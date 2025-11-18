@@ -3,9 +3,9 @@ package com.example.trainreservationsystem;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import org.kordamp.ikonli.javafx.FontIcon;
 import javafx.scene.paint.Color;
 import javafx.scene.control.ContentDisplay;
@@ -16,9 +16,6 @@ public class HomeController {
 
     @FXML
     private Button manageAccountButton;
-
-    @FXML
-    private HBox manageSearchBox;
 
     @FXML
     private Button manageSwapButton;
@@ -33,10 +30,10 @@ public class HomeController {
     private Button manageNotificationButton;
 
     @FXML
-    void onManageAccountClick(MouseEvent event) {
-        System.out.println("Manage Account");
-    }
+    private Region topRegion;
 
+    @FXML
+    private Region bottomRegion;
 
 
     @FXML
@@ -85,6 +82,8 @@ public class HomeController {
         manageSwapButton.setGraphicTextGap(8);
 
 
+        bottomRegion.minWidthProperty().bind(topRegion.widthProperty());
+        bottomRegion.maxWidthProperty().bind(topRegion.widthProperty());
 
     }
 }

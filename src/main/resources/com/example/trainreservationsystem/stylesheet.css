@@ -77,6 +77,14 @@
    TEXT FIELDS / PASSWORD FIELDS
    ================================ */
 
+.searchbox-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #4c4f69;
+    -fx-padding: 0 0 0 0;
+}
+
+
 .text-field,
 .password-field {
     -fx-background-radius: 5;
