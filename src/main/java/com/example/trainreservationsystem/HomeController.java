@@ -3,8 +3,6 @@ package com.example.trainreservationsystem;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import org.kordamp.ikonli.javafx.FontIcon;
 import javafx.scene.paint.Color;
