@@ -32,7 +32,7 @@
          </Button>
            <Region prefHeight="100.0" prefWidth="151.0" HBox.hgrow="ALWAYS" />
          <Button fx:id="manageNotificationButton" accessibleText="Notifications" mnemonicParsing="false" />
-           <Button fx:id="manageAccountButton" alignment="CENTER_RIGHT" contentDisplay="TOP" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#onManageAccountClick" text="Manage Account" textAlignment="JUSTIFY" HBox.hgrow="ALWAYS">
+           <Button fx:id="manageAccountButton" alignment="CENTER_RIGHT" contentDisplay="TOP" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" text="Manage Account" textAlignment="JUSTIFY" HBox.hgrow="ALWAYS">
               <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
               </HBox.margin>
