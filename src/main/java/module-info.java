@@ -7,6 +7,8 @@ module com.example.trainreservationsystem {
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
+    requires io.github.cdimascio.dotenv.java;
+    requires java.sql;
 
     opens com.example.trainreservationsystem to javafx.fxml;
     exports com.example.trainreservationsystem;
