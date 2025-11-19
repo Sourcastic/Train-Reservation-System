@@ -10,4 +10,8 @@ module com.example.trainreservationsystem {
 
     opens com.example.trainreservationsystem to javafx.fxml;
     exports com.example.trainreservationsystem;
+    exports com.example.trainreservationsystem.applications;
+    opens com.example.trainreservationsystem.applications to javafx.fxml;
+    exports com.example.trainreservationsystem.controllers;
+    opens com.example.trainreservationsystem.controllers to javafx.fxml;
 }

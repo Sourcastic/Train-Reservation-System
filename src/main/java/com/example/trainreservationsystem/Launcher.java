@@ -1,5 +1,6 @@
 package com.example.trainreservationsystem;
 
+import com.example.trainreservationsystem.applications.HomeApplication;
 import javafx.application.Application;
 
 public class Launcher {

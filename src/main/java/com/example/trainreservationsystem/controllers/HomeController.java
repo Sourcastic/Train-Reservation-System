@@ -1,4 +1,4 @@
-package com.example.trainreservationsystem;
+package com.example.trainreservationsystem.controllers;
 
 
 import javafx.fxml.FXML;

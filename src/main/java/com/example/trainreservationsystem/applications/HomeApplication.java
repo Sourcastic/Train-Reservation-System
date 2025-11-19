@@ -1,4 +1,4 @@
-package com.example.trainreservationsystem;
+package com.example.trainreservationsystem.applications;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
