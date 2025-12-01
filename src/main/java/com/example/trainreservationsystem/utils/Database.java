@@ -1,23 +1,32 @@
 package com.example.trainreservationsystem.utils;
+
+import java.net.URI;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import io.github.cdimascio.dotenv.Dotenv;
-import java.net.URI;
 import java.util.Properties;
 
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class Database {
 
-    private static final Dotenv dotenv = Dotenv.load();
+    private static final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
     public static Connection getConnection() throws Exception {
         String databaseUrl = dotenv.get("DATABASE_URL");
+
+        // Fallback if .env is missing or variable not found (helpful for simple local
+        // testing)
+        if (databaseUrl == null) {
+            // Default to standard local postgres if not set
+            databaseUrl = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=password";
+        }
 
         String cleanUrl = databaseUrl.startsWith("jdbc:") ? databaseUrl.substring(5) : databaseUrl;
 
         URI uri = URI.create(cleanUrl);
 
-        String jdbcUrl = "jdbc:postgresql://" + uri.getHost() + ":" + (uri.getPort() == -1 ? 5432 : uri.getPort()) + uri.getPath();
+        String jdbcUrl = "jdbc:postgresql://" + uri.getHost() + ":" + (uri.getPort() == -1 ? 5432 : uri.getPort())
+                + uri.getPath();
         if (uri.getQuery() != null) {
             jdbcUrl += "?" + uri.getQuery();
         }
