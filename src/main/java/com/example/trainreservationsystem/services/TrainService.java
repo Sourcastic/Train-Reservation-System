@@ -20,4 +20,21 @@ public class TrainService {
   public Schedule getSchedule(int id) {
     return repository.getScheduleById(id);
   }
+
+    public List<Schedule> getAllSchedules() {
+        return repository.getAllSchedules();
+    }
+
+    public void updateScheduleStatusAndNotify(int scheduleId, String status) {
+        // Update status
+        repository.updateScheduleStatus(scheduleId, status);
+
+        // Notify passengers
+        String message = "Your train " + repository.getScheduleById(scheduleId).getRoute().getSource() +
+                " → " + repository.getScheduleById(scheduleId).getRoute().getDestination() +
+                " has been updated to " + status + ".";
+        repository.notifyPassengers(scheduleId, message);
+    }
+
+
 }

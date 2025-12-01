@@ -1,9 +1,6 @@
 package com.example.trainreservationsystem.services;
 
-import com.example.trainreservationsystem.repositories.BookingRepository;
-import com.example.trainreservationsystem.repositories.ComplaintRepository;
-import com.example.trainreservationsystem.repositories.PaymentRepository;
-import com.example.trainreservationsystem.repositories.TrainRepository;
+import com.example.trainreservationsystem.repositories.*;
 
 public class ServiceFactory {
 
@@ -47,4 +44,14 @@ public class ServiceFactory {
     }
     return ticketService;
   }
+
+    private static NotificationsService notificationService;
+
+    public static NotificationsService getNotificationService() {
+        if (notificationService == null) {
+            notificationService = new NotificationsService(new NotificationsRepository());
+        }
+        return notificationService;
+    }
+
 }

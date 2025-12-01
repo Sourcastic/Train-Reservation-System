@@ -25,14 +25,17 @@ public class DatabaseInitializer {
           "destination VARCHAR(100) NOT NULL)");
 
       // Schedules (formerly trains)
-      stmt.execute("CREATE TABLE IF NOT EXISTS schedules (" +
-          "id SERIAL PRIMARY KEY, " +
-          "route_id INT REFERENCES routes(id), " +
-          "departure_date DATE NOT NULL, " +
-          "departure_time TIME NOT NULL, " +
-          "arrival_time TIME NOT NULL, " +
-          "capacity INT NOT NULL, " +
-          "price DECIMAL(10, 2) NOT NULL)");
+        stmt.execute("CREATE TABLE IF NOT EXISTS schedules (" +
+                "id SERIAL PRIMARY KEY, " +
+                "route_id INT REFERENCES routes(id), " +
+                "departure_date DATE NOT NULL, " +
+                "departure_time TIME NOT NULL, " +
+                "arrival_time TIME NOT NULL, " +
+                "capacity INT NOT NULL, " +
+                "price DECIMAL(10, 2) NOT NULL, " +
+                "status VARCHAR(20) DEFAULT 'On-time'" +   // <- new column
+                ")");
+
 
       // Bookings
       stmt.execute("CREATE TABLE IF NOT EXISTS bookings (" +
@@ -77,6 +80,14 @@ public class DatabaseInitializer {
           "tracking_id VARCHAR(50) UNIQUE NOT NULL, " +
           "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
 
+      // Staff Responses table
+      stmt.execute("CREATE TABLE IF NOT EXISTS staff_responses (" +
+                "id SERIAL PRIMARY KEY, " +
+                "complaint_id INT REFERENCES complaints(id), " +
+                "staff_id INT REFERENCES users(id), " +
+                "response TEXT NOT NULL, " +
+                "responded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
+                ")");
       // Notifications table
       stmt.execute("CREATE TABLE IF NOT EXISTS notifications (" +
           "id SERIAL PRIMARY KEY, " +

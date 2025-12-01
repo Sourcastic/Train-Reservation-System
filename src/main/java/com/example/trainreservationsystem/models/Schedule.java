@@ -11,6 +11,7 @@ public class Schedule {
   private LocalTime arrivalTime;
   private double price;
   private int capacity;
+  private String status; // on-time, delayed, cancelled
 
   public Schedule() {
   }
@@ -86,4 +87,8 @@ public class Schedule {
   public String toString() {
     return route.getSource() + " to " + route.getDestination() + " (" + departureTime + ")";
   }
+
+  public String getStatus() { return status; }
+
+  public void setStatus(String status) { this.status = status; }
 }

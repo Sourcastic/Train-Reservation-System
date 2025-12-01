@@ -9,6 +9,9 @@ public class Complaint {
   private String description;
   private String trackingId;
   private LocalDateTime createdAt;
+  private String staffResponse;
+  private int staffId;
+  private LocalDateTime respondedAt;
 
   public Complaint() {
   }
@@ -69,4 +72,16 @@ public class Complaint {
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
+
+  public String getStaffResponse() { return staffResponse; }
+
+  public void setStaffResponse(String staffResponse) { this.staffResponse = staffResponse; }
+
+  public int getStaffId() { return staffId; }
+
+  public void setStaffId(int staffId) { this.staffId = staffId; }
+
+  public LocalDateTime getRespondedAt() { return respondedAt; }
+
+  public void setRespondedAt(LocalDateTime respondedAt) { this.respondedAt = respondedAt; }
 }
