@@ -20,7 +20,7 @@ public class HomeApplication extends Application {
         com.example.trainreservationsystem.services.UserSession.getInstance().login(user);
 
         Parent root = FXMLLoader.load(
-                getClass().getResource("/com/example/trainreservationsystem/home-view.fxml"));
+                getClass().getResource("/com/example/trainreservationsystem/respondtocomplaints-view.fxml"));
 
         Scene scene = new Scene(root, 1380, 780);
         stage.setScene(scene);
