@@ -34,7 +34,7 @@ public class RespondToComplaintsController {
     @FXML
     private Button btnSubmitResponse;
 
-    private final StaffComplaintService staffService = com.example.trainreservationsystem.services.ServiceFactory.getStaffComplaintService();
+    //private final StaffComplaintService staffService = com.example.trainreservationsystem.services.ServiceFactory.getStaffComplaintService();
 
     private ObservableList<Complaint> complaintsList;
 
@@ -63,7 +63,7 @@ public class RespondToComplaintsController {
     }
 
     private void loadComplaints() {
-        complaintsList = FXCollections.observableArrayList(staffService.getAllComplaints());
+        //complaintsList = FXCollections.observableArrayList(staffService.getAllComplaints());
         complaintsTable.setItems(complaintsList);
     }
 
@@ -82,7 +82,7 @@ public class RespondToComplaintsController {
         }
 
         int staffId = 1; // Replace with actual logged-in staff ID
-        staffService.respondToComplaint(selected.getId(), responseText, staffId);
+        //staffService.respondToComplaint(selected.getId(), responseText, staffId);
 
         showAlert("Success", "Response sent successfully!");
         responseArea.clear();

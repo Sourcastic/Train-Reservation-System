@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.logincontroller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.LoginController">
 
     <center>
         <VBox alignment="CENTER" spacing="20">
@@ -29,17 +29,20 @@
                             <!-- Email -->
                             <HBox spacing="10">
                                 <Label prefWidth="100" style="-fx-font-size: 16px;" text="Email:" />
-                                <TextField prefWidth="300" promptText="Enter your email" />
+                                <TextField fx:id="emailField" prefWidth="300" promptText="Enter your email" />
                             </HBox>
 
                             <!-- Password -->
                             <HBox spacing="10">
                                 <Label prefWidth="100" style="-fx-font-size: 16px;" text="Password:" />
-                                <PasswordField prefWidth="300" promptText="Enter your password" />
+                                <PasswordField fx:id="passwordField" prefWidth="300" promptText="Enter your password" />
                             </HBox>
 
+                            <!-- Error Label -->
+                            <Label fx:id="errorLabel" styleClass="error-label" text="" />
+
                             <!-- Login Button -->
-                            <Button prefWidth="200" style="-fx-font-size: 18px;                                            -fx-padding: 10 30;                                            -fx-background-radius: 15;" text="Login" />
+                            <Button fx:id="loginButton" onAction="#handleLogin" prefWidth="200" style="-fx-font-size: 18px;                                            -fx-padding: 10 30;                                            -fx-background-radius: 15;" text="Login" />
 
 
                         </VBox>

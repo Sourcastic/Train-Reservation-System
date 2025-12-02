@@ -5,6 +5,9 @@ public class User {
   private String username;
   private String password;
   private String email;
+  private String phoneNo;
+  private String userType;
+  private int loyaltyPoints;
 
   public User() {
   }
@@ -14,6 +17,17 @@ public class User {
     this.username = username;
     this.password = password;
     this.email = email;
+  }
+
+  public User(int id, String username, String password, String email, String phoneNo, String userType,
+      int loyaltyPoints) {
+    this.id = id;
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.phoneNo = phoneNo;
+    this.userType = userType;
+    this.loyaltyPoints = loyaltyPoints;
   }
 
   public int getId() {
@@ -46,5 +60,29 @@ public class User {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public String getPhoneNo() {
+    return phoneNo;
+  }
+
+  public void setPhoneNo(String phoneNo) {
+    this.phoneNo = phoneNo;
+  }
+
+  public String getUserType() {
+    return userType;
+  }
+
+  public void setUserType(String userType) {
+    this.userType = userType;
+  }
+
+  public int getLoyaltyPoints() {
+    return loyaltyPoints;
+  }
+
+  public void setLoyaltyPoints(int loyaltyPoints) {
+    this.loyaltyPoints = loyaltyPoints;
   }
 }

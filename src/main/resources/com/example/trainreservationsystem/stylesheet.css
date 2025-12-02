@@ -30,6 +30,13 @@
     -fx-background-color: #8839ff;
 }
 
+.button:disabled {
+    -fx-background-color: #ccd0da;
+    -fx-text-fill: #7c7f93;
+    -fx-cursor: default;
+    -fx-opacity: 0.6;
+}
+
 
 /* Button in the header bar */
 .header-button {
