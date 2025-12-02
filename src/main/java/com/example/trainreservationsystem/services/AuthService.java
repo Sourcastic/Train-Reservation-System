@@ -41,7 +41,7 @@ public class AuthService {
 
         try {
             userRepository.registerUser(username, password, email, phoneNo);
-            return userRepository.authenticateUser(username, password);
+            return userRepository.authenticateUser(email, password);
         } catch (Exception e) {
             if (e.getMessage() != null && e.getMessage().contains("Email already registered")) {
                 throw new IllegalArgumentException("Email already registered");

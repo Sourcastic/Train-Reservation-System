@@ -1,38 +1,96 @@
+/* ================================
+   COLOR SCHEME VARIABLES
+   (Documented for easy updates)
+   ================================ */
+/*
+   --text: #170d13 (Dark text)
+   --background: #ebd6e1 (Light pink background)
+   --primary: #a96a8a (Main pink)
+   --secondary: #cba6a4 (Secondary pink)
+   --accent: #bea08e (Accent beige)
+
+   Additional derived colors:
+   --white: #ffffff (Pure white for cards)
+   --hover-bg: rgba(203,166,164,0.1) (Secondary with opacity for hovers)
+   --border: rgba(203,166,164,0.3) (Secondary with opacity for borders)
+   --shadow: rgba(0,0,0,0.06) (Subtle shadows)
+*/
+
+/* ================================
+   BASE: ROOT & TYPOGRAPHY
+   ================================ */
 .root {
-    -fx-font-family: "Inter", "Segoe UI", sans-serif;
-    -fx-background-color: linear-gradient(to bottom right, #f3e7f3, #e6edf7);
+    -fx-font-family: "Nunito", "Alpino", "Segoe UI", sans-serif;
+    -fx-background-color: #ebd6e1;
     -fx-text-fill: #170d13;
 }
 
+.page-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #170d13;
+    -fx-font-family: "Alpino", sans-serif;
+}
+
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #cba6a4;
+    -fx-font-family: "Alpino", sans-serif;
+}
+
+.field-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #cba6a4;
+    -fx-font-family: "Alpino", sans-serif;
+}
+
+.error-label {
+    -fx-text-fill: #d32f2f;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-font-family: "Nunito", sans-serif;
+}
+
+.hint-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #bea08e;
+    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-style: italic;
+}
+
 /* ================================
-   SIDEBAR
+   LAYOUT: SIDEBAR & DASHBOARD
    ================================ */
 .sidebar {
-    -fx-background-color: rgba(255,255,255,0.98);
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 18, 0, 0, 0);
-    -fx-spacing: 16;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 0);
+    -fx-spacing: 12;
 }
 
 .sidebar-button {
     -fx-background-color: transparent;
     -fx-text-fill: #170d13;
     -fx-alignment: CENTER_LEFT;
-    -fx-padding: 10 18;
+    -fx-padding: 12 16;
     -fx-background-radius: 8;
-    -fx-font-weight: 600;
+    -fx-font-weight: 500;
     -fx-font-size: 14px;
+    -fx-font-family: "Nunito", sans-serif;
     -fx-cursor: hand;
 }
 
 .sidebar-button:hover {
-    -fx-background-color: rgba(169,106,138,0.16);
+    -fx-background-color: rgba(203,166,164,0.1);
 }
 
 .title-button {
     -fx-background-color: transparent;
     -fx-text-fill: #170d13;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+    -fx-font-family: "Alpino", sans-serif;
     -fx-padding: 8 0;
     -fx-alignment: CENTER_LEFT;
 }
@@ -40,221 +98,262 @@
 .app-logo {
     -fx-background-color: #a96a8a;
     -fx-text-fill: white;
-    -fx-font-size: 16px;
+    -fx-font-size: 14px;
     -fx-font-weight: 600;
-    -fx-padding: 10 32;
-    -fx-background-radius: 999;
+    -fx-font-family: "Alpino", sans-serif;
+    -fx-padding: 10 20;
+    -fx-background-radius: 8;
     -fx-alignment: CENTER;
     -fx-cursor: default;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.20), 18, 0, 0, 6);
 }
 
-.app-logo:hover {
-    -fx-background-color: #a96a8a;
-}
-
-.icon-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #170d13;
-    -fx-background-radius: 999;
-    -fx-padding: 6 12;
-    -fx-cursor: hand;
-}
-.icon-button:hover {
-    -fx-background-color: rgba(169,106,138,0.16);
-}
-
-/* ================================
-   FORMS & CARDS
-   ================================ */
-.page-title {
-    -fx-font-size: 26px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #170d13;
-}
-
-.section-title {
-    -fx-font-size: 18px;
+.user-name-label {
+    -fx-font-size: 15px;
     -fx-font-weight: 600;
-    -fx-text-fill: #4b3b45;
+    -fx-text-fill: #170d13;
+    -fx-font-family: "Alpino", sans-serif;
+    -fx-padding: 8 0;
+    -fx-alignment: CENTER_LEFT;
 }
 
-.form-card {
-    -fx-background-color: rgba(255,255,255,0.95);
-    -fx-background-radius: 16;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 20, 0, 0, 6);
-    -fx-spacing: 16;
-}
-
-/* Member dashboard */
 .member-root {
     -fx-background-color: transparent;
 }
 
 .dashboard-header {
-    -fx-background-color: rgba(255,255,255,0.9);
-    -fx-background-radius: 18;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 24, 0, 0, 8);
-    -fx-padding: 16;
-    -fx-min-height: 180;
-}
-
-.dashboard-header-content {
-    -fx-padding: 12 24;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 16, 0, 0, 2);
+    -fx-padding: 24;
+    -fx-min-height: 160;
 }
 
 .dashboard-header-title {
-    -fx-font-size: 24px;
-    -fx-font-weight: 800;
+    -fx-font-size: 28px;
+    -fx-font-weight: 700;
     -fx-text-fill: #170d13;
+    -fx-font-family: "Alpino", sans-serif;
 }
 
 .dashboard-header-subtitle {
     -fx-font-size: 14px;
-    -fx-text-fill: #4b3b45;
+    -fx-text-fill: #cba6a4;
+    -fx-font-family: "Nunito", sans-serif;
 }
 
 .quick-action-button {
-    -fx-background-radius: 999;
-    -fx-padding: 10 22;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-text-fill: #170d13;
     -fx-font-size: 14px;
-    -fx-background-color: #a96a8a;
-    -fx-text-fill: white;
-    -fx-cursor: hand;
     -fx-font-weight: 600;
-    -fx-border-color: transparent;
-    -fx-border-width: 0;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 8, 0, 0, 2);
+    -fx-font-family: "Nunito", sans-serif;
+    -fx-padding: 16 24;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 1);
+    -fx-border-color: rgba(203,166,164,0.3);
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
 }
 
 .quick-action-button:hover {
-    -fx-background-color: #965b7a;
+    -fx-background-color: #ebd6e1;
+    -fx-border-color: #a96a8a;
+    -fx-effect: dropshadow(gaussian, rgba(169,106,138,0.15), 12, 0, 0, 2);
 }
 
-.searchBox {
-    -fx-background-color: rgba(255,255,255,0.7);
-    -fx-background-radius: 12;
-    -fx-padding: 16;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 18, 0, 0, 8);
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
 }
 
-/* Quick action cards */
-.quick-card {
-    -fx-background-color: rgba(255,255,255,0.95);
-    -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 18, 0, 0, 6);
-    -fx-cursor: hand;
-    -fx-spacing: 8;
-    -fx-transition: all 0.2s ease-in-out;
-}
-
-.quick-card:hover {
-    -fx-translate-y: -3;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.16), 22, 0, 0, 10);
-}
-
-.quick-card-title {
-    -fx-font-size: 16px;
+.table-view .column-header {
+    -fx-background-color: #ebd6e1;
     -fx-font-weight: 600;
+    -fx-text-fill: #170d13;
+    -fx-font-family: "Alpino", sans-serif;
+    -fx-padding: 12 16;
+}
+
+.table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: rgba(203,166,164,0.2);
+    -fx-border-width: 0 0 1 0;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #ebd6e1;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: rgba(203,166,164,0.15);
     -fx-text-fill: #170d13;
 }
 
-.quick-card-subtitle {
-    -fx-font-size: 13px;
-    -fx-text-fill: #6c6f85;
+.empty-state {
+    -fx-background-color: transparent;
 }
 
-.quick-card-button {
-    -fx-background-radius: 20;
+.empty-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #cba6a4;
+    -fx-font-family: "Alpino", sans-serif;
+}
+
+.empty-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #bea08e;
+    -fx-font-family: "Nunito", sans-serif;
+}
+
+/* ================================
+   COMPONENTS: BUTTONS
+   ================================ */
+.button {
+    -fx-background-color: #a96a8a;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-padding: 10 24;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-font-family: "Nunito", sans-serif;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(169,106,138,0.2), 8, 0, 0, 2);
+}
+
+.button:hover {
+    -fx-background-color: #cba6a4;
+}
+
+.secondary-button {
+    -fx-background-radius: 8;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-background-color: transparent;
+    -fx-text-fill: #a96a8a;
+    -fx-font-family: "Nunito", sans-serif;
+    -fx-cursor: hand;
+    -fx-font-weight: 600;
+    -fx-border-color: #a96a8a;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+}
+
+.secondary-button:hover {
+    -fx-background-color: rgba(203,166,164,0.1);
+}
+
+.book-button {
+    -fx-background-radius: 8;
     -fx-padding: 8 16;
     -fx-font-size: 13px;
     -fx-background-color: #a96a8a;
     -fx-text-fill: white;
+    -fx-font-family: "Nunito", sans-serif;
     -fx-cursor: hand;
     -fx-font-weight: 600;
 }
 
-.quick-card-button:hover {
-    -fx-background-color: #965b7a;
+.book-button:hover {
+    -fx-background-color: #cba6a4;
 }
 
-.searchbox-label {
-    -fx-font-size: 20px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #170d13;
-    -fx-padding: 0 0 0 0;
-}
-
-/* ================================
-   BUTTONS
-   ================================ */
-.button {
-    -fx-background-radius: 999;
-    -fx-padding: 10 20;
-    -fx-font-size: 14px;
-    -fx-background-color: #a96a8a;  /* primary */
+.payment-method-button {
+    -fx-background-color: #a96a8a;
+    -fx-background-radius: 8;
     -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-font-family: "Nunito", sans-serif;
+    -fx-padding: 12 24;
+    -fx-cursor: hand;
+}
+
+.payment-method-button:hover {
+    -fx-background-color: #cba6a4;
+}
+
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #170d13;
+    -fx-background-radius: 8;
+    -fx-padding: 8 12;
+    -fx-font-family: "Nunito", sans-serif;
+    -fx-cursor: hand;
+}
+
+.icon-button:hover {
+    -fx-background-color: rgba(203,166,164,0.1);
+}
+
+.tab-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #cba6a4;
+    -fx-padding: 8 16;
+    -fx-background-radius: 8;
     -fx-cursor: hand;
     -fx-font-weight: 600;
-    -fx-border-color: transparent;
-    -fx-border-width: 0;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.16), 8, 0, 0, 2);
+    -fx-font-family: "Nunito", sans-serif;
 }
 
-.button:hover {
-    -fx-background-color: #965b7a;
+.tab-button:hover {
+    -fx-background-color: rgba(203,166,164,0.1);
 }
 
-/* ================================
-   ALERTS
-   ================================ */
-.custom-alert {
-    -fx-background-color: rgba(255,255,255,0.95);
-    -fx-background-radius: 14;
+.tab-active {
+    -fx-background-color: #a96a8a;
+    -fx-text-fill: white;
 }
-.custom-alert .header-panel {
+
+.dismiss-button {
     -fx-background-color: transparent;
+    -fx-text-fill: #bea08e;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+    -fx-min-width: 20;
+    -fx-min-height: 20;
 }
-.custom-alert .label {
-    -fx-font-family: "Inter", "Segoe UI", sans-serif;
-    -fx-text-fill: #170d13;
+
+.dismiss-button:hover {
+    -fx-text-fill: #d32f2f;
 }
 
 /* ================================
-   INPUTS
+   COMPONENTS: INPUTS
    ================================ */
 .text-field,
 .password-field,
 .text-area {
-    -fx-background-radius: 10;
-    -fx-background-color: rgba(255,255,255,0.8);
-    -fx-padding: 8;
-    -fx-border-radius: 10;
-    -fx-border-color: rgba(186, 153, 165, 0.6);
+    -fx-background-radius: 8;
+    -fx-background-color: #ffffff;
+    -fx-padding: 10;
+    -fx-border-radius: 8;
+    -fx-border-color: rgba(203,166,164,0.3);
     -fx-font-size: 14px;
+    -fx-font-family: "Nunito", sans-serif;
 }
 
 .text-field:focused,
 .password-field:focused,
 .text-area:focused {
     -fx-border-color: #a96a8a;
-    -fx-effect: dropshadow(gaussian, rgba(169, 106, 138, 0.35), 10, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(169,106,138,0.15), 8, 0, 0, 0);
 }
 
-/* Combobox & DatePicker styles */
 .searchable-combobox, .date-picker {
-    -fx-background-color: rgba(255,255,255,0.8);
+    -fx-background-color: #ffffff;
     -fx-background-insets: 0;
-    -fx-background-radius: 6;
+    -fx-background-radius: 8;
     -fx-padding: 0;
     -fx-font-size: 14px;
     -fx-text-fill: #170d13;
-    -fx-border-radius: 6;
+    -fx-font-family: "Nunito", sans-serif;
+    -fx-border-radius: 8;
     -fx-border-width: 1;
-    -fx-border-color: rgba(186, 153, 165, 0.6);
-    -fx-pref-height: 36px;
-    -fx-min-height: 36px;
-    -fx-max-height: 36px;
+    -fx-border-color: rgba(203,166,164,0.3);
+    -fx-pref-height: 40px;
 }
 
 .searchable-combobox:hover, .date-picker:hover {
@@ -265,172 +364,91 @@
     -fx-border-color: #a96a8a;
 }
 
-.searchable-combobox .arrow-button, .date-picker .arrow-button {
-    -fx-background-color: transparent;
-    -fx-padding: 0 6;
-}
-
-.searchable-combobox .arrow-button .arrow, .date-picker .arrow-button .arrow {
-    -fx-background-color: #170d13;
-}
-
 .searchable-combobox .list-cell {
-    -fx-background-color: rgba(255,255,255,0.9);
+    -fx-background-color: #ffffff;
     -fx-text-fill: #170d13;
-    -fx-padding: 4 10;
+    -fx-font-family: "Nunito", sans-serif;
+    -fx-padding: 8 12;
 }
 
 .searchable-combobox .list-cell:hover {
-    -fx-background-color: rgba(186, 153, 165, 0.2);
-}
-
-/* Calendar Popup */
-.date-picker-popup {
-    -fx-background-color: rgba(255,255,255,0.96);
-    -fx-border-color: rgba(186, 153, 165, 0.5);
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-    -fx-padding: 8;
-}
-
-.date-picker-popup .month-year-pane {
-    -fx-background-color: transparent;
-}
-
-.date-picker-popup .month-year-pane .label {
-    -fx-text-fill: #170d13;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-}
-
-.date-picker-popup .day-cell {
-    -fx-text-fill: #170d13;
-    -fx-background-radius: 5;
-}
-
-.date-picker-popup .day-cell:hover {
-    -fx-background-color: rgba(186, 153, 165, 0.18);
-}
-
-.date-picker-popup .day-cell:selected {
-    -fx-background-color: #a96a8a;
-    -fx-text-fill: white;
-}
-
-.date-picker-popup .today {
-    -fx-background-color: rgba(190, 160, 142, 0.6);
-    -fx-background-radius: 5;
-    -fx-text-fill: #170d13;
-}
-
-/* Table View */
-.table-view {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-}
-
-.table-view .column-header {
-    -fx-background-color: rgba(255,255,255,0.5);
-    -fx-font-weight: 600;
-    -fx-text-fill: #170d13;
-    -fx-padding: 12 16;
-}
-
-.table-row-cell {
-    -fx-background-color: rgba(255,255,255,0.8);
-    -fx-border-color: rgba(186, 153, 165, 0.2);
-    -fx-border-width: 0 0 1 0;
-}
-
-.table-row-cell:hover {
-    -fx-background-color: rgba(255,255,255,0.95);
-}
-
-.table-row-cell:selected {
-    -fx-background-color: rgba(169, 106, 138, 0.15);
-    -fx-text-fill: #170d13;
-}
-
-/* ================================
-   BOOKING & SEAT SELECTION
-   ================================ */
-.info-card {
-    -fx-background-color: linear-gradient(to right, rgba(169,106,138,0.1), rgba(169,106,138,0.05));
-    -fx-background-radius: 12;
-    -fx-padding: 20;
-    -fx-spacing: 8;
-}
-
-.route-title {
-    -fx-font-size: 20px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #170d13;
-}
-
-.info-label {
-    -fx-font-size: 14px;
-    -fx-text-fill: #6c6f85;
-}
-
-.price-label {
-    -fx-font-size: 18px;
-    -fx-font-weight: 600;
-    -fx-text-fill: #a96a8a;
-}
-
-.field-label {
-    -fx-font-size: 13px;
-    -fx-font-weight: 600;
-    -fx-text-fill: #4b3b45;
+    -fx-background-color: rgba(203,166,164,0.1);
 }
 
 .modern-field {
     -fx-background-radius: 8;
-    -fx-background-color: rgba(255,255,255,0.9);
+    -fx-background-color: #ffffff;
     -fx-padding: 10;
     -fx-border-radius: 8;
-    -fx-border-color: rgba(186, 153, 165, 0.3);
+    -fx-border-color: rgba(203,166,164,0.3);
     -fx-font-size: 14px;
+    -fx-font-family: "Nunito", sans-serif;
 }
 
 .modern-field:focused {
     -fx-border-color: #a96a8a;
-    -fx-effect: dropshadow(gaussian, rgba(169, 106, 138, 0.25), 10, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(169,106,138,0.15), 8, 0, 0, 0);
 }
 
-.modern-spinner {
+/* ================================
+   COMPONENTS: CARDS
+   ================================ */
+.form-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 16, 0, 0, 2);
+    -fx-spacing: 16;
+}
+
+.ticket-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 16, 0, 0, 2);
+}
+
+.notification-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 1);
+    -fx-cursor: hand;
+}
+
+.notification-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 2);
+}
+
+.summary-box {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 2);
+}
+
+.cash-info-box {
+    -fx-background-color: #ebd6e1;
     -fx-background-radius: 8;
-    -fx-background-color: rgba(255,255,255,0.9);
-    -fx-border-radius: 8;
-    -fx-border-color: rgba(186, 153, 165, 0.3);
+    -fx-padding: 12;
 }
 
-.modern-spinner:focused {
-    -fx-border-color: #a96a8a;
-}
-
-/* Seat Grid Styles */
-.seat-scroll {
-    -fx-background-color: transparent;
-    -fx-background: transparent;
-}
-
+/* ================================
+   FEATURES: BOOKING & SEATS
+   ================================ */
 .seat-available, .seat-selected, .seat-occupied {
-    -fx-background-radius: 6;
+    -fx-background-radius: 8;
     -fx-font-size: 12px;
     -fx-font-weight: 600;
+    -fx-font-family: "Nunito", sans-serif;
     -fx-cursor: hand;
 }
 
 .seat-available {
-    -fx-background-color: #e8f4ea;
-    -fx-text-fill: #2d7a3e;
-    -fx-border-color: #2d7a3e;
+    -fx-background-color: #e8f5e9;
+    -fx-text-fill: #2e7d32;
+    -fx-border-color: #2e7d32;
     -fx-border-width: 1;
 }
 
 .seat-available:hover {
-    -fx-background-color: #d0e8d4;
+    -fx-background-color: #c8e6c9;
 }
 
 .seat-selected {
@@ -439,493 +457,211 @@
 }
 
 .seat-occupied {
-    -fx-background-color: #f0f0f0;
-    -fx-text-fill: #999;
+    -fx-background-color: rgba(203,166,164,0.2);
+    -fx-text-fill: #bea08e;
     -fx-cursor: not-allowed;
-}
-
-/* Legends */
-.seat-available-legend {
-    -fx-background-color: #e8f4ea;
-    -fx-border-color: #2d7a3e;
-    -fx-border-width: 1;
-}
-
-.seat-selected-legend {
-    -fx-background-color: #a96a8a;
-}
-
-.seat-occupied-legend {
-    -fx-background-color: #f0f0f0;
-}
-
-.legend-label {
-    -fx-font-size: 12px;
-    -fx-text-fill: #6c6f85;
 }
 
 .row-label {
     -fx-font-size: 11px;
     -fx-font-weight: 600;
-    -fx-text-fill: #6c6f85;
+    -fx-text-fill: #cba6a4;
+    -fx-font-family: "Nunito", sans-serif;
     -fx-padding: 0 10 0 0;
 }
 
-/* Secondary button */
-.secondary-button {
-    -fx-background-radius: 999;
-    -fx-padding: 10 20;
-    -fx-font-size: 14px;
-    -fx-background-color: transparent;
-    -fx-text-fill: #a96a8a;
-    -fx-cursor: hand;
-    -fx-font-weight: 600;
-    -fx-border-color: #a96a8a;
-    -fx-border-width: 2;
-    -fx-border-radius: 999;
-}
-
-.secondary-button:hover {
-    -fx-background-color: rgba(169,106,138,0.1);
-}
-
-.book-button {
-    -fx-background-radius: 6;
-    -fx-padding: 6 16;
-    -fx-font-size: 13px;
-    -fx-background-color: #a96a8a;
-    -fx-text-fill: white;
-    -fx-cursor: hand;
-    -fx-font-weight: 600;
-}
-
-.book-button:hover {
-    -fx-background-color: #965b7a;
-}
-
 /* ================================
-   TICKET VIEW
-   ================================ */
-.ticket-card {
-    -fx-background-color: white;
-    -fx-background-radius: 16;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 24, 0, 0, 8);
-}
-
-.ticket-header {
-    -fx-font-size: 22px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #170d13;
-}
-
-.booking-id {
-    -fx-font-size: 14px;
-    -fx-text-fill: #6c6f85;
-    -fx-font-weight: 600;
-}
-
-.station-name {
-    -fx-font-size: 20px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #170d13;
-}
-
-.station-label {
-    -fx-font-size: 11px;
-    -fx-text-fill: #6c6f85;
-    -fx-font-weight: 600;
-}
-
-.detail-label {
-    -fx-font-size: 12px;
-    -fx-text-fill: #6c6f85;
-    -fx-font-weight: 600;
-}
-
-.detail-value {
-    -fx-font-size: 15px;
-    -fx-text-fill: #170d13;
-    -fx-font-weight: 600;
-}
-
-.status-confirmed {
-    -fx-font-size: 15px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #2d7a3e;
-}
-
-.status-pending {
-    -fx-font-size: 15px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #d97706;
-}
-
-.status-cancelled {
-    -fx-font-size: 15px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #dc2626;
-}
-
-/* ================================
-   PAYMENT VIEW
+   FEATURES: PAYMENT
    ================================ */
 .payment-container {
     -fx-background-color: transparent;
     -fx-spacing: 24;
 }
 
-.summary-card {
-    -fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2);
-    -fx-background-radius: 16;
-    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.4), 24, 0, 0, 8);
-    -fx-text-fill: white;
-}
-
-.summary-card .field-label {
-    -fx-text-fill: rgba(255, 255, 255, 0.8);
-    -fx-font-size: 12px;
-}
-
-.summary-card .summary-value {
-    -fx-text-fill: white;
-    -fx-font-size: 15px;
-    -fx-font-weight: 600;
-}
-
-.summary-card .section-title {
-    -fx-text-fill: white;
-    -fx-font-size: 18px;
-}
-
-.total-label {
-    -fx-font-size: 16px;
-    -fx-text-fill: rgba(255, 255, 255, 0.9);
-}
-
-.total-amount {
-    -fx-font-size: 28px;
-    -fx-font-weight: 700;
-    -fx-text-fill: white;
-}
-
-.payment-methods-card {
-    -fx-background-color: white;
-    -fx-background-radius: 16;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 20, 0, 0, 6);
-}
-
-.payment-option {
-    -fx-padding: 12;
-    -fx-background-radius: 8;
-    -fx-cursor: hand;
-}
-
-.payment-option:hover {
-    -fx-background-color: rgba(169,106,138,0.05);
-}
-
-.payment-method-title {
-    -fx-font-size: 16px;
-    -fx-font-weight: 600;
-}
-
-.wallet-button {
-    -fx-background-radius: 8;
-    -fx-padding: 8 16;
-    -fx-background-color: #f0f0f5;
-    -fx-text-fill: #4b3b45;
-    -fx-cursor: hand;
-}
-
-.wallet-button:hover {
-    -fx-background-color: #e0e0e8;
-}
-
-.pay-button {
-    -fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2);
-    -fx-background-radius: 999;
-    -fx-padding: 14 32;
-    -fx-font-size: 16px;
-    -fx-text-fill: white;
-    -fx-cursor: hand;
-    -fx-font-weight: 700;
-    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.4), 16, 0, 0, 4);
-}
-
-.pay-button:hover {
-    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.6), 20, 0, 0, 6);
-    -fx-translate-y: -2;
-}
-
-.pay-button:disabled {
-    -fx-opacity: 0.6;
-    -fx-cursor: wait;
-}
-
-.security-note {
-    -fx-font-size: 12px;
-    -fx-text-fill: #6c6f85;
-}
-
-/* Payment Accordion Styles */
 .payment-accordion {
     -fx-background-color: transparent;
 }
 
 .payment-accordion .titled-pane {
-    -fx-background-color: white;
+    -fx-background-color: #ffffff;
     -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 1);
 }
 
 .payment-accordion .titled-pane:expanded {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 16, 0, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 2);
 }
 
 .payment-accordion .titled-pane > .title {
-    -fx-background-color: white;
+    -fx-background-color: #ffffff;
     -fx-background-radius: 12 12 0 0;
     -fx-padding: 16 20;
     -fx-font-size: 16px;
     -fx-font-weight: 600;
+    -fx-font-family: "Alpino", sans-serif;
 }
 
 .payment-accordion .titled-pane:expanded > .title {
-    -fx-background-color: linear-gradient(to right, #f8f9fa, #e9ecef);
+    -fx-background-color: #ebd6e1;
 }
 
 .payment-accordion .titled-pane > .content {
-    -fx-background-color: white;
+    -fx-background-color: #ffffff;
     -fx-background-radius: 0 0 12 12;
 }
 
-.payment-method-button {
-    -fx-background-color: #a96a8a;
-    -fx-background-radius: 8;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-font-weight: 600;
-    -fx-padding: 12 24;
-    -fx-cursor: hand;
+.payment-pane {
+    -fx-background-color: #ffffff;
 }
 
-.payment-method-button:hover {
-    -fx-background-color: #965b7a;
-    -fx-effect: dropshadow(gaussian, rgba(169, 106, 138, 0.4), 12, 0, 0, 3);
-}
-
-.hint-text {
-    -fx-font-size: 12px;
-    -fx-text-fill: #6c757d;
-    -fx-font-style: italic;
-}
-
-.cash-info-box {
-    -fx-background-color: #f8f9fa;
-    -fx-background-radius: 8;
-    -fx-padding: 12;
-}
-
-.info-header {
-    -fx-font-size: 14px;
-    -fx-font-weight: 600;
-    -fx-text-fill: #495057;
-}
-
-.info-text {
-    -fx-font-size: 13px;
-    -fx-text-fill: #6c757d;
-}
-
-.payment-method-title {
-    -fx-font-size: 18px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #170d13;
-}
-
-.payment-method-subtitle {
-    -fx-font-size: 14px;
-    -fx-text-fill: #6c757d;
-}
-
-.section-title-white {
-    -fx-font-size: 18px;
-    -fx-font-weight: 600;
-    -fx-text-fill: white;
-}
-
-.field-label-white {
-    -fx-text-fill: rgba(255, 255, 255, 0.8);
-    -fx-font-size: 12px;
-}
-
-/* Summary Sidebar */
 .summary-sidebar {
     -fx-background-color: transparent;
-}
-
-.summary-box {
-    -fx-background-color: white;
-    -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 16, 0, 0, 4);
 }
 
 .summary-label {
     -fx-font-size: 12px;
     -fx-font-weight: 600;
-    -fx-text-fill: #6c757d;
+    -fx-text-fill: #cba6a4;
+    -fx-font-family: "Nunito", sans-serif;
 }
 
 .summary-value-small {
     -fx-font-size: 14px;
     -fx-font-weight: 600;
     -fx-text-fill: #170d13;
+    -fx-font-family: "Nunito", sans-serif;
 }
 
 .summary-amount-small {
     -fx-font-size: 20px;
     -fx-font-weight: 700;
     -fx-text-fill: #a96a8a;
+    -fx-font-family: "Alpino", sans-serif;
 }
 
-/* Success Alert */
-.success-alert .dialog-pane {
-    -fx-background-color: white;
-    -fx-background-radius: 16;
+.info-header {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #cba6a4;
+    -fx-font-family: "Alpino", sans-serif;
 }
 
-.success-alert .header-panel {
-    -fx-background-color: linear-gradient(to bottom right, #84fab0, #8fd3f4);
-    -fx-padding: 20;
+.info-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #cba6a4;
+    -fx-font-family: "Nunito", sans-serif;
 }
 
 /* ================================
-   NOTIFICATION INBOX
+   FEATURES: TICKETS
    ================================ */
-.notification-header {
-    -fx-background-color: white;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2);
+.ticket-header {
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #170d13;
+    -fx-font-family: "Alpino", sans-serif;
 }
 
-.notification-title {
+.booking-id {
+    -fx-font-size: 14px;
+    -fx-text-fill: #cba6a4;
+    -fx-font-weight: 600;
+    -fx-font-family: "Nunito", sans-serif;
+}
+
+.station-name {
     -fx-font-size: 20px;
     -fx-font-weight: 700;
     -fx-text-fill: #170d13;
+    -fx-font-family: "Alpino", sans-serif;
 }
 
-.clear-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #dc2626;
-    -fx-font-size: 12px;
-    -fx-cursor: hand;
+.station-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #cba6a4;
     -fx-font-weight: 600;
+    -fx-font-family: "Nunito", sans-serif;
 }
 
-.clear-button:hover {
-    -fx-text-fill: #b91c1c;
+.status-confirmed {
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #2e7d32;
+    -fx-font-family: "Alpino", sans-serif;
 }
 
-.tab-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #6c6f85;
-    -fx-padding: 8 16;
-    -fx-background-radius: 20;
-    -fx-cursor: hand;
-    -fx-font-weight: 600;
+.status-pending {
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #f57c00;
+    -fx-font-family: "Alpino", sans-serif;
 }
 
-.tab-button:hover {
-    -fx-background-color: rgba(169,106,138,0.1);
+.status-cancelled {
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #d32f2f;
+    -fx-font-family: "Alpino", sans-serif;
 }
 
-.tab-active {
-    -fx-background-color: #a96a8a;
-    -fx-text-fill: white;
-}
-
-.notification-scroll {
-    -fx-background-color: #f8f9fa;
-    -fx-background: #f8f9fa;
-}
-
-.notification-card {
-    -fx-background-color: white;
-    -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 2);
-    -fx-cursor: hand;
-}
-
-.notification-card:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 12, 0, 0, 4);
-}
-
+/* ================================
+   FEATURES: NOTIFICATIONS
+   ================================ */
 .booking-notification {
     -fx-border-width: 0 0 0 3;
-    -fx-border-color: #3b82f6;
+    -fx-border-color: #2196f3;
 }
 
 .payment-notification {
     -fx-border-width: 0 0 0 3;
-    -fx-border-color: #10b981;
+    -fx-border-color: #4caf50;
 }
 
 .success-notification {
     -fx-border-width: 0 0 0 3;
-    -fx-border-color: #22c55e;
+    -fx-border-color: #4caf50;
 }
 
 .info-notification {
     -fx-border-width: 0 0 0 3;
-    -fx-border-color: #6366f1;
+    -fx-border-color: #a96a8a;
 }
 
 .notification-message {
     -fx-font-size: 14px;
     -fx-text-fill: #170d13;
+    -fx-font-family: "Nunito", sans-serif;
 }
 
 .notification-time {
     -fx-font-size: 11px;
-    -fx-text-fill: #9ca3af;
+    -fx-text-fill: #bea08e;
+    -fx-font-family: "Nunito", sans-serif;
 }
 
-.dismiss-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #9ca3af;
-    -fx-font-size: 16px;
-    -fx-cursor: hand;
-    -fx-padding: 0;
-    -fx-min-width: 20;
-    -fx-min-height: 20;
+/* ================================
+   FEATURES: ALERTS
+   ================================ */
+.custom-alert {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
 }
 
-.dismiss-button:hover {
-    -fx-text-fill: #dc2626;
-}
-
-.empty-state {
+.custom-alert .header-panel {
     -fx-background-color: transparent;
 }
 
-.empty-title {
-    -fx-font-size: 18px;
-    -fx-font-weight: 600;
-    -fx-text-fill: #4b5563;
+.custom-alert .label {
+    -fx-font-family: "Nunito", "Alpino", "Segoe UI", sans-serif;
+    -fx-text-fill: #170d13;
 }
 
-.empty-subtitle {
-    -fx-font-size: 14px;
-    -fx-text-fill: #9ca3af;
+.success-alert .dialog-pane {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
 }
 
-/* Notification Badge */
-.notification-badge {
-    -fx-background-color: #dc2626;
-    -fx-background-radius: 999;
-    -fx-text-fill: white;
-    -fx-font-size: 10px;
-    -fx-font-weight: 700;
-    -fx-padding: 2 6;
-    -fx-translate-x: 8;
-    -fx-translate-y: -8;
+.success-alert .header-panel {
+    -fx-background-color: #e8f5e9;
+    -fx-padding: 20;
 }

@@ -17,6 +17,7 @@ module com.example.trainreservationsystem {
     opens com.example.trainreservationsystem.applications to javafx.fxml;
 
     exports com.example.trainreservationsystem.controllers;
+    exports com.example.trainreservationsystem.controllers.auth;
     exports com.example.trainreservationsystem.controllers.booking;
     exports com.example.trainreservationsystem.controllers.payment;
     exports com.example.trainreservationsystem.controllers.search;
@@ -31,6 +32,7 @@ module com.example.trainreservationsystem {
     exports com.example.trainreservationsystem.repositories;
 
     opens com.example.trainreservationsystem.controllers to javafx.fxml;
+    opens com.example.trainreservationsystem.controllers.auth to javafx.fxml;
     opens com.example.trainreservationsystem.controllers.booking to javafx.fxml;
     opens com.example.trainreservationsystem.controllers.payment to javafx.fxml;
     opens com.example.trainreservationsystem.controllers.search to javafx.fxml;

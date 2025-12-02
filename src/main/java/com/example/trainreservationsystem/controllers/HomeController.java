@@ -8,6 +8,8 @@ import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import com.example.trainreservationsystem.services.NotificationService;
+import com.example.trainreservationsystem.services.UserSession;
+import com.example.trainreservationsystem.utils.ui.AlertUtils;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,11 +25,13 @@ import javafx.stage.Stage;
 public class HomeController {
 
     @FXML
-    private Button manageAccountButton;
+    private javafx.scene.control.Label manageTitleLabel;
     @FXML
-    private Button manageTitleLabel;
+    private javafx.scene.control.Label userNameLabel;
     @FXML
     private Button manageNotificationButton;
+    @FXML
+    private Button logoutButton;
     @FXML
     private StackPane contentArea;
 
@@ -56,10 +60,6 @@ public class HomeController {
         });
 
         // Create FontIcons using FontAwesome5 enum
-        FontIcon userIcon = new FontIcon(FontAwesomeSolid.USER);
-        userIcon.setIconSize(16);
-        userIcon.setIconColor(Color.web("#170d13"));
-
         FontIcon notificationIcon = new FontIcon(FontAwesomeSolid.BELL);
         notificationIcon.setIconSize(16);
         notificationIcon.setIconColor(Color.web("#170d13"));
@@ -80,13 +80,13 @@ public class HomeController {
         dashboardIcon.setIconSize(16);
         dashboardIcon.setIconColor(Color.web("#170d13"));
 
+        // Set user name
+        if (UserSession.getInstance().isLoggedIn()) {
+            String username = UserSession.getInstance().getCurrentUser().getUsername();
+            userNameLabel.setText(username);
+        }
+
         // Attach the icons
-        manageAccountButton.setGraphic(userIcon);
-        manageAccountButton.setContentDisplay(ContentDisplay.LEFT);
-        manageAccountButton.setGraphicTextGap(8);
-
-        // Title styled purely via CSS to look like an app logo (no icon)
-
         manageNotificationButton.setGraphic(notificationIcon);
         manageNotificationButton.setContentDisplay(ContentDisplay.LEFT);
         manageNotificationButton.setGraphicTextGap(8);
@@ -103,8 +103,39 @@ public class HomeController {
         btnComplaint.setGraphic(complaintIcon);
         btnComplaint.setGraphicTextGap(12);
 
-        // Load default member home with quick actions
-        loadView("/com/example/trainreservationsystem/member-home.fxml");
+        // Load default view based on login status
+        if (UserSession.getInstance().isLoggedIn()) {
+            String userType = UserSession.getInstance().getCurrentUser().getUserType();
+            if ("CUSTOMER".equals(userType) || "MEMBER".equals(userType)) {
+                loadView("/com/example/trainreservationsystem/member-home.fxml");
+            } else {
+                // Staff dashboard or other user types
+                loadView("/com/example/trainreservationsystem/search/search-view.fxml");
+            }
+        } else {
+            // Not logged in - redirect to landing
+            redirectToLanding();
+        }
+    }
+
+    private void redirectToLanding() {
+        try {
+            Stage stage = (Stage) contentArea.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/trainreservationsystem/landing-view.fxml"));
+            Parent root = loader.load();
+            stage.setScene(new Scene(root, 1280, 800));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleLogout() {
+        if (AlertUtils.showConfirmation("Logout", "Are you sure you want to logout?")) {
+            UserSession.getInstance().logout();
+            redirectToLanding();
+        }
     }
 
     @FXML
