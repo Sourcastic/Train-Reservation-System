@@ -127,10 +127,14 @@ public class HistoryController {
   }
 
   private Booking findBooking(int bookingId) {
-    return historyTable.getItems().stream()
-        .filter(b -> b.getId() == bookingId)
-        .findFirst()
-        .orElse(null);
+    // Use simple loop instead of stream - easier to understand, same O(n)
+    // complexity
+    for (Booking booking : historyTable.getItems()) {
+      if (booking.getId() == bookingId) {
+        return booking;
+      }
+    }
+    return null;
   }
 
   private void openTicketWindow(Booking booking) {

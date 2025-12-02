@@ -489,6 +489,23 @@
     -fx-opacity: 0.6;
 }
 
+.seat-highlighted {
+    -fx-background-color: #fff9c4;
+    -fx-text-fill: #f57c00;
+    -fx-border-color: #ffb74d;
+    -fx-border-width: 2;
+    -fx-background-radius: 8;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-font-family: "Nunito", sans-serif;
+    -fx-cursor: hand;
+}
+
+.seat-highlighted:hover {
+    -fx-background-color: #fff59d;
+    -fx-border-color: #ff9800;
+}
+
 .legend-label {
     -fx-font-size: 13px;
     -fx-text-fill: #170d13;
@@ -697,4 +714,173 @@
 .success-alert .header-panel {
     -fx-background-color: #e8f5e9;
     -fx-padding: 20;
+}
+
+/* ================================
+   FEATURES: TRAIN SEARCH CARDS
+   ================================ */
+.search-summary-bar {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-padding: 16 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 1);
+}
+
+.search-summary-text {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #170d13;
+    -fx-font-family: "Nunito", sans-serif;
+}
+
+.sort-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #cba6a4;
+    -fx-font-family: "Nunito", sans-serif;
+}
+
+.sort-combobox {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(203,166,164,0.3);
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-padding: 8 12;
+    -fx-font-size: 13px;
+    -fx-font-family: "Nunito", sans-serif;
+}
+
+.sort-combobox:hover {
+    -fx-border-color: #a96a8a;
+}
+
+.sort-combobox:focused {
+    -fx-border-color: #a96a8a;
+}
+
+.train-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 16, 0, 0, 2);
+    -fx-border-color: rgba(203,166,164,0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+}
+
+.train-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 20, 0, 0, 3);
+}
+
+.train-name {
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #170d13;
+    -fx-font-family: "Alpino", sans-serif;
+}
+
+.time-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #170d13;
+    -fx-font-family: "Alpino", sans-serif;
+}
+
+.station-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #cba6a4;
+    -fx-font-family: "Nunito", sans-serif;
+}
+
+.journey-duration {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #170d13;
+    -fx-font-family: "Nunito", sans-serif;
+}
+
+.journey-info {
+    -fx-font-size: 11px;
+    -fx-text-fill: #bea08e;
+    -fx-font-family: "Nunito", sans-serif;
+}
+
+.booking-class-card {
+    -fx-background-color: #f8f8f8;
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(203,166,164,0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+}
+
+.booking-class-card:hover {
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 1);
+}
+
+.class-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #170d13;
+    -fx-font-family: "Nunito", sans-serif;
+}
+
+.availability-available {
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #2e7d32;
+    -fx-font-family: "Nunito", sans-serif;
+}
+
+.availability-unavailable {
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #d32f2f;
+    -fx-font-family: "Nunito", sans-serif;
+}
+
+.price-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #a96a8a;
+    -fx-font-family: "Alpino", sans-serif;
+}
+
+.book-now-button {
+    -fx-background-color: #a96a8a;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 8 16;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-font-family: "Nunito", sans-serif;
+    -fx-cursor: hand;
+}
+
+.book-now-button:hover {
+    -fx-background-color: #cba6a4;
+}
+
+.book-now-button:disabled {
+    -fx-background-color: #d3d3d3;
+    -fx-text-fill: #808080;
+    -fx-opacity: 0.6;
+    -fx-cursor: default;
+}
+
+.carousel-button {
+    -fx-background-color: #a96a8a;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 8 12;
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-font-family: "Nunito", sans-serif;
+    -fx-cursor: hand;
+    -fx-pref-height: 40;
+}
+
+.carousel-button:hover {
+    -fx-background-color: #cba6a4;
 }

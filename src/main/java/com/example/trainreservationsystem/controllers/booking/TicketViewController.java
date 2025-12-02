@@ -60,7 +60,7 @@ public class TicketViewController {
     toLabel.setText(booking.getSchedule().getRoute().getDestination());
     dateLabel.setText(booking.getSchedule().getDepartureDate().toString());
     timeLabel.setText(booking.getSchedule().getDepartureTime().toString());
-    amountLabel.setText("$" + String.format("%.2f", booking.getTotalAmount()));
+    amountLabel.setText("PKR " + String.format("%.2f", booking.getTotalAmount()));
   }
 
   private void displayPassengerInfo() {
@@ -71,10 +71,15 @@ public class TicketViewController {
     String name = first.getName().split("\\(")[0].trim();
     passengerLabel.setText(name);
 
-    String seats = booking.getPassengers().stream()
-        .map(p -> String.valueOf(p.getSeatNumber()))
-        .reduce((a, b) -> a + ", " + b)
-        .orElse("N/A");
+    // Use simple loop instead of stream - easier to understand
+    StringBuilder seatsBuilder = new StringBuilder();
+    for (int i = 0; i < booking.getPassengers().size(); i++) {
+      if (i > 0) {
+        seatsBuilder.append(", ");
+      }
+      seatsBuilder.append(booking.getPassengers().get(i).getSeatNumber());
+    }
+    String seats = seatsBuilder.length() > 0 ? seatsBuilder.toString() : "N/A";
     seatLabel.setText(seats);
   }
 

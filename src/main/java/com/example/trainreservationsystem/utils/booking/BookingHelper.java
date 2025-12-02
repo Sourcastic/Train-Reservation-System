@@ -33,7 +33,15 @@ public class BookingHelper {
   }
 
   public static void saveBooking(Booking booking, Schedule schedule, int selectedSeatsCount) {
-    booking.setTotalAmount(schedule.getPrice() * selectedSeatsCount);
+    // Use selected class price if available
+    double pricePerSeat = schedule.getPrice();
+    String selectedClass = UserSession.getInstance().getSelectedClass();
+    if (selectedClass != null) {
+      double multiplier = UserSession.getInstance().getSelectedClassPriceMultiplier();
+      pricePerSeat = schedule.getPrice() * multiplier;
+    }
+
+    booking.setTotalAmount(pricePerSeat * selectedSeatsCount);
     if (booking.getSchedule() == null) {
       booking.setSchedule(schedule);
     }
