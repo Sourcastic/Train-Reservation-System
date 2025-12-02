@@ -12,6 +12,7 @@ public class Booking {
 
   private List<Passenger> passengers;
   private Schedule schedule;
+  private double totalAmount;
 
   public Booking() {
   }
@@ -78,5 +79,13 @@ public class Booking {
 
   public void setSchedule(Schedule schedule) {
     this.schedule = schedule;
+  }
+
+  public double getTotalAmount() {
+    return totalAmount;
+  }
+
+  public void setTotalAmount(double totalAmount) {
+    this.totalAmount = totalAmount;
   }
 }

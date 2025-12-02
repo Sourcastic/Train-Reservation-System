@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.trainreservationsystem.controllers.booking.TicketViewController"
+      alignment="CENTER" maxWidth="500.0" spacing="20.0" styleClass="ticket-card">
+
+    <padding>
+        <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+    </padding>
+
+    <!-- Ticket Header -->
+    <VBox alignment="CENTER" spacing="8.0">
+        <Label fx:id="ticketIcon" style="-fx-font-size: 48px;"/>
+        <Label text="E-TICKET" styleClass="ticket-header"/>
+        <Label fx:id="bookingIdLabel" styleClass="booking-id"/>
+    </VBox>
+
+    <Separator/>
+
+    <!-- Route Info -->
+    <VBox spacing="12.0">
+        <HBox alignment="CENTER" spacing="16.0">
+            <VBox alignment="CENTER">
+                <Label fx:id="fromLabel" styleClass="station-name"/>
+                <Label text="FROM" styleClass="station-label"/>
+            </VBox>
+            <Label text="➜" style="-fx-font-size: 24px; -fx-text-fill: #a96a8a;"/>
+            <VBox alignment="CENTER">
+                <Label fx:id="toLabel" styleClass="station-name"/>
+                <Label text="TO" styleClass="station-label"/>
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <Separator/>
+
+    <!-- Travel Details -->
+    <VBox spacing="12.0">
+        <HBox spacing="24.0">
+            <VBox HBox.hgrow="ALWAYS">
+                <Label text="Date" styleClass="detail-label"/>
+                <Label fx:id="dateLabel" styleClass="detail-value"/>
+            </VBox>
+            <VBox HBox.hgrow="ALWAYS">
+                <Label text="Time" styleClass="detail-label"/>
+                <Label fx:id="timeLabel" styleClass="detail-value"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="24.0">
+            <VBox HBox.hgrow="ALWAYS">
+                <Label text="Passenger" styleClass="detail-label"/>
+                <Label fx:id="passengerLabel" styleClass="detail-value"/>
+            </VBox>
+            <VBox HBox.hgrow="ALWAYS">
+                <Label text="Seat(s)" styleClass="detail-label"/>
+                <Label fx:id="seatLabel" styleClass="detail-value"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="24.0">
+            <VBox HBox.hgrow="ALWAYS">
+                <Label text="Status" styleClass="detail-label"/>
+                <Label fx:id="statusLabel" styleClass="status-confirmed"/>
+            </VBox>
+            <VBox HBox.hgrow="ALWAYS">
+                <Label text="Total Paid" styleClass="detail-label"/>
+                <Label fx:id="amountLabel" styleClass="detail-value"/>
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <Separator/>
+
+    <!-- QR Code Placeholder -->
+    <VBox alignment="CENTER" spacing="8.0">
+        <Rectangle fx:id="qrPlaceholder" width="120.0" height="120.0"
+                   fill="#f0f0f0" strokeWidth="2.0" stroke="#a96a8a"/>
+        <Label text="QR Code" styleClass="detail-label"/>
+    </VBox>
+
+    <!-- Action Buttons -->
+    <HBox spacing="12.0" alignment="CENTER">
+        <Button text="Print" styleClass="secondary-button" prefWidth="100.0"/>
+        <Button text="Close" onAction="#handleClose" styleClass="button" prefWidth="100.0"/>
+    </HBox>
+
+</VBox>

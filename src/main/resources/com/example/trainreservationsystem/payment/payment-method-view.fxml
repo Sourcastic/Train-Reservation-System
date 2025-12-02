@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.PaymentMethodController">
+    <center>
+        <VBox alignment="CENTER" maxWidth="480.0" spacing="20.0" styleClass="form-card">
+            <padding>
+                <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
+            </padding>
+            <Label styleClass="page-title" text="Add Payment Method" />
+
+            <VBox spacing="8.0" maxWidth="Infinity">
+                <Label text="Method Type:" style="-fx-font-weight: bold;"/>
+                <ComboBox fx:id="methodTypeCombo" maxWidth="Infinity" />
+            </VBox>
+
+            <VBox spacing="8.0" maxWidth="Infinity">
+                <Label text="Details (Card Number / Wallet ID):" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="detailsField" promptText="Enter payment details" />
+            </VBox>
+
+            <Button onAction="#handleSave" styleClass="button" text="Save Method" maxWidth="Infinity" />
+        </VBox>
+    </center>
+</BorderPane>

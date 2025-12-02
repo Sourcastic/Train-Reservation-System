@@ -4,12 +4,21 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
+
+import com.example.trainreservationsystem.services.NotificationService;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class HomeController {
 
@@ -22,6 +31,8 @@ public class HomeController {
     @FXML
     private StackPane contentArea;
 
+    @FXML
+    private Button btnDashboard;
     @FXML
     private Button btnSearch;
     @FXML
@@ -38,49 +49,111 @@ public class HomeController {
     @FXML
     private void initialize() {
         instance = this;
-        // Create FontIcons
-        // FontIcon userIcon = new FontIcon("fas-user");
-        // userIcon.setIconSize(16);
-        // userIcon.setIconColor(Color.web("#11111b"));
 
-        // FontIcon labelLogoIcon = new FontIcon("fas-train");
-        // labelLogoIcon.setIconSize(32);
-        // labelLogoIcon.setIconColor(Color.web("#40a02b"));
+        // Add notification listener for badge updates
+        NotificationService.getInstance().addListener(count -> {
+            updateNotificationBadge(count);
+        });
 
-        // FontIcon notificationIcon = new FontIcon("fas-bell");
-        // notificationIcon.setIconSize(16);
-        // notificationIcon.setIconColor(Color.web("#11111b"));
+        // Create FontIcons using FontAwesome5 enum
+        FontIcon userIcon = new FontIcon(FontAwesomeSolid.USER);
+        userIcon.setIconSize(16);
+        userIcon.setIconColor(Color.web("#170d13"));
+
+        FontIcon notificationIcon = new FontIcon(FontAwesomeSolid.BELL);
+        notificationIcon.setIconSize(16);
+        notificationIcon.setIconColor(Color.web("#170d13"));
+
+        FontIcon searchIcon = new FontIcon(FontAwesomeSolid.SEARCH);
+        searchIcon.setIconSize(16);
+        searchIcon.setIconColor(Color.web("#170d13"));
+
+        FontIcon historyIcon = new FontIcon(FontAwesomeSolid.HISTORY);
+        historyIcon.setIconSize(16);
+        historyIcon.setIconColor(Color.web("#170d13"));
+
+        FontIcon complaintIcon = new FontIcon(FontAwesomeSolid.COMMENT);
+        complaintIcon.setIconSize(16);
+        complaintIcon.setIconColor(Color.web("#170d13"));
+
+        FontIcon dashboardIcon = new FontIcon(FontAwesomeSolid.TH);
+        dashboardIcon.setIconSize(16);
+        dashboardIcon.setIconColor(Color.web("#170d13"));
 
         // Attach the icons
-        // manageAccountButton.setGraphic(userIcon);
+        manageAccountButton.setGraphic(userIcon);
         manageAccountButton.setContentDisplay(ContentDisplay.LEFT);
         manageAccountButton.setGraphicTextGap(8);
 
-        // manageTitleLabel.setGraphic(labelLogoIcon);
-        manageTitleLabel.setContentDisplay(ContentDisplay.LEFT);
-        manageTitleLabel.setGraphicTextGap(8);
+        // Title styled purely via CSS to look like an app logo (no icon)
 
-        // manageNotificationButton.setGraphic(notificationIcon);
+        manageNotificationButton.setGraphic(notificationIcon);
         manageNotificationButton.setContentDisplay(ContentDisplay.LEFT);
         manageNotificationButton.setGraphicTextGap(8);
 
-        // Load default view
-        showSearch();
+        btnDashboard.setGraphic(dashboardIcon);
+        btnDashboard.setGraphicTextGap(12);
+
+        btnSearch.setGraphic(searchIcon);
+        btnSearch.setGraphicTextGap(12);
+
+        btnHistory.setGraphic(historyIcon);
+        btnHistory.setGraphicTextGap(12);
+
+        btnComplaint.setGraphic(complaintIcon);
+        btnComplaint.setGraphicTextGap(12);
+
+        // Load default member home with quick actions
+        loadView("/com/example/trainreservationsystem/member-home.fxml");
     }
 
     @FXML
-    private void showSearch() {
-        loadView("/com/example/trainreservationsystem/search-view.fxml");
+    public void showDashboard() {
+        loadView("/com/example/trainreservationsystem/member-home.fxml");
     }
 
     @FXML
-    private void showHistory() {
-        loadView("/com/example/trainreservationsystem/booking-history.fxml");
+    public void showSearch() {
+        loadView("/com/example/trainreservationsystem/search/search-view.fxml");
+    }
+
+    @FXML
+    public void showHistory() {
+        loadView("/com/example/trainreservationsystem/booking/booking-history.fxml");
     }
 
     @FXML
     private void showComplaint() {
         loadView("/com/example/trainreservationsystem/complaint-view.fxml");
+    }
+
+    @FXML
+    private void openNotifications() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/trainreservationsystem/notification-inbox.fxml"));
+            Parent root = loader.load();
+
+            Stage notificationStage = new Stage();
+            notificationStage.setTitle("Notifications");
+            notificationStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            notificationStage.setScene(new Scene(root));
+            notificationStage.setResizable(false);
+            notificationStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Fallback to simple alert
+            var notifications = NotificationService.getInstance().getAll();
+            String content = notifications.isEmpty()
+                    ? "No notifications yet."
+                    : String.join("\n• ", notifications);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Notifications");
+            alert.setHeaderText("Recent Activity");
+            alert.setContentText(notifications.isEmpty() ? content : "• " + content);
+            alert.showAndWait();
+        }
     }
 
     public void loadView(String fxmlPath) {
@@ -90,6 +163,15 @@ public class HomeController {
         } catch (IOException e) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
+        }
+    }
+
+    private void updateNotificationBadge(int count) {
+        if (count > 0) {
+            // Add badge to notification button text
+            manageNotificationButton.setText("Notifications (" + count + ")");
+        } else {
+            manageNotificationButton.setText("Notifications");
         }
     }
 }

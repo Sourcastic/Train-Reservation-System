@@ -6,6 +6,7 @@ public class Passenger {
   private int age;
   private boolean bringPet;
   private boolean hasWheelchair;
+  private int seatNumber;
 
   public Passenger() {
   }
@@ -55,5 +56,13 @@ public class Passenger {
 
   public void setHasWheelchair(boolean hasWheelchair) {
     this.hasWheelchair = hasWheelchair;
+  }
+
+  public int getSeatNumber() {
+    return seatNumber;
+  }
+
+  public void setSeatNumber(int seatNumber) {
+    this.seatNumber = seatNumber;
   }
 }

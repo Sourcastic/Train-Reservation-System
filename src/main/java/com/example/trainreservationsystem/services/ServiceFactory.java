@@ -4,14 +4,19 @@ import com.example.trainreservationsystem.repositories.BookingRepository;
 import com.example.trainreservationsystem.repositories.ComplaintRepository;
 import com.example.trainreservationsystem.repositories.PaymentRepository;
 import com.example.trainreservationsystem.repositories.TrainRepository;
+import com.example.trainreservationsystem.services.booking.BookingService;
+import com.example.trainreservationsystem.services.payment.PaymentService;
 
+/**
+ * Factory for creating service instances.
+ * Uses singleton pattern to reuse service instances.
+ */
 public class ServiceFactory {
 
   private static BookingService bookingService;
   private static PaymentService paymentService;
   private static TrainService trainService;
   private static ComplaintService complaintService;
-  private static TicketService ticketService;
 
   public static BookingService getBookingService() {
     if (bookingService == null) {
@@ -39,12 +44,5 @@ public class ServiceFactory {
       complaintService = new ComplaintService(new ComplaintRepository());
     }
     return complaintService;
-  }
-
-  public static TicketService getTicketService() {
-    if (ticketService == null) {
-      ticketService = new TicketService();
-    }
-    return ticketService;
   }
 }

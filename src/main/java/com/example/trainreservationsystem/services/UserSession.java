@@ -1,5 +1,6 @@
 package com.example.trainreservationsystem.services;
 
+import com.example.trainreservationsystem.models.Booking;
 import com.example.trainreservationsystem.models.Schedule;
 import com.example.trainreservationsystem.models.User;
 
@@ -7,7 +8,7 @@ public class UserSession {
   private static UserSession instance;
   private User currentUser;
   private Schedule selectedSchedule;
-  private com.example.trainreservationsystem.models.Booking pendingBooking;
+  private Booking pendingBooking;
 
   private UserSession() {
   }
@@ -43,11 +44,11 @@ public class UserSession {
     return selectedSchedule;
   }
 
-  public void setPendingBooking(com.example.trainreservationsystem.models.Booking booking) {
+  public void setPendingBooking(Booking booking) {
     this.pendingBooking = booking;
   }
 
-  public com.example.trainreservationsystem.models.Booking getPendingBooking() {
+  public Booking getPendingBooking() {
     return pendingBooking;
   }
 }

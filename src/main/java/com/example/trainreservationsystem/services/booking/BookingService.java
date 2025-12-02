@@ -1,4 +1,4 @@
-package com.example.trainreservationsystem.services;
+package com.example.trainreservationsystem.services.booking;
 
 import java.util.List;
 
@@ -8,6 +8,10 @@ import com.example.trainreservationsystem.models.Schedule;
 import com.example.trainreservationsystem.repositories.BookingRepository;
 import com.example.trainreservationsystem.repositories.TrainRepository;
 
+/**
+ * Service for booking operations.
+ * Handles booking creation, retrieval, and status updates.
+ */
 public class BookingService {
   private final BookingRepository bookingRepository;
   private final TrainRepository trainRepository;
@@ -18,19 +22,22 @@ public class BookingService {
   }
 
   public Booking createBooking(int userId, Schedule schedule, List<Passenger> passengers) {
-    // Check capacity? simplified
     Booking booking = new Booking();
     booking.setUserId(userId);
     booking.setScheduleId(schedule.getId());
+    booking.setSchedule(schedule);
     booking.setPassengers(passengers);
     booking.setStatus("PENDING");
 
-    return bookingRepository.createBooking(booking);
+    Booking created = bookingRepository.createBooking(booking);
+    if (created != null) {
+      created.setSchedule(schedule);
+    }
+    return created;
   }
 
   public List<Booking> getUserBookings(int userId) {
     List<Booking> bookings = bookingRepository.getBookingsByUserId(userId);
-    // Hydrate schedule info
     for (Booking b : bookings) {
       b.setSchedule(trainRepository.getScheduleById(b.getScheduleId()));
     }
@@ -43,5 +50,9 @@ public class BookingService {
 
   public void confirmBooking(int bookingId) {
     bookingRepository.updateBookingStatus(bookingId, "CONFIRMED");
+  }
+
+  public List<Integer> getOccupiedSeats(int scheduleId) {
+    return bookingRepository.getOccupiedSeats(scheduleId);
   }
 }

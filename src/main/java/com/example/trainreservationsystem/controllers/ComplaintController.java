@@ -1,11 +1,12 @@
 package com.example.trainreservationsystem.controllers;
 
 import com.example.trainreservationsystem.services.ComplaintService;
+import com.example.trainreservationsystem.services.NotificationService;
 import com.example.trainreservationsystem.services.ServiceFactory;
 import com.example.trainreservationsystem.services.UserSession;
+import com.example.trainreservationsystem.utils.ui.AlertUtils;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -20,28 +21,22 @@ public class ComplaintController {
   @FXML
   public void handleSubmit() {
     if (!UserSession.getInstance().isLoggedIn()) {
-      showAlert("Error", "You must be logged in.");
+      AlertUtils.showError("Error", "You must be logged in.");
       return;
     }
 
-    String subject = subjectField.getText();
-    String desc = descriptionArea.getText();
+    String subject = subjectField.getText().trim();
+    String desc = descriptionArea.getText().trim();
 
     if (subject.isEmpty() || desc.isEmpty()) {
-      showAlert("Error", "Fields cannot be empty.");
+      AlertUtils.showError("Error", "Fields cannot be empty.");
       return;
     }
 
     complaintService.submitComplaint(UserSession.getInstance().getCurrentUser().getId(), subject, desc);
-    showAlert("Success", "Complaint submitted successfully.");
+    NotificationService.getInstance().add("Complaint submitted: " + subject);
+    AlertUtils.showSuccess("Success", "Complaint submitted successfully.");
     subjectField.clear();
     descriptionArea.clear();
-  }
-
-  private void showAlert(String title, String content) {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-    alert.setTitle(title);
-    alert.setContentText(content);
-    alert.showAndWait();
   }
 }

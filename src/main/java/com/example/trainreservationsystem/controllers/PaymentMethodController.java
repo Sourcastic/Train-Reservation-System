@@ -1,12 +1,13 @@
 package com.example.trainreservationsystem.controllers;
 
 import com.example.trainreservationsystem.models.PaymentMethod;
-import com.example.trainreservationsystem.services.PaymentService;
+import com.example.trainreservationsystem.services.NotificationService;
 import com.example.trainreservationsystem.services.ServiceFactory;
 import com.example.trainreservationsystem.services.UserSession;
+import com.example.trainreservationsystem.services.payment.PaymentService;
+import com.example.trainreservationsystem.utils.ui.AlertUtils;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
@@ -27,7 +28,7 @@ public class PaymentMethodController {
   @FXML
   public void handleSave() {
     if (!UserSession.getInstance().isLoggedIn()) {
-      showAlert("Error", "Please login first");
+      AlertUtils.showError("Error", "Please login first");
       return;
     }
 
@@ -35,7 +36,7 @@ public class PaymentMethodController {
     String details = detailsField.getText();
 
     if (methodType == null || details == null || details.trim().isEmpty()) {
-      showAlert("Error", "Please fill all fields");
+      AlertUtils.showError("Error", "Please fill all fields");
       return;
     }
 
@@ -45,20 +46,14 @@ public class PaymentMethodController {
     method.setDetails(details);
 
     paymentService.addPaymentMethod(method);
-    showAlert("Success", "Payment method added successfully!");
+    NotificationService.getInstance().add("New payment method added: " + methodType);
+    AlertUtils.showSuccess("Success", "Payment method added successfully!");
 
     // Go back to payment screen if there's a pending booking
     if (UserSession.getInstance().getPendingBooking() != null) {
-      HomeController.getInstance().loadView("/com/example/trainreservationsystem/payment-view.fxml");
+      HomeController.getInstance().loadView("/com/example/trainreservationsystem/payment/payment-view.fxml");
     } else {
-      HomeController.getInstance().loadView("/com/example/trainreservationsystem/search-view.fxml");
+      HomeController.getInstance().loadView("/com/example/trainreservationsystem/search/search-view.fxml");
     }
-  }
-
-  private void showAlert(String title, String content) {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-    alert.setTitle(title);
-    alert.setContentText(content);
-    alert.showAndWait();
   }
 }

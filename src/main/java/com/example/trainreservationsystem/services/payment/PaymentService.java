@@ -1,4 +1,4 @@
-package com.example.trainreservationsystem.services;
+package com.example.trainreservationsystem.services.payment;
 
 import java.util.List;
 
@@ -7,6 +7,10 @@ import com.example.trainreservationsystem.models.PaymentMethod;
 import com.example.trainreservationsystem.repositories.BookingRepository;
 import com.example.trainreservationsystem.repositories.PaymentRepository;
 
+/**
+ * Service for payment operations.
+ * Handles payment processing and payment method management.
+ */
 public class PaymentService {
   private final PaymentRepository paymentRepository;
   private final BookingRepository bookingRepository;
@@ -29,11 +33,9 @@ public class PaymentService {
     payment.setBookingId(bookingId);
     payment.setAmount(amount);
     payment.setPaymentMethodId(methodId);
-    payment.setStatus("SUCCESS"); // Mock success
+    payment.setStatus("SUCCESS");
 
     paymentRepository.savePayment(payment);
-
-    // Update booking status
     bookingRepository.updateBookingStatus(bookingId, "CONFIRMED");
   }
 }

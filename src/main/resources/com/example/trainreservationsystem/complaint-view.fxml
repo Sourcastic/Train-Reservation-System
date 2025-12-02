@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.ComplaintController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-    <Label styleClass="searchbox-label" text="Submit Complaint / Feedback" />
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.ComplaintController">
+    <center>
+        <VBox alignment="CENTER" maxWidth="500.0" spacing="20.0" styleClass="form-card">
+            <padding>
+                <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
+            </padding>
+            <Label styleClass="page-title" text="Submit Complaint / Feedback" />
 
-    <TextField fx:id="subjectField" promptText="Subject" />
-    <TextArea fx:id="descriptionArea" promptText="Description" prefRowCount="10" />
+            <VBox spacing="8.0" maxWidth="Infinity">
+                <Label text="Subject" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="subjectField" promptText="Enter subject" />
+            </VBox>
 
-    <Button text="Submit" onAction="#handleSubmit" />
-</VBox>
+            <VBox spacing="8.0" maxWidth="Infinity">
+                <Label text="Description" style="-fx-font-weight: bold;"/>
+                <TextArea fx:id="descriptionArea" prefRowCount="8" promptText="Describe your issue or feedback..." wrapText="true" />
+            </VBox>
 
+            <Button onAction="#handleSubmit" styleClass="button" text="Submit" maxWidth="Infinity" />
+        </VBox>
+    </center>
+</BorderPane>

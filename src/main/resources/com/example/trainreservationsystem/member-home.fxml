@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.trainreservationsystem.controllers.MemberHomeController"
+      spacing="24.0"
+      alignment="TOP_LEFT"
+      styleClass="member-root">
+
+    <padding>
+        <Insets top="32.0" right="32.0" bottom="32.0" left="32.0"/>
+    </padding>
+
+    <children>
+        <!-- Header with subtle train image -->
+        <StackPane styleClass="dashboard-header">
+            <children>
+                <ImageView fitHeight="180.0" fitWidth="900.0" preserveRatio="true" opacity="0.18">
+                    <!-- Place a train image at resources path: /com/example/trainreservationsystem/images/train-header.jpg -->
+                    <image>
+                        <Image url="@images/train-header.jpg" />
+                    </image>
+                </ImageView>
+
+                <VBox alignment="CENTER_LEFT" spacing="8.0" styleClass="dashboard-header-content">
+                    <Label text="Welcome aboard" styleClass="dashboard-header-title"/>
+                    <Label text="Plan your next journey, manage trips, and track your bookings in one place."
+                           styleClass="dashboard-header-subtitle" wrapText="true"/>
+                </VBox>
+            </children>
+        </StackPane>
+
+        <!-- Quick actions as large buttons -->
+        <VBox spacing="16.0">
+            <Label text="Quick actions" styleClass="section-title"/>
+
+            <HBox spacing="12.0">
+                <Button text="Search Trains" onAction="#goToSearch" styleClass="quick-action-button"/>
+                <Button text="Book Train" onAction="#goToBook" styleClass="quick-action-button"/>
+                <Button text="View History" onAction="#goToHistory" styleClass="quick-action-button"/>
+            </HBox>
+        </VBox>
+    </children>
+</VBox>
+
+

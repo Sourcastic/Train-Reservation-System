@@ -11,12 +11,23 @@ import javafx.stage.Stage;
 public class HomeApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        // Commenting out DB init for now to run on dummy data only
-        // com.example.trainreservationsystem.utils.DatabaseInitializer.initialize();
+        // Initialize database schema and seed data
+        boolean dbInitialized = com.example.trainreservationsystem.utils.database.DatabaseInitializer.initialize();
 
-        // Mock login since we aren't hitting the DB
-        com.example.trainreservationsystem.models.User user = new com.example.trainreservationsystem.models.User(1,
-                "demo", "demo123", "demo@example.com");
+        // Auto-login demo user
+        com.example.trainreservationsystem.models.User user = null;
+        if (dbInitialized) {
+            // Try to get user from database
+            user = new com.example.trainreservationsystem.repositories.UserRepository()
+                    .getUserByUsername("demo");
+        }
+
+        // If database failed or user not found, create mock user
+        if (user == null) {
+            System.out.println("ℹ️  Using mock user for demo");
+            user = new com.example.trainreservationsystem.models.User(1, "demo", "demo123", "demo@example.com");
+        }
+
         com.example.trainreservationsystem.services.UserSession.getInstance().login(user);
 
         Parent root = FXMLLoader.load(
