@@ -3,7 +3,7 @@ package com.example.trainreservationsystem.services;
 import com.example.trainreservationsystem.models.Complaint;
 import com.example.trainreservationsystem.repositories.StaffComplaintRepository;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class StaffComplaintService {
 
@@ -13,15 +13,20 @@ public class StaffComplaintService {
         this.repository = repository;
     }
 
+    // Return all complaints as an array
     public Complaint[] getAllComplaints() {
-        return repository.findAllComplaints();
+        List<Complaint> complaintsList = repository.getAllComplaints();
+        return complaintsList.toArray(new Complaint[0]);
     }
 
+    // Respond to a complaint
     public void respondToComplaint(int complaintId, String staffResponse, String responderName) {
-        // Basic validation (trim)
         if (staffResponse == null || staffResponse.trim().isEmpty()) {
             throw new IllegalArgumentException("Response cannot be empty");
         }
-        repository.saveStaffResponse(complaintId, staffResponse.trim(), responderName == null ? "Staff" : responderName);
+
+        // Trim response and pass to repository
+        repository.saveStaffResponse(complaintId, staffResponse.trim(), responderName);
     }
+
 }

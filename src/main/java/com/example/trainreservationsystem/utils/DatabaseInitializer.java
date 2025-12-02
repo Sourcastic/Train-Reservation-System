@@ -17,6 +17,7 @@ public class DatabaseInitializer {
           "loyalty_points INT DEFAULT 0, " +
           "user_type VARCHAR(20) DEFAULT 'CUSTOMER')");
 
+
       // Routes table
       stmt.execute("CREATE TABLE IF NOT EXISTS routes (" +
           "id SERIAL PRIMARY KEY, " +
@@ -25,15 +26,14 @@ public class DatabaseInitializer {
           "destination VARCHAR(100) NOT NULL)");
 
       // Schedules (formerly trains)
-        stmt.execute("CREATE TABLE IF NOT EXISTS schedules (" +
-                "id SERIAL PRIMARY KEY, " +
-                "route_id INT REFERENCES routes(id), " +
-                "departure_date DATE NOT NULL, " +
-                "departure_time TIME NOT NULL, " +
-                "arrival_time TIME NOT NULL, " +
+      stmt.execute("CREATE TABLE IF NOT EXISTS schedules (" +
+            "id SERIAL PRIMARY KEY, " +
+            "route_id INT REFERENCES routes(id), " +
+            "departure_date DATE NOT NULL, " +
+            "departure_time TIME NOT NULL, " +
+            "arrival_time TIME NOT NULL, " +
                 "capacity INT NOT NULL, " +
                 "price DECIMAL(10, 2) NOT NULL, " +
-                "status VARCHAR(20) DEFAULT 'On-time'" +   // <- new column
                 ")");
 
 
@@ -95,6 +95,9 @@ public class DatabaseInitializer {
           "message TEXT NOT NULL, " +
           "sent BOOLEAN DEFAULT FALSE, " +
           "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
+
+      stmt.execute("ALTER TABLE schedules " +
+              "ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'On-time'");
 
       // Seed some data if empty
       seedData(conn);

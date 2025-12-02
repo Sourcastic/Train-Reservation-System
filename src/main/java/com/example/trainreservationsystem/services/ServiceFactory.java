@@ -9,6 +9,7 @@ public class ServiceFactory {
   private static TrainService trainService;
   private static ComplaintService complaintService;
   private static TicketService ticketService;
+    private static NotificationService notificationService;
 
   public static BookingService getBookingService() {
     if (bookingService == null) {
@@ -19,14 +20,14 @@ public class ServiceFactory {
 
   public static PaymentService getPaymentService() {
     if (paymentService == null) {
-      paymentService = new PaymentService(new PaymentRepository(), new BookingRepository());
+      paymentService = new PaymentService(new PaymentRepository(), new BookingRepository(),getNotificationService());
     }
     return paymentService;
   }
 
   public static TrainService getTrainService() {
     if (trainService == null) {
-      trainService = new TrainService(new TrainRepository());
+      trainService = new TrainService(new TrainRepository(),new BookingRepository(),getNotificationService() );
     }
     return trainService;
   }
@@ -44,8 +45,6 @@ public class ServiceFactory {
     }
     return ticketService;
   }
-
-    private static NotificationService notificationService;
 
     public static NotificationService getNotificationService() {
         if (notificationService == null) {

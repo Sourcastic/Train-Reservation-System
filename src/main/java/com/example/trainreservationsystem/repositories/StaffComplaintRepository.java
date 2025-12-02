@@ -9,6 +9,7 @@ import java.util.List;
 
 public class StaffComplaintRepository {
 
+    // Fetch all complaints along with any staff response (if exists)
     public List<Complaint> getAllComplaints() {
         List<Complaint> complaints = new ArrayList<>();
         String query = """
@@ -37,7 +38,10 @@ public class StaffComplaintRepository {
                 if (response != null) {
                     c.setStaffResponse(response);
                     c.setStaffId(rs.getInt("staff_id"));
-                    c.setRespondedAt(rs.getTimestamp("responded_at").toLocalDateTime());
+                    Timestamp respondedAt = rs.getTimestamp("responded_at");
+                    if (respondedAt != null) {
+                        c.setRespondedAt(respondedAt.toLocalDateTime());
+                    }
                 }
 
                 complaints.add(c);
@@ -50,15 +54,19 @@ public class StaffComplaintRepository {
         return complaints;
     }
 
-    // Save staff response
-    public void saveStaffResponse(int complaintId, int staffId, String response) {
+    // Save staff response for a complaint
+    public void saveStaffResponse(int complaintId, String response, String responderName) {
         String insertQuery = "INSERT INTO staff_responses (complaint_id, staff_id, response) VALUES (?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(insertQuery)) {
+
+            // For simplicity, you can set a dummy staff_id (or modify to get actual staff ID)
+            int staffId = 1; // TODO: Replace with actual logged-in staff ID if needed
             pstmt.setInt(1, complaintId);
             pstmt.setInt(2, staffId);
             pstmt.setString(3, response);
             pstmt.executeUpdate();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

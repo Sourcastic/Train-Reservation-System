@@ -128,5 +128,37 @@ public class BookingRepository {
         }
         return expired;
     }
+    // Get all bookings for a schedule
+    public List<Booking> getBookingsBySchedule(int scheduleId) {
+        List<Booking> bookings = new ArrayList<>();
+        try (Connection conn = Database.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM bookings WHERE schedule_id = ?")) {
 
+            ps.setInt(1, scheduleId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                bookings.add(mapResultSetToBooking(rs));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+
+    // Get bookings by journey date
+    public List<Booking> getBookingsByJourneyDate(LocalDate date) {
+        List<Booking> bookings = new ArrayList<>();
+        try (Connection conn = Database.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM bookings WHERE journey_date = ?")) {
+
+            ps.setDate(1, Date.valueOf(date));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                bookings.add(mapResultSetToBooking(rs));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
 }

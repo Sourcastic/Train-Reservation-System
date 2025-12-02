@@ -37,8 +37,8 @@ public class updatetrainstatuscontroller {
     @FXML
     private ComboBox<String> statusComboBox;
 
-    @FXML
-    private Button confirmButton;
+//    @FXML
+//    private Button confirmButton;
 
     private TrainService trainService;
     private ObservableList<Schedule> scheduleList;
@@ -94,7 +94,7 @@ public class updatetrainstatuscontroller {
         scheduleTable.setItems(scheduleList);
 
         // Configure confirm button
-        confirmButton.setOnAction(e -> handleUpdateStatus());
+//        confirmButton.setOnAction(e -> handleUpdateStatus());
     }
 
     @FXML
