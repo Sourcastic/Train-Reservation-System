@@ -1,50 +1,27 @@
 package com.example.trainreservationsystem.models;
 
+import java.time.LocalDateTime;
+
 public class Notification {
-  private int id;
-  private int userId;
-  private String message;
-  private boolean sent;
+    private int id;
+    private int userId;
+    private String message;
+    private boolean sent;
+    private LocalDateTime createdAt;
 
-  public Notification() {
-  }
+    public Notification(int userId, String message) {
+        this.userId = userId;
+        this.message = message;
+        this.sent = false;
+        this.createdAt = LocalDateTime.now();
+    }
 
-  public Notification(int id, int userId, String message, boolean sent) {
-    this.id = id;
-    this.userId = userId;
-    this.message = message;
-    this.sent = sent;
-  }
+    public int getId() { return id; }
+    public int getUserId() { return userId; }
+    public String getMessage() { return message; }
+    public boolean isSent() { return sent; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public int getUserId() {
-    return userId;
-  }
-
-  public void setUserId(int userId) {
-    this.userId = userId;
-  }
-
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
-  }
-
-  public boolean isSent() {
-    return sent;
-  }
-
-  public void setSent(boolean sent) {
-    this.sent = sent;
-  }
+    public void setId(int id) { this.id = id; }
+    public void setSent(boolean sent) { this.sent = sent; }
 }

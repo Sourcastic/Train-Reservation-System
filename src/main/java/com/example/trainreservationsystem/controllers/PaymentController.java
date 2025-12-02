@@ -31,7 +31,7 @@ public class PaymentController {
 
     private final PaymentService paymentService = ServiceFactory.getPaymentService();
     private final BookingService bookingService = ServiceFactory.getBookingService();
-    private final NotificationsService notificationsService = ServiceFactory.getNotificationService();
+    private final NotificationService notificationsService = ServiceFactory.getNotificationService();
 
     private Booking booking;
 

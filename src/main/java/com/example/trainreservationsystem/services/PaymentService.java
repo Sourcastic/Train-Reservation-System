@@ -12,11 +12,11 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final BookingRepository bookingRepository;
-    private final NotificationsService notificationService;  // ADD THIS
+    private final NotificationService notificationService;  // ADD THIS
 
     public PaymentService(PaymentRepository paymentRepository,
                           BookingRepository bookingRepository,
-                          NotificationsService notificationService) {  // ADD THIS
+                          NotificationService notificationService) {  // ADD THIS
         this.paymentRepository = paymentRepository;
         this.bookingRepository = bookingRepository;
         this.notificationService = notificationService;

@@ -45,11 +45,11 @@ public class ServiceFactory {
     return ticketService;
   }
 
-    private static NotificationsService notificationService;
+    private static NotificationService notificationService;
 
-    public static NotificationsService getNotificationService() {
+    public static NotificationService getNotificationService() {
         if (notificationService == null) {
-            notificationService = new NotificationsService(new NotificationsRepository());
+            notificationService = new NotificationService(new NotificationRepository());
         }
         return notificationService;
     }

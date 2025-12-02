@@ -2,7 +2,10 @@ package com.example.trainreservationsystem.controllers;
 
 import com.example.trainreservationsystem.models.Schedule;
 import com.example.trainreservationsystem.services.TrainService;
+import com.example.trainreservationsystem.services.NotificationService;
 import com.example.trainreservationsystem.repositories.TrainRepository;
+import com.example.trainreservationsystem.repositories.BookingRepository;
+import com.example.trainreservationsystem.repositories.NotificationRepository;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,34 +41,55 @@ public class updatetrainstatuscontroller {
     private Button confirmButton;
 
     private TrainService trainService;
-
     private ObservableList<Schedule> scheduleList;
 
     @FXML
     public void initialize() {
-        // Initialize service with repository
-        trainService = new TrainService(new TrainRepository());
 
-        // Initialize ComboBox items
-        statusComboBox.setItems(FXCollections.observableArrayList("On-time", "Delayed", "Cancelled"));
+        // Initialize repositories
+        TrainRepository trainRepo = new TrainRepository();
+        BookingRepository bookingRepo = new BookingRepository();
+        NotificationRepository notificationRepo = new NotificationRepository(); // should have a Database connection in constructor
+        NotificationService notificationService = new NotificationService(notificationRepo);
 
-        // Configure table columns
-        idColumn.setCellValueFactory(cell -> new javafx.beans.property.SimpleIntegerProperty(cell.getValue().getId()).asObject());
+        // Initialize service
+        trainService = new TrainService(trainRepo, bookingRepo, notificationService);
 
-        routeColumn.setCellValueFactory(cell -> new javafx.beans.property.SimpleStringProperty(
-                cell.getValue().getRoute().getSource() + " → " + cell.getValue().getRoute().getDestination()));
+        // Initialize ComboBox
+        statusComboBox.setItems(FXCollections.observableArrayList(
+                "On-time", "Delayed", "Cancelled", "Rescheduled"
+        ));
 
-        departureColumn.setCellValueFactory(cell -> new javafx.beans.property.SimpleStringProperty(
-                cell.getValue().getDepartureTime().toString()));
+        // Configure TableView columns
+        idColumn.setCellValueFactory(cell ->
+                new javafx.beans.property.SimpleIntegerProperty(cell.getValue().getId()).asObject());
 
-        arrivalColumn.setCellValueFactory(cell -> new javafx.beans.property.SimpleStringProperty(
-                cell.getValue().getArrivalTime().toString()));
+        routeColumn.setCellValueFactory(cell ->
+                new javafx.beans.property.SimpleStringProperty(
+                        cell.getValue().getRoute().getSource() + " → " + cell.getValue().getRoute().getDestination()
+                )
+        );
 
-        statusColumn.setCellValueFactory(cell -> new javafx.beans.property.SimpleStringProperty(
-                cell.getValue().getStatus() == null ? "On-time" : cell.getValue().getStatus()));
+        departureColumn.setCellValueFactory(cell ->
+                new javafx.beans.property.SimpleStringProperty(
+                        cell.getValue().getDepartureTime().toString()
+                )
+        );
 
-        // Load schedules (from DB later)
-        List<Schedule> schedules = trainService.searchSchedules("Any", "Any", java.time.LocalDate.now());
+        arrivalColumn.setCellValueFactory(cell ->
+                new javafx.beans.property.SimpleStringProperty(
+                        cell.getValue().getArrivalTime().toString()
+                )
+        );
+
+        statusColumn.setCellValueFactory(cell ->
+                new javafx.beans.property.SimpleStringProperty(
+                        cell.getValue().getStatus() == null ? "On-time" : cell.getValue().getStatus()
+                )
+        );
+
+        // Load schedules from DB
+        List<Schedule> schedules = trainService.getAllSchedules();
         scheduleList = FXCollections.observableArrayList(schedules);
         scheduleTable.setItems(scheduleList);
 
@@ -75,6 +99,7 @@ public class updatetrainstatuscontroller {
 
     @FXML
     private void handleUpdateStatus() {
+
         Schedule selected = scheduleTable.getSelectionModel().getSelectedItem();
         String newStatus = statusComboBox.getValue();
 
@@ -82,15 +107,16 @@ public class updatetrainstatuscontroller {
             showAlert(Alert.AlertType.ERROR, "No train selected", "Please select a train to update.");
             return;
         }
+
         if (newStatus == null || newStatus.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "No status selected", "Please select a new status.");
             return;
         }
 
-        // TODO: Update in DB
-        trainService.updateScheduleStatusAndNotify(selected.getId(), newStatus);
+        // Call TrainService method (fixed name)
+        trainService.updateScheduleAndNotify(selected.getId(), newStatus);
 
-        // Update the TableView
+        // Update TableView
         selected.setStatus(newStatus);
         scheduleTable.refresh();
 

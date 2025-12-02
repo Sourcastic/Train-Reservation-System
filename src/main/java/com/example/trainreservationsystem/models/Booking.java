@@ -12,6 +12,7 @@ public class Booking {
 
   private List<Passenger> passengers;
   private Schedule schedule;
+  private LocalDateTime journeyDate; // add this
 
   public Booking() {
   }
@@ -22,6 +23,8 @@ public class Booking {
     this.scheduleId = scheduleId;
     this.status = status;
     this.bookingDate = bookingDate;
+      this.journeyDate = journeyDate;
+
   }
 
   public int getId() {
@@ -79,4 +82,12 @@ public class Booking {
   public void setSchedule(Schedule schedule) {
     this.schedule = schedule;
   }
+
+    public LocalDateTime getJourneyDate() {
+        return journeyDate;
+    }
+
+    public void setJourneyDate(LocalDateTime journeyDate) {
+        this.journeyDate = journeyDate;
+    }
 }
