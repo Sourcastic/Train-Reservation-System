@@ -85,6 +85,11 @@ public class BookingController {
   }
 
   private void toggleSeat(int seatNumber, Button button) {
+    // Prevent selecting occupied seats
+    if (occupiedSeats.contains(seatNumber)) {
+      return;
+    }
+
     if (selectedSeats.contains(seatNumber)) {
       deselectSeat(seatNumber, button);
     } else {
@@ -94,12 +99,23 @@ public class BookingController {
   }
 
   private void selectSeat(int seatNumber, Button button) {
+    // Double-check that seat is not occupied
+    if (occupiedSeats.contains(seatNumber)) {
+      return;
+    }
+
     selectedSeats.add(seatNumber);
     button.getStyleClass().remove("seat-available");
     button.getStyleClass().add("seat-selected");
   }
 
   private void deselectSeat(int seatNumber, Button button) {
+    // Don't allow deselecting if seat is occupied (shouldn't happen, but safety
+    // check)
+    if (occupiedSeats.contains(seatNumber)) {
+      return;
+    }
+
     selectedSeats.remove(seatNumber);
     button.getStyleClass().remove("seat-selected");
     button.getStyleClass().add("seat-available");
@@ -177,6 +193,24 @@ public class BookingController {
       AlertUtils.showWarning("Validation Error", "Please select at least one seat");
       return false;
     }
+
+    // Reload occupied seats to ensure we have the latest data
+    loadOccupiedSeats();
+
+    // Check if any selected seat is now occupied
+    for (Integer seatNumber : selectedSeats) {
+      if (occupiedSeats.contains(seatNumber)) {
+        AlertUtils.showError("Seat Unavailable",
+            "Seat " + seatNumber + " is no longer available. Please select a different seat.");
+        // Refresh the seat grid
+        seatGrid.getChildren().clear();
+        createSeatGrid();
+        selectedSeats.clear();
+        updateDisplay();
+        return false;
+      }
+    }
+
     return true;
   }
 

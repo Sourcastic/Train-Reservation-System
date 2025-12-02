@@ -457,9 +457,42 @@
 }
 
 .seat-occupied {
-    -fx-background-color: rgba(203,166,164,0.2);
-    -fx-text-fill: #bea08e;
+    -fx-background-color: #d3d3d3;
+    -fx-text-fill: #808080;
+    -fx-border-color: #a0a0a0;
+    -fx-border-width: 1;
     -fx-cursor: not-allowed;
+    -fx-opacity: 0.6;
+}
+
+/* Legend styles for seat status indicators */
+.seat-available-legend {
+    -fx-background-color: #e8f5e9;
+    -fx-text-fill: #2e7d32;
+    -fx-border-color: #2e7d32;
+    -fx-border-width: 1;
+    -fx-background-radius: 8;
+}
+
+.seat-selected-legend {
+    -fx-background-color: #a96a8a;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+}
+
+.seat-occupied-legend {
+    -fx-background-color: #d3d3d3;
+    -fx-text-fill: #808080;
+    -fx-border-color: #a0a0a0;
+    -fx-border-width: 1;
+    -fx-background-radius: 8;
+    -fx-opacity: 0.6;
+}
+
+.legend-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #170d13;
+    -fx-font-family: "Nunito", sans-serif;
 }
 
 .row-label {
