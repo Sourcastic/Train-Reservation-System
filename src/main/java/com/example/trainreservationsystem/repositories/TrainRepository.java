@@ -4,6 +4,7 @@ package com.example.trainreservationsystem.repositories;
 
 import com.example.trainreservationsystem.models.Route;
 import com.example.trainreservationsystem.models.Schedule;
+import com.example.trainreservationsystem.utils.Database;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class TrainRepository {
                 s.setStatus(rs.getString("status"));
                 schedules.add(s);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return schedules;
@@ -69,7 +70,7 @@ public class TrainRepository {
                 s.setStatus(rs.getString("status"));
                 return s;
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -81,7 +82,7 @@ public class TrainRepository {
             ps.setString(1, status);
             ps.setInt(2, scheduleId);
             ps.executeUpdate();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -117,7 +118,7 @@ public class TrainRepository {
                 s.setStatus(rs.getString("status"));
                 schedules.add(s);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return schedules;

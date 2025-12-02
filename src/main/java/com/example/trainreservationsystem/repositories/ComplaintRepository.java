@@ -3,6 +3,7 @@ package com.example.trainreservationsystem.repositories;
 
 
 import com.example.trainreservationsystem.models.Complaint;
+import com.example.trainreservationsystem.utils.Database;
 
 public class ComplaintRepository {
   public void saveComplaint(Complaint complaint) {

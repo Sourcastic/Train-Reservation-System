@@ -17,13 +17,13 @@ public class Booking {
   public Booking() {
   }
 
-  public Booking(int id, int userId, int scheduleId, String status, LocalDateTime bookingDate) {
+  public Booking(int id, int userId, int scheduleId, String status, LocalDateTime bookingDate,LocalDateTime journeyDate) {
     this.id = id;
     this.userId = userId;
     this.scheduleId = scheduleId;
     this.status = status;
     this.bookingDate = bookingDate;
-      this.journeyDate = journeyDate;
+    this.journeyDate = journeyDate;
 
   }
 

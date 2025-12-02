@@ -1,8 +1,7 @@
-//not mock
-
 package com.example.trainreservationsystem.repositories;
 
 import com.example.trainreservationsystem.models.Complaint;
+import com.example.trainreservationsystem.utils.Database;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,12 +12,12 @@ public class StaffComplaintRepository {
     public List<Complaint> getAllComplaints() {
         List<Complaint> complaints = new ArrayList<>();
         String query = """
-            SELECT c.id, c.user_id, c.subject, c.description, c.tracking_id, c.created_at,
-                   sr.response, sr.staff_id, sr.responded_at
-            FROM complaints c
-            LEFT JOIN staff_responses sr ON c.id = sr.complaint_id
-            ORDER BY c.created_at DESC
-            """;
+        SELECT c.id, c.user_id, c.subject, c.description, c.tracking_id, c.created_at,
+               sr.response, sr.staff_id, sr.responded_at
+        FROM complaints c
+        LEFT JOIN staff_responses sr ON c.id = sr.complaint_id
+        ORDER BY c.created_at DESC
+        """;
 
         try (Connection conn = Database.getConnection();
              Statement stmt = conn.createStatement();
@@ -44,7 +43,7 @@ public class StaffComplaintRepository {
                 complaints.add(c);
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -60,8 +59,9 @@ public class StaffComplaintRepository {
             pstmt.setInt(2, staffId);
             pstmt.setString(3, response);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }
