@@ -1,19 +1,17 @@
 package com.example.trainreservationsystem.repositories;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-
 import com.example.trainreservationsystem.models.Complaint;
 import com.example.trainreservationsystem.utils.database.Database;
 
-public class ComplaintRepository {
-  public void saveComplaint(Complaint complaint) {
-    if (Database.isMockMode()) {
-      System.out.println(
-          "Mock: Saved complaint: " + complaint.getSubject() + " (Tracking: " + complaint.getTrackingId() + ")");
-      return;
-    }
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
+public class ComplaintRepository {
+
+  public void saveComplaint(Complaint complaint) {
     String query = "INSERT INTO complaints (user_id, subject, description, tracking_id, created_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)";
     try (Connection conn = Database.getConnection();
         PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -23,13 +21,31 @@ public class ComplaintRepository {
       stmt.setString(4, complaint.getTrackingId());
       stmt.executeUpdate();
     } catch (Exception e) {
-      if (e.getMessage() != null && e.getMessage().equals("MOCK_MODE")) {
-        saveComplaint(complaint); // Retry with mock
-        return;
-      }
       System.err.println("Error saving complaint: " + e.getMessage());
       e.printStackTrace();
-      saveComplaint(complaint); // Fallback to mock
+        throw new RuntimeException("Failed to save complaint", e);
     }
+  }
+
+    public List<Complaint> getComplaintsByUserId(int userId) {
+        List<Complaint> complaints = new ArrayList<>();
+        String query = "SELECT * FROM complaints WHERE user_id = ? ORDER BY created_at DESC";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Complaint complaint = new Complaint();
+                complaint.setUserId(rs.getInt("user_id"));
+                complaint.setSubject(rs.getString("subject"));
+                complaint.setDescription(rs.getString("description"));
+                complaint.setTrackingId(rs.getString("tracking_id"));
+                complaints.add(complaint);
+            }
+        } catch (Exception e) {
+            System.err.println("Error getting complaints: " + e.getMessage());
+            e.printStackTrace();
+    }
+        return complaints;
   }
 }

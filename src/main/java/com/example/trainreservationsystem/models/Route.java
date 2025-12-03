@@ -1,10 +1,17 @@
 package com.example.trainreservationsystem.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * A route is a collection of ordered RouteSegments.
+ */
 public class Route {
   private int id;
   private String name;
   private String source;
   private String destination;
+  private List<RouteSegment> segments = new ArrayList<>();
 
   public Route() {
   }
@@ -16,6 +23,7 @@ public class Route {
     this.destination = destination;
   }
 
+  // Getters & setters
   public int getId() {
     return id;
   }
@@ -46,5 +54,38 @@ public class Route {
 
   public void setDestination(String destination) {
     this.destination = destination;
+  }
+
+  public List<RouteSegment> getSegments() {
+    return segments;
+  }
+
+  public void setSegments(List<RouteSegment> segments) {
+    this.segments = segments;
+  }
+
+  /**
+   * Add a segment to the route (maintains order).
+   */
+  public void addSegment(RouteSegment segment) {
+    this.segments.add(segment);
+  }
+
+  /**
+   * Total distance of the whole route (sum of segment distances).
+   */
+  public double totalDistance() {
+    return segments.stream()
+        .mapToDouble(RouteSegment::getDistance)
+        .sum();
+  }
+
+  /**
+   * Total price of the whole route (sum of segment prices).
+   */
+  public double totalPrice() {
+    return segments.stream()
+        .mapToDouble(RouteSegment::getPrice)
+        .sum();
   }
 }

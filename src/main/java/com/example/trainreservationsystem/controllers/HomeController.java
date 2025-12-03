@@ -1,16 +1,9 @@
 package com.example.trainreservationsystem.controllers;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
-import org.kordamp.ikonli.javafx.FontIcon;
-
+import com.example.trainreservationsystem.models.User;
 import com.example.trainreservationsystem.services.NotificationService;
 import com.example.trainreservationsystem.services.UserSession;
 import com.example.trainreservationsystem.utils.ui.AlertUtils;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,20 +11,31 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HomeController {
 
     @FXML
     private javafx.scene.control.Label manageTitleLabel;
     @FXML
-    private javafx.scene.control.Label userNameLabel;
+    private Button userNameLabel;
     @FXML
     private Button manageNotificationButton;
     @FXML
     private Button logoutButton;
+
+    @FXML
+    private ContextMenu menu;
+
     @FXML
     private StackPane contentArea;
 
@@ -80,10 +84,25 @@ public class HomeController {
         dashboardIcon.setIconSize(16);
         dashboardIcon.setIconColor(Color.web("#170d13"));
 
-        // Set user name
+        // Add train icon to the title
+        FontIcon trainIcon = new FontIcon(FontAwesomeSolid.TRAIN);
+        trainIcon.setIconSize(18);
+        trainIcon.setIconColor(Color.web("#170d13"));
+        manageTitleLabel.setGraphic(trainIcon);
+        manageTitleLabel.setContentDisplay(ContentDisplay.LEFT);
+        manageTitleLabel.setGraphicTextGap(10);
+
+        // Set user name with profile icon
         if (UserSession.getInstance().isLoggedIn()) {
             String username = UserSession.getInstance().getCurrentUser().getUsername();
             userNameLabel.setText(username);
+
+            FontIcon profileIcon = new FontIcon(FontAwesomeSolid.USER_CIRCLE);
+            profileIcon.setIconSize(16);
+            profileIcon.setIconColor(Color.web("#170d13"));
+            userNameLabel.setGraphic(profileIcon);
+            userNameLabel.setContentDisplay(ContentDisplay.LEFT);
+            userNameLabel.setGraphicTextGap(8);
         }
 
         // Attach the icons
@@ -151,6 +170,58 @@ public class HomeController {
     @FXML
     public void showHistory() {
         loadView("/com/example/trainreservationsystem/booking/booking-history.fxml");
+    }
+
+    @FXML
+    private void openDropdown() {
+        User currentUser = UserSession.getInstance().getCurrentUser();
+        if (currentUser == null)
+            return;
+
+        if ("ADMIN".equalsIgnoreCase(currentUser.getUserType())) {
+            // Show context menu for Admin
+            if (menu == null) {
+                menu = new ContextMenu();
+                javafx.scene.control.MenuItem updateProfileItem = new javafx.scene.control.MenuItem("Update Profile");
+                updateProfileItem.setOnAction(e -> navigateToUpdateProfile());
+
+                javafx.scene.control.MenuItem staffDashboardItem = new javafx.scene.control.MenuItem("Staff Dashboard");
+                staffDashboardItem.setOnAction(e -> {
+                    try {
+                        javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                                getClass().getResource("/com/example/trainreservationsystem/staff-view.fxml"));
+                        javafx.scene.Parent root = loader.load();
+                        javafx.scene.Scene scene = new javafx.scene.Scene(root);
+                        javafx.stage.Stage stage = (javafx.stage.Stage) userNameLabel.getScene().getWindow();
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (java.io.IOException ex) {
+                        ex.printStackTrace();
+                        AlertUtils.showError("Navigation Error", "Could not load Staff Dashboard.");
+                    }
+                });
+
+                menu.getItems().addAll(updateProfileItem, staffDashboardItem);
+            }
+            // Show menu below the button
+            menu.show(userNameLabel, javafx.geometry.Side.BOTTOM, 0, 0);
+        } else {
+            // Direct navigation for Customer
+            navigateToUpdateProfile();
+        }
+    }
+
+    private void navigateToUpdateProfile() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/trainreservationsystem/update-profile-view.fxml"));
+            Parent view = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(view);
+        } catch (IOException e) {
+            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, e);
+            AlertUtils.showError("Navigation Error", "Failed to load Update Profile view.");
+        }
     }
 
     @FXML

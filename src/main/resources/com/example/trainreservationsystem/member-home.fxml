@@ -9,22 +9,17 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.trainreservationsystem.controllers.MemberHomeController"
-      spacing="24.0"
-      alignment="TOP_LEFT"
-      styleClass="member-root">
+<VBox alignment="TOP_LEFT" spacing="24.0" styleClass="member-root" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.MemberHomeController">
 
     <padding>
-        <Insets top="32.0" right="32.0" bottom="32.0" left="32.0"/>
+        <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
     </padding>
 
     <children>
         <!-- Header with subtle train image -->
         <StackPane styleClass="dashboard-header">
             <children>
-                <ImageView fitHeight="180.0" fitWidth="900.0" preserveRatio="true" opacity="0.18">
+                <ImageView fitHeight="180.0" fitWidth="900.0" opacity="0.18" preserveRatio="true">
                     <!-- Place a train image at resources path: /com/example/trainreservationsystem/images/train-header.jpg -->
                     <image>
                         <Image url="@images/train-header.jpg" />
@@ -32,24 +27,21 @@
                 </ImageView>
 
                 <VBox alignment="CENTER_LEFT" spacing="8.0" styleClass="dashboard-header-content">
-                    <Label text="Welcome aboard" styleClass="dashboard-header-title"/>
-                    <Label text="Plan your next journey, manage trips, and track your bookings in one place."
-                           styleClass="dashboard-header-subtitle" wrapText="true"/>
+                    <Label styleClass="dashboard-header-title" text="Welcome aboard" />
+                    <Label styleClass="dashboard-header-subtitle" text="Plan your next journey, manage trips, and track your bookings in one place." wrapText="true" />
                 </VBox>
             </children>
         </StackPane>
 
         <!-- Quick actions as large buttons -->
         <VBox spacing="16.0">
-            <Label text="Quick actions" styleClass="section-title"/>
+            <Label styleClass="section-title" text="Quick actions" />
 
             <HBox spacing="12.0">
-                <Button text="Search Trains" onAction="#goToSearch" styleClass="quick-action-button"/>
-                <Button text="Book Train" onAction="#goToBook" styleClass="quick-action-button"/>
-                <Button text="View History" onAction="#goToHistory" styleClass="quick-action-button"/>
+                <Button onAction="#goToSearch" styleClass="quick-action-button" text="Search Trains" />
+                <Button onAction="#goToBook" styleClass="quick-action-button" text="Book Train" />
+                <Button onAction="#goToHistory" styleClass="quick-action-button" text="View History" />
             </HBox>
         </VBox>
     </children>
 </VBox>
-
-

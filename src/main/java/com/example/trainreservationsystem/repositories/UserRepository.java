@@ -1,11 +1,11 @@
 package com.example.trainreservationsystem.repositories;
 
+import com.example.trainreservationsystem.models.User;
+import com.example.trainreservationsystem.utils.database.Database;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
-
-import com.example.trainreservationsystem.models.User;
-import com.example.trainreservationsystem.utils.database.Database;
 
 public class UserRepository {
 
@@ -78,6 +78,30 @@ public class UserRepository {
               rs.getInt("loyalty_points"));
         }
         return null;
+      }
+    }
+  }
+
+  public void updatePassword(String email, String newPassword) throws Exception {
+    try (Connection conn = Database.getConnection()) {
+      String sql = "CALL sp_update_password(?, ?)";
+      try (CallableStatement stmt = conn.prepareCall(sql)) {
+        stmt.setString(1, email);
+        stmt.setString(2, newPassword);
+        stmt.execute();
+      }
+    }
+  }
+
+  public void updateUser(User user) throws Exception {
+    try (Connection conn = Database.getConnection()) {
+      String sql = "CALL sp_update_user(?, ?, ?, ?)";
+      try (CallableStatement stmt = conn.prepareCall(sql)) {
+        stmt.setInt(1, user.getId());
+        stmt.setString(2, user.getUsername());
+        stmt.setString(3, user.getEmail());
+        stmt.setString(4, user.getPhoneNo());
+        stmt.execute();
       }
     }
   }

@@ -81,7 +81,17 @@ public class Booking {
     this.schedule = schedule;
   }
 
-  public double getTotalAmount() {
+    private Seat seat;
+
+    public Seat getSeat() {
+        return seat;
+    }
+
+    public void setSeat(Seat seat) {
+        this.seat = seat;
+    }
+
+    public double getTotalAmount() {
     return totalAmount;
   }
 

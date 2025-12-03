@@ -10,7 +10,7 @@
    --accent: #bea08e (Accent beige)
 
    Additional derived colors:
-   --white: #ffffff (Pure white for cards)
+   --white: #E5CCD5 (Pure white for cards)
    --hover-bg: rgba(203,166,164,0.1) (Secondary with opacity for hovers)
    --border: rgba(203,166,164,0.3) (Secondary with opacity for borders)
    --shadow: rgba(0,0,0,0.06) (Subtle shadows)
@@ -20,7 +20,7 @@
    BASE: ROOT & TYPOGRAPHY
    ================================ */
 .root {
-    -fx-font-family: "Nunito", "Alpino", "Segoe UI", sans-serif;
+    -fx-font-family: "DM Serif Display", "DM Serif Display", "Segoe UI", sans-serif;
     -fx-background-color: #ebd6e1;
     -fx-text-fill: #170d13;
 }
@@ -29,34 +29,34 @@
     -fx-font-size: 24px;
     -fx-font-weight: 700;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .section-title {
     -fx-font-size: 16px;
     -fx-font-weight: 600;
-    -fx-text-fill: #cba6a4;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-text-fill: #170d13;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .field-label {
     -fx-font-size: 13px;
     -fx-font-weight: 600;
     -fx-text-fill: #cba6a4;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .error-label {
     -fx-text-fill: #d32f2f;
     -fx-font-size: 13px;
     -fx-font-weight: 500;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .hint-text {
     -fx-font-size: 12px;
     -fx-text-fill: #bea08e;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-font-style: italic;
 }
 
@@ -64,8 +64,8 @@
    LAYOUT: SIDEBAR & DASHBOARD
    ================================ */
 .sidebar {
-    -fx-background-color: #ffffff;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 0);
+    -fx-background-color: #E5CCD5;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 12, 0, 0, 0);
     -fx-spacing: 12;
 }
 
@@ -77,43 +77,38 @@
     -fx-background-radius: 8;
     -fx-font-weight: 500;
     -fx-font-size: 14px;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-cursor: hand;
 }
 
 .sidebar-button:hover {
-    -fx-background-color: rgba(203,166,164,0.1);
+    -fx-background-color: rgba(203, 166, 164, 0.1);
 }
 
 .title-button {
     -fx-background-color: transparent;
     -fx-text-fill: #170d13;
-    -fx-font-size: 18px;
+    -fx-font-size: 20px;
     -fx-font-weight: 700;
-    -fx-font-family: "Alpino", sans-serif;
-    -fx-padding: 8 0;
+    -fx-font-family: "DM Serif Display", sans-serif;
+    -fx-padding: 12 0;
     -fx-alignment: CENTER_LEFT;
-}
-
-.app-logo {
-    -fx-background-color: #a96a8a;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-font-weight: 600;
-    -fx-font-family: "Alpino", sans-serif;
-    -fx-padding: 10 20;
-    -fx-background-radius: 8;
-    -fx-alignment: CENTER;
-    -fx-cursor: default;
 }
 
 .user-name-label {
-    -fx-font-size: 15px;
-    -fx-font-weight: 600;
+    -fx-background-color: transparent;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Alpino", sans-serif;
-    -fx-padding: 8 0;
     -fx-alignment: CENTER_LEFT;
+    -fx-padding: 12 16;
+    -fx-background-radius: 8;
+    -fx-font-weight: 500;
+    -fx-font-size: 14px;
+    -fx-font-family: "DM Serif Display", sans-serif;
+    -fx-cursor: hand;
+}
+
+.user-name-label:hover {
+    -fx-background-color: rgba(203, 166, 164, 0.1);
 }
 
 .member-root {
@@ -121,9 +116,9 @@
 }
 
 .dashboard-header {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 16, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 16, 0, 0, 2);
     -fx-padding: 24;
     -fx-min-height: 160;
 }
@@ -132,26 +127,27 @@
     -fx-font-size: 28px;
     -fx-font-weight: 700;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .dashboard-header-subtitle {
     -fx-font-size: 14px;
-    -fx-text-fill: #cba6a4;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-text-fill: #170d13;
+    -fx-font-style: italic;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .quick-action-button {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 12;
     -fx-text-fill: #170d13;
     -fx-font-size: 14px;
     -fx-font-weight: 600;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-padding: 16 24;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 1);
-    -fx-border-color: rgba(203,166,164,0.3);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 8, 0, 0, 1);
+    -fx-border-color: rgba(203, 166, 164, 0.3);
     -fx-border-width: 1;
     -fx-border-radius: 12;
 }
@@ -159,7 +155,7 @@
 .quick-action-button:hover {
     -fx-background-color: #ebd6e1;
     -fx-border-color: #a96a8a;
-    -fx-effect: dropshadow(gaussian, rgba(169,106,138,0.15), 12, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(169, 106, 138, 0.15), 12, 0, 0, 2);
 }
 
 .table-view {
@@ -171,13 +167,13 @@
     -fx-background-color: #ebd6e1;
     -fx-font-weight: 600;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-padding: 12 16;
 }
 
 .table-row-cell {
-    -fx-background-color: #ffffff;
-    -fx-border-color: rgba(203,166,164,0.2);
+    -fx-background-color: #E5CCD5;
+    -fx-border-color: rgba(203, 166, 164, 0.2);
     -fx-border-width: 0 0 1 0;
 }
 
@@ -186,7 +182,7 @@
 }
 
 .table-row-cell:selected {
-    -fx-background-color: rgba(203,166,164,0.15);
+    -fx-background-color: rgba(203, 166, 164, 0.15);
     -fx-text-fill: #170d13;
 }
 
@@ -198,13 +194,13 @@
     -fx-font-size: 18px;
     -fx-font-weight: 600;
     -fx-text-fill: #cba6a4;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .empty-subtitle {
     -fx-font-size: 14px;
     -fx-text-fill: #bea08e;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 /* ================================
@@ -212,14 +208,14 @@
    ================================ */
 .button {
     -fx-background-color: #a96a8a;
-    -fx-text-fill: white;
+    -fx-text-fill: #170d13;
     -fx-background-radius: 8;
     -fx-padding: 10 24;
     -fx-font-size: 14px;
     -fx-font-weight: 600;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(169,106,138,0.2), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(169, 106, 138, 0.2), 8, 0, 0, 2);
 }
 
 .button:hover {
@@ -232,7 +228,7 @@
     -fx-font-size: 14px;
     -fx-background-color: transparent;
     -fx-text-fill: #a96a8a;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-cursor: hand;
     -fx-font-weight: 600;
     -fx-border-color: #a96a8a;
@@ -241,7 +237,7 @@
 }
 
 .secondary-button:hover {
-    -fx-background-color: rgba(203,166,164,0.1);
+    -fx-background-color: rgba(203, 166, 164, 0.1);
 }
 
 .book-button {
@@ -249,8 +245,8 @@
     -fx-padding: 8 16;
     -fx-font-size: 13px;
     -fx-background-color: #a96a8a;
-    -fx-text-fill: white;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-text-fill: #170d13;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-cursor: hand;
     -fx-font-weight: 600;
 }
@@ -262,10 +258,10 @@
 .payment-method-button {
     -fx-background-color: #a96a8a;
     -fx-background-radius: 8;
-    -fx-text-fill: white;
+    -fx-text-fill: #170d13;
     -fx-font-size: 14px;
     -fx-font-weight: 600;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-padding: 12 24;
     -fx-cursor: hand;
 }
@@ -279,12 +275,12 @@
     -fx-text-fill: #170d13;
     -fx-background-radius: 8;
     -fx-padding: 8 12;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-cursor: hand;
 }
 
 .icon-button:hover {
-    -fx-background-color: rgba(203,166,164,0.1);
+    -fx-background-color: rgba(203, 166, 164, 0.1);
 }
 
 .tab-button {
@@ -294,16 +290,16 @@
     -fx-background-radius: 8;
     -fx-cursor: hand;
     -fx-font-weight: 600;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .tab-button:hover {
-    -fx-background-color: rgba(203,166,164,0.1);
+    -fx-background-color: rgba(203, 166, 164, 0.1);
 }
 
 .tab-active {
     -fx-background-color: #a96a8a;
-    -fx-text-fill: white;
+    -fx-text-fill: #170d13;
 }
 
 .dismiss-button {
@@ -324,103 +320,257 @@
    COMPONENTS: INPUTS
    ================================ */
 .text-field,
-.password-field,
-.text-area {
+.password-field {
     -fx-background-radius: 8;
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5
     -fx-padding: 10;
     -fx-border-radius: 8;
-    -fx-border-color: rgba(203,166,164,0.3);
+    -fx-border-color: rgba(203, 166, 164, 0.3);
     -fx-font-size: 14px;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
+    -fx-text-fill: #170d13;
 }
 
 .text-field:focused,
-.password-field:focused,
-.text-area:focused {
+.password-field:focused {
     -fx-border-color: #a96a8a;
-    -fx-effect: dropshadow(gaussian, rgba(169,106,138,0.15), 8, 0, 0, 0);
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(169, 106, 138, 0.15), 8, 0, 0, 0);
 }
 
-.searchable-combobox, .date-picker {
-    -fx-background-color: #ffffff;
-    -fx-background-insets: 0;
-    -fx-background-radius: 8;
-    -fx-padding: 0;
-    -fx-font-size: 14px;
+.text-field:placeholder,
+.password-field:placeholder {
+    -fx-text-fill: rgba(23, 13, 19, 0.5);
+}
+
+.searchable-combobox,
+.date-picker {
+    -fx-background-color: #ebd6e1;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Nunito", sans-serif;
-    -fx-border-radius: 8;
-    -fx-border-width: 1;
-    -fx-border-color: rgba(203,166,164,0.3);
-    -fx-pref-height: 40px;
+    -fx-background-radius: 6;
+    -fx-padding: 6 8;
+    -fx-prompt-text-fill: #170d13A0; /* slightly transparent */
+    -fx-border-color: #a96a8a;
+    -fx-border-radius: 6;
 }
 
-.searchable-combobox:hover, .date-picker:hover {
+
+
+.searchable-combobox:hover,
+.date-picker:hover {
     -fx-border-color: #a96a8a;
+    -fx-border-width: 2;
 }
 
-.searchable-combobox:focused, .date-picker:focused {
+.searchable-combobox:focused,
+.date-picker:focused {
     -fx-border-color: #a96a8a;
+    -fx-border-width: 2;
 }
 
 .searchable-combobox .list-cell {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-padding: 8 12;
 }
 
 .searchable-combobox .list-cell:hover {
-    -fx-background-color: rgba(203,166,164,0.1);
+    -fx-background-color: rgba(203, 166, 164, 0.1);
 }
 
 .modern-field {
     -fx-background-radius: 8;
-    -fx-background-color: #ffffff;
+    -fx-background-color: #FFFFFF;
     -fx-padding: 10;
     -fx-border-radius: 8;
-    -fx-border-color: rgba(203,166,164,0.3);
+    -fx-border-color: rgba(203, 166, 164, 0.3);
     -fx-font-size: 14px;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .modern-field:focused {
     -fx-border-color: #a96a8a;
-    -fx-effect: dropshadow(gaussian, rgba(169,106,138,0.15), 8, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(169, 106, 138, 0.15), 8, 0, 0, 0);
+}
+/* ===== DatePicker Main ===== */
+.date-picker {
+    -fx-background-color: #ebd6e1;
+    -fx-text-fill: #170d13;
+    -fx-background-radius: 6;
+    -fx-padding: 6 8;
+    -fx-prompt-text-fill: #170d13A0;
+    -fx-border-color: #a96a8a;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-font-size: 14px;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
+.date-picker:hover {
+    -fx-border-color: #a96a8a;
+    -fx-border-width: 2;
+}
+
+.date-picker:focused {
+    -fx-border-color: #a96a8a;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(169, 106, 138, 0.15), 8, 0, 0, 0);
+}
+
+/* ===== DatePicker Text Field ===== */
+.date-picker .text-field {
+    -fx-background-color: #ebd6e1;
+    -fx-text-fill: #170d13;
+    -fx-padding: 6 8;
+    -fx-font-size: 14px;
+    -fx-font-family: "DM Serif Display", sans-serif;
+}
+
+/* ===== DatePicker Calendar Icon Button ===== */
+.date-picker .arrow-button {
+    -fx-background-color: #a96a8a;
+    -fx-background-radius: 0 6 6 0;
+    -fx-padding: 0 6;
+}
+
+.date-picker .arrow-button:hover {
+    -fx-background-color: #9d5d7e;
+}
+
+.date-picker .arrow-button:pressed {
+    -fx-background-color: #8b4f6c;
+}
+
+.date-picker .arrow-button .arrow {
+    -fx-background-color: #E5CCD5;
+}
+
+/* ===== Calendar Popup Container ===== */
+.date-picker-popup {
+    -fx-background-color: #ebd6e1;
+    -fx-border-color: #a96a8a;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8;
+}
+
+/* ===== Month/Year Header and Navigation ===== */
+.date-picker-popup .month-year-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 8;
+}
+
+.date-picker-popup .month-year-pane .label {
+    -fx-text-fill: #170d13;
+    -fx-font-size: 14px;
+    -fx-font-family: "DM Serif Display", sans-serif;
+    -fx-font-weight: bold;
+}
+
+.date-picker-popup .spinner .button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #170d13;
+    -fx-padding: 4 8;
+    -fx-font-size: 14px;
+}
+
+.date-picker-popup .spinner .button:hover {
+    -fx-background-color: rgba(203, 166, 164, 0.1);
+    -fx-background-radius: 5;
+}
+
+.date-picker-popup .spinner .button:pressed {
+    -fx-background-color: #a96a8a;
+    -fx-text-fill: #E5CCD5;
+}
+
+.date-picker-popup .spinner .button .arrow {
+    -fx-background-color: #170d13;
+}
+
+/* ===== Day Header Cells (Mon, Tue, etc.) ===== */
+.date-picker-popup .day-header-pane {
+    -fx-background-color: rgba(169, 106, 138, 0.1);
+    -fx-padding: 8;
+}
+
+.date-picker-popup .day-header-pane .label {
+    -fx-text-fill: #170d13;
+    -fx-font-size: 13px;
+    -fx-font-family: "DM Serif Display", sans-serif;
+    -fx-font-weight: bold;
+}
+
+/* ===== Date Cells ===== */
+.date-picker-popup .day-cell {
+    -fx-background-color: #ebd6e1;
+    -fx-text-fill: #170d13;
+    -fx-padding: 8;
+    -fx-border-color: rgba(203, 166, 164, 0.3);
+    -fx-border-radius: 5;
+    -fx-font-size: 14px;
+    -fx-font-family: "DM Serif Display", sans-serif;
+}
+
+.date-picker-popup .day-cell:hover {
+    -fx-background-color: rgba(203, 166, 164, 0.1);
+    -fx-border-color: #a96a8a;
+}
+
+.date-picker-popup .day-cell:focused {
+    -fx-background-color: rgba(203, 166, 164, 0.2);
+    -fx-border-color: #a96a8a;
+    -fx-border-width: 1.5;
+}
+
+.date-picker-popup .day-cell:selected {
+    -fx-background-color: #a96a8a;
+    -fx-text-fill: #E5CCD5;
+    -fx-border-color: #a96a8a;
+}
+
+.date-picker-popup .day-cell:disabled {
+    -fx-text-fill: rgba(23, 13, 19, 0.4);
+    -fx-background-color: rgba(203, 166, 164, 0.05);
+}
+
+.date-picker-popup .today {
+    -fx-background-color: rgba(169, 106, 138, 0.2);
+    -fx-border-color: #a96a8a;
+    -fx-border-width: 1;
+}
 /* ================================
    COMPONENTS: CARDS
    ================================ */
 .form-card {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 16, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 16, 0, 0, 2);
     -fx-spacing: 16;
 }
 
 .ticket-card {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 16, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 16, 0, 0, 2);
 }
 
 .notification-card {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 8, 0, 0, 1);
     -fx-cursor: hand;
 }
 
 .notification-card:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 12, 0, 0, 2);
 }
 
 .summary-box {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 12, 0, 0, 2);
 }
 
 .cash-info-box {
@@ -432,11 +582,13 @@
 /* ================================
    FEATURES: BOOKING & SEATS
    ================================ */
-.seat-available, .seat-selected, .seat-occupied {
+.seat-available,
+.seat-selected,
+.seat-occupied {
     -fx-background-radius: 8;
     -fx-font-size: 12px;
     -fx-font-weight: 600;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-cursor: hand;
 }
 
@@ -453,7 +605,7 @@
 
 .seat-selected {
     -fx-background-color: #a96a8a;
-    -fx-text-fill: white;
+    -fx-text-fill: #170d13;
 }
 
 .seat-occupied {
@@ -476,7 +628,7 @@
 
 .seat-selected-legend {
     -fx-background-color: #a96a8a;
-    -fx-text-fill: white;
+    -fx-text-fill: #170d13;
     -fx-background-radius: 8;
 }
 
@@ -497,7 +649,7 @@
     -fx-background-radius: 8;
     -fx-font-size: 12px;
     -fx-font-weight: 600;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-cursor: hand;
 }
 
@@ -509,14 +661,14 @@
 .legend-label {
     -fx-font-size: 13px;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .row-label {
     -fx-font-size: 11px;
     -fx-font-weight: 600;
     -fx-text-fill: #cba6a4;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-padding: 0 10 0 0;
 }
 
@@ -533,35 +685,35 @@
 }
 
 .payment-accordion .titled-pane {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 8, 0, 0, 1);
 }
 
 .payment-accordion .titled-pane:expanded {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 12, 0, 0, 2);
 }
 
-.payment-accordion .titled-pane > .title {
-    -fx-background-color: #ffffff;
+.payment-accordion .titled-pane>.title {
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 12 12 0 0;
     -fx-padding: 16 20;
     -fx-font-size: 16px;
     -fx-font-weight: 600;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
-.payment-accordion .titled-pane:expanded > .title {
+.payment-accordion .titled-pane:expanded>.title {
     -fx-background-color: #ebd6e1;
 }
 
-.payment-accordion .titled-pane > .content {
-    -fx-background-color: #ffffff;
+.payment-accordion .titled-pane>.content {
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 0 0 12 12;
 }
 
 .payment-pane {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
 }
 
 .summary-sidebar {
@@ -572,34 +724,34 @@
     -fx-font-size: 12px;
     -fx-font-weight: 600;
     -fx-text-fill: #cba6a4;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .summary-value-small {
     -fx-font-size: 14px;
     -fx-font-weight: 600;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .summary-amount-small {
     -fx-font-size: 20px;
     -fx-font-weight: 700;
     -fx-text-fill: #a96a8a;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .info-header {
     -fx-font-size: 14px;
     -fx-font-weight: 600;
     -fx-text-fill: #cba6a4;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .info-text {
     -fx-font-size: 13px;
     -fx-text-fill: #cba6a4;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 /* ================================
@@ -609,49 +761,49 @@
     -fx-font-size: 22px;
     -fx-font-weight: 700;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .booking-id {
     -fx-font-size: 14px;
     -fx-text-fill: #cba6a4;
     -fx-font-weight: 600;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .station-name {
     -fx-font-size: 20px;
     -fx-font-weight: 700;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .station-label {
     -fx-font-size: 11px;
     -fx-text-fill: #cba6a4;
     -fx-font-weight: 600;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .status-confirmed {
     -fx-font-size: 15px;
     -fx-font-weight: 700;
     -fx-text-fill: #2e7d32;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .status-pending {
     -fx-font-size: 15px;
     -fx-font-weight: 700;
     -fx-text-fill: #f57c00;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .status-cancelled {
     -fx-font-size: 15px;
     -fx-font-weight: 700;
     -fx-text-fill: #d32f2f;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 /* ================================
@@ -680,20 +832,20 @@
 .notification-message {
     -fx-font-size: 14px;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .notification-time {
     -fx-font-size: 11px;
     -fx-text-fill: #bea08e;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 /* ================================
    FEATURES: ALERTS
    ================================ */
 .custom-alert {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 12;
 }
 
@@ -702,12 +854,12 @@
 }
 
 .custom-alert .label {
-    -fx-font-family: "Nunito", "Alpino", "Segoe UI", sans-serif;
+    -fx-font-family: "DM Serif Display", "DM Serif Display", "Segoe UI", sans-serif;
     -fx-text-fill: #170d13;
 }
 
 .success-alert .dialog-pane {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 12;
 }
 
@@ -720,35 +872,35 @@
    FEATURES: TRAIN SEARCH CARDS
    ================================ */
 .search-summary-bar {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 8;
     -fx-padding: 16 20;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 8, 0, 0, 1);
 }
 
 .search-summary-text {
     -fx-font-size: 14px;
     -fx-font-weight: 600;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .sort-label {
     -fx-font-size: 13px;
     -fx-font-weight: 600;
     -fx-text-fill: #cba6a4;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .sort-combobox {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 8;
-    -fx-border-color: rgba(203,166,164,0.3);
+    -fx-border-color: rgba(203, 166, 164, 0.3);
     -fx-border-width: 1;
     -fx-border-radius: 8;
     -fx-padding: 8 12;
     -fx-font-size: 13px;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .sort-combobox:hover {
@@ -760,101 +912,101 @@
 }
 
 .train-card {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #E5CCD5;
     -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 16, 0, 0, 2);
-    -fx-border-color: rgba(203,166,164,0.2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 16, 0, 0, 2);
+    -fx-border-color: rgba(203, 166, 164, 0.2);
     -fx-border-width: 1;
     -fx-border-radius: 12;
 }
 
 .train-card:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 20, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 20, 0, 0, 3);
 }
 
 .train-name {
     -fx-font-size: 18px;
     -fx-font-weight: 700;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .time-label {
     -fx-font-size: 20px;
     -fx-font-weight: 700;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .station-label {
     -fx-font-size: 12px;
     -fx-font-weight: 600;
     -fx-text-fill: #cba6a4;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .journey-duration {
     -fx-font-size: 14px;
     -fx-font-weight: 600;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .journey-info {
     -fx-font-size: 11px;
     -fx-text-fill: #bea08e;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .booking-class-card {
     -fx-background-color: #f8f8f8;
     -fx-background-radius: 8;
-    -fx-border-color: rgba(203,166,164,0.2);
+    -fx-border-color: rgba(203, 166, 164, 0.2);
     -fx-border-width: 1;
     -fx-border-radius: 8;
 }
 
 .booking-class-card:hover {
-    -fx-background-color: #ffffff;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 1);
+    -fx-background-color: #E5CCD5;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 8, 0, 0, 1);
 }
 
 .class-label {
     -fx-font-size: 13px;
     -fx-font-weight: 600;
     -fx-text-fill: #170d13;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .availability-available {
     -fx-font-size: 12px;
     -fx-font-weight: 600;
     -fx-text-fill: #2e7d32;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .availability-unavailable {
     -fx-font-size: 12px;
     -fx-font-weight: 600;
     -fx-text-fill: #d32f2f;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .price-label {
     -fx-font-size: 16px;
     -fx-font-weight: 700;
     -fx-text-fill: #a96a8a;
-    -fx-font-family: "Alpino", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
 }
 
 .book-now-button {
     -fx-background-color: #a96a8a;
-    -fx-text-fill: white;
+    -fx-text-fill: #170d13;
     -fx-background-radius: 6;
     -fx-padding: 8 16;
     -fx-font-size: 12px;
     -fx-font-weight: 600;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-cursor: hand;
 }
 
@@ -871,12 +1023,12 @@
 
 .carousel-button {
     -fx-background-color: #a96a8a;
-    -fx-text-fill: white;
+    -fx-text-fill: #170d13;
     -fx-background-radius: 6;
     -fx-padding: 8 12;
     -fx-font-size: 16px;
     -fx-font-weight: 700;
-    -fx-font-family: "Nunito", sans-serif;
+    -fx-font-family: "DM Serif Display", sans-serif;
     -fx-cursor: hand;
     -fx-pref-height: 40;
 }

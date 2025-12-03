@@ -6,8 +6,17 @@ import com.example.trainreservationsystem.repositories.UserRepository;
 public class AuthService {
     private final UserRepository userRepository;
 
-    public AuthService() {
+    private static AuthService instance;
+
+    private AuthService() {
         this.userRepository = new UserRepository();
+    }
+
+    public static synchronized AuthService getInstance() {
+        if (instance == null) {
+            instance = new AuthService();
+        }
+        return instance;
     }
 
     public User login(String email, String password) throws Exception {
@@ -48,5 +57,29 @@ public class AuthService {
             }
             throw e;
         }
+    }
+
+    public boolean resetPassword(String email, String newPassword) {
+        try {
+            userRepository.updatePassword(email, newPassword);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void updateUserProfile(User user) throws Exception {
+        if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+        if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be empty");
+        }
+        if (user.getPhoneNo() == null || user.getPhoneNo().trim().isEmpty()) {
+            throw new IllegalArgumentException("Phone number cannot be empty");
+        }
+
+        userRepository.updateUser(user);
     }
 }

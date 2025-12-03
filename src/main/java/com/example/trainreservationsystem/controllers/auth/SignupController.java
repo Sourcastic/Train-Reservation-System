@@ -2,7 +2,6 @@ package com.example.trainreservationsystem.controllers.auth;
 
 import com.example.trainreservationsystem.services.AuthService;
 import com.example.trainreservationsystem.utils.ui.AlertUtils;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -31,7 +30,7 @@ public class SignupController {
   @FXML
   private Button signupButton;
 
-  private final AuthService authService = new AuthService();
+    private final AuthService authService = AuthService.getInstance();
 
   @FXML
   public void initialize() {
@@ -104,6 +103,20 @@ public class SignupController {
       e.printStackTrace();
     }
   }
+
+    @FXML
+    public void handleBackToLanding() {
+        try {
+            Stage stage = (Stage) nameField.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/trainreservationsystem/landing-view.fxml"));
+            Parent root = loader.load();
+            stage.setScene(new Scene(root, 1280, 800));
+        } catch (Exception e) {
+            AlertUtils.showError("Error", "Failed to load landing page");
+            e.printStackTrace();
+        }
+    }
 
   private void showError(String message) {
     errorLabel.setText(message);

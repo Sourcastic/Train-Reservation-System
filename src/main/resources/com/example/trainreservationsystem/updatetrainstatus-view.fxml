@@ -2,104 +2,37 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.*?>
 
-<BorderPane prefHeight="800" prefWidth="1280"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.trainreservationsystem.controllers.updatetrainstatuscontroller">
+<VBox spacing="25" style="-fx-padding: 30;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.UpdateTrainStatusController">
 
-    <!-- ============ UNIFIED STAFF SIDEBAR ============ -->
-    <left>
-        <VBox prefWidth="240" spacing="20" alignment="TOP_CENTER"
-              style="-fx-background-color: #2C3E50;">
+    <!-- TITLE -->
+    <Label text="Update Train Status"
+           style="-fx-font-size: 30px; -fx-font-weight: bold;"/>
 
-            <padding>
-                <Insets top="30" bottom="20" left="15" right="15"/>
-            </padding>
+    <!-- TRAIN TABLE -->
+    <TableView fx:id="trainTable" prefHeight="450" prefWidth="900"
+               style="-fx-background-radius: 10; -fx-border-radius: 10;">
+        <columns>
+            <TableColumn fx:id="colTrainId" text="Train ID" prefWidth="200"/>
+            <TableColumn fx:id="colTrainName" text="Train Name" prefWidth="350"/>
+            <TableColumn fx:id="colCurrentStatus" text="Current Status" prefWidth="250"/>
+        </columns>
+    </TableView>
 
-            <Label text="Staff Panel"
-                   style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;"/>
+    <!-- STATUS UPDATE SECTION -->
+    <HBox spacing="30" alignment="CENTER">
 
-            <Separator/>
-
-            <!-- Navigation Buttons -->
-            <Button text="Dashboard" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color: #34495E; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnDashboard"/>
-
-            <Button text="Handle Complaints" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color: #34495E; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnComplaints"/>
-
-            <Button text="Confirm Bookings" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color: #34495E; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnConfirmBookings"/>
-
-            <Button text="Ticket Validation" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color: #34495E; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnTicketValidation"/>
-
-            <Button text="Notifications" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color: #34495E; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnNotifications"/>
-
-            <!-- Highlight current page -->
-            <Button text="Update Train Status" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color: #1ABC9C; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnTrainStatus"/>
-
-            <VBox VBox.vgrow="ALWAYS"/>
-
-            <Button text="Logout" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color: #C0392B; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnLogout"/>
+        <VBox spacing="10">
+            <Label text="Select New Status:" style="-fx-font-size: 16;"/>
+            <ComboBox fx:id="statusSelect" prefWidth="250"/>
         </VBox>
-    </left>
 
+        <Button text="Update Status"
+                fx:id="btnUpdateStatus"
+                onAction="#updateStatus"
+                prefWidth="220" prefHeight="45"
+                style="-fx-background-color: #1ABC9C; -fx-text-fill: white;
+                       -fx-font-size: 17; -fx-background-radius: 12;"/>
+    </HBox>
 
-    <!-- ============ MAIN CONTENT ============ -->
-    <center>
-        <VBox spacing="25" style="-fx-padding: 30;">
-
-            <!-- TITLE -->
-            <Label text="Update Train Status"
-                   style="-fx-font-size: 30px; -fx-font-weight: bold;"/>
-
-            <!-- TRAIN TABLE -->
-            <TableView fx:id="trainTable" prefHeight="450" prefWidth="900"
-                       style="-fx-background-radius: 10; -fx-border-radius: 10;">
-                <columns>
-                    <TableColumn fx:id="colTrainId" text="Train ID" prefWidth="200"/>
-                    <TableColumn fx:id="colTrainName" text="Train Name" prefWidth="350"/>
-                    <TableColumn fx:id="colCurrentStatus" text="Current Status" prefWidth="250"/>
-                </columns>
-            </TableView>
-
-            <!-- STATUS UPDATE SECTION -->
-            <HBox spacing="30" alignment="CENTER">
-
-                <VBox spacing="10">
-                    <Label text="Select New Status:" style="-fx-font-size: 16;"/>
-                    <ComboBox fx:id="statusSelect" prefWidth="250"/>
-                </VBox>
-
-                <Button text="Update Status"
-                        fx:id="btnUpdateStatus"
-                        onAction="#updateStatus"
-                        prefWidth="220" prefHeight="45"
-                        style="-fx-background-color: #1ABC9C; -fx-text-fill: white;
-                               -fx-font-size: 17; -fx-background-radius: 12;"/>
-            </HBox>
-
-        </VBox>
-    </center>
-
-</BorderPane>
+</VBox>

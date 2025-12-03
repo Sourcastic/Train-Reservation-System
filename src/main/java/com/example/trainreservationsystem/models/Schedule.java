@@ -2,7 +2,14 @@ package com.example.trainreservationsystem.models;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+/**
+ * Represents a train schedule (a specific run of a route).
+ */
 public class Schedule {
   private int id;
   private Route route;
@@ -11,6 +18,8 @@ public class Schedule {
   private LocalTime arrivalTime;
   private double price;
   private int capacity;
+  private List<Seat> seats = new ArrayList<>();
+  private List<Booking> bookings = new ArrayList<>();
 
   public Schedule() {
   }
@@ -26,6 +35,7 @@ public class Schedule {
     this.capacity = capacity;
   }
 
+  // Getters & setters
   public int getId() {
     return id;
   }
@@ -82,8 +92,80 @@ public class Schedule {
     this.capacity = capacity;
   }
 
-  @Override
-  public String toString() {
-    return route.getSource() + " to " + route.getDestination() + " (" + departureTime + ")";
+  public List<Seat> getSeats() {
+    return seats;
+  }
+
+  public void setSeats(List<Seat> seats) {
+    this.seats = seats;
+  }
+
+  public List<Booking> getBookings() {
+    return bookings;
+  }
+
+  public void setBookings(List<Booking> bookings) {
+    this.bookings = bookings;
+  }
+
+  /**
+   * Add a seat to the schedule.
+   */
+  public void addSeat(Seat seat) {
+    this.seats.add(seat);
+  }
+
+  /**
+   * Add a booking to this schedule.
+   */
+  public void addBooking(Booking booking) {
+    this.bookings.add(booking);
+  }
+
+  /**
+   * Clear all bookings.
+   */
+  public void clearBookings() {
+    this.bookings.clear();
+  }
+
+  /**
+   * Count free seats per SeatClass.
+   */
+  public Map<Integer, Long> freeSeatsByClass() {
+    return seats.stream()
+        .filter(seat -> !seat.isBooked())
+        .collect(Collectors.groupingBy(seat -> seat.getSeatClass().getId(), Collectors.counting()));
+  }
+
+  /**
+   * Calculate total price for a given seat (route price + class base fare).
+   */
+  public double calculateSeatPrice(Seat seat) {
+    double routePrice = route.totalPrice();
+    return routePrice + seat.getSeatClass().getBaseFare();
+  }
+
+  /**
+   * Modify departure and arrival times.
+   */
+  public void modifyTimes(LocalTime newDeparture, LocalTime newArrival) {
+    this.departureTime = newDeparture;
+    this.arrivalTime = newArrival;
+  }
+
+  /**
+   * Generate a simple statistics snapshot for this schedule.
+   */
+  public Statistics generateStatistics(String dayOfWeek) {
+    Statistics stats = new Statistics();
+    stats.setScheduleId(this.id);
+    stats.setDayOfWeek(dayOfWeek);
+    stats.setDepartureTime(this.departureTime);
+    // For each seat class, record seats sold
+    Map<Integer, Long> soldPerClass = bookings.stream()
+        .collect(Collectors.groupingBy(b -> b.getSeat().getSeatClass().getId(), Collectors.counting()));
+    stats.setSeatsSoldPerClass(soldPerClass);
+    return stats;
   }
 }

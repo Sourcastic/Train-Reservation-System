@@ -1,5 +1,8 @@
 package com.example.trainreservationsystem.services;
 
+import com.example.trainreservationsystem.models.Notification;
+import com.example.trainreservationsystem.repositories.NotificationRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +10,7 @@ public class NotificationService {
   private static NotificationService instance;
   private final List<String> messages = new ArrayList<>();
   private final List<NotificationListener> listeners = new ArrayList<>();
+    private final NotificationRepository repository = new NotificationRepository();
 
   private NotificationService() {
   }
@@ -22,7 +26,47 @@ public class NotificationService {
     notifyListeners();
   }
 
-  public List<String> getAll() {
+    /**
+     * Adds a notification and persists to database.
+     * Write-through operation.
+     */
+    public void add(String message, int userId) {
+        // Add to in-memory list
+        messages.add(0, message); // latest first
+
+        // Persist to database
+        try {
+            Notification notification = new Notification();
+            notification.setUserId(userId);
+            notification.setMessage(message);
+            notification.setSent(false);
+            repository.saveNotification(notification);
+        } catch (Exception e) {
+            System.err.println("Error persisting notification: " + e.getMessage());
+        }
+
+        notifyListeners();
+    }
+
+    /**
+     * Loads notifications for a user from database.
+     * Called on login.
+     */
+    public void loadNotificationsForUser(int userId) {
+        try {
+            messages.clear();
+            List<Notification> notifications = repository.getNotificationsByUserId(userId);
+            for (Notification n : notifications) {
+                messages.add(n.getMessage());
+            }
+            notifyListeners();
+            System.out.println("📧 Loaded " + messages.size() + " notifications for user " + userId);
+        } catch (Exception e) {
+            System.err.println("Error loading notifications: " + e.getMessage());
+        }
+    }
+
+    public List<String> getAll() {
     return new ArrayList<>(messages);
   }
 

@@ -1,8 +1,8 @@
 package com.example.trainreservationsystem.seeders;
 
-import java.sql.Connection;
-
 import com.example.trainreservationsystem.utils.database.Database;
+
+import java.sql.Connection;
 
 /**
  * Main database seeder that coordinates all individual seeders.
@@ -17,11 +17,6 @@ public class DatabaseSeeder {
    * @return true if seeding was successful or skipped, false on error
    */
   public static boolean seed() {
-    // Skip seeding if in mock mode
-    if (Database.isMockMode()) {
-      System.out.println("ℹ️  Skipping database seeding (mock mode)");
-      return true;
-    }
 
     try (Connection conn = Database.getConnection()) {
       System.out.println("🌱 Starting database seeding...");
@@ -48,10 +43,6 @@ public class DatabaseSeeder {
 
       return true;
     } catch (Exception e) {
-      if (e.getMessage() != null && e.getMessage().equals("MOCK_MODE")) {
-        System.out.println("ℹ️  Skipping database seeding (mock mode)");
-        return true;
-      }
       System.err.println("❌ Database seeding error: " + e.getMessage());
       e.printStackTrace();
       return false;

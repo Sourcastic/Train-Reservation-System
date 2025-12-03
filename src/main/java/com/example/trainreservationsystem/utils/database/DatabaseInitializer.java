@@ -1,9 +1,9 @@
 package com.example.trainreservationsystem.utils.database;
 
+import com.example.trainreservationsystem.seeders.DatabaseSeeder;
+
 import java.sql.Connection;
 import java.sql.Statement;
-
-import com.example.trainreservationsystem.seeders.DatabaseSeeder;
 
 /**
  * Initializes database tables.
@@ -16,16 +16,13 @@ public class DatabaseInitializer {
         Statement stmt = conn.createStatement()) {
 
       createTables(stmt);
-      System.out.println("✅ Database tables created successfully!");
+      createStoredProcedures(stmt);
+      System.out.println("✅ Database tables and procedures created successfully!");
 
       DatabaseSeeder.seed();
       return true;
 
     } catch (Exception e) {
-      if (e.getMessage() != null && e.getMessage().equals("MOCK_MODE")) {
-        System.out.println("ℹ️  Running in mock data mode (no database connection)");
-        return false;
-      }
       System.err.println("❌ Database initialization error: " + e.getMessage());
       e.printStackTrace();
       return false;
@@ -43,6 +40,49 @@ public class DatabaseInitializer {
     stmt.execute(createComplaintsTable());
     stmt.execute(createNotificationsTable());
     stmt.execute(createTicketsTable());
+    // New tables for route handling
+    stmt.execute(createStopsTable());
+    stmt.execute(createRouteSegmentsTable());
+    stmt.execute(createSeatClassesTable());
+    stmt.execute(createSeatsTable());
+    stmt.execute(createStatisticsTable());
+  }
+
+  private static void createStoredProcedures(Statement stmt) throws Exception {
+    stmt.execute(createUpdatePasswordProcedure());
+    stmt.execute(createUpdateUserProcedure());
+  }
+
+  private static String createUpdatePasswordProcedure() {
+    return "CREATE OR REPLACE PROCEDURE sp_update_password(" +
+        "p_email VARCHAR, " +
+        "p_new_password VARCHAR) " +
+        "LANGUAGE plpgsql " +
+        "AS $$ " +
+        "BEGIN " +
+        "    UPDATE users " +
+        "    SET password = p_new_password " +
+        "    WHERE email = p_email; " +
+        "END; " +
+        "$$;";
+  }
+
+  private static String createUpdateUserProcedure() {
+    return "CREATE OR REPLACE PROCEDURE sp_update_user(" +
+        "p_id INT, " +
+        "p_username VARCHAR, " +
+        "p_email VARCHAR, " +
+        "p_phone_no VARCHAR) " +
+        "LANGUAGE plpgsql " +
+        "AS $$ " +
+        "BEGIN " +
+        "    UPDATE users " +
+        "    SET username = p_username, " +
+        "        email = p_email, " +
+        "        phone_no = p_phone_no " +
+        "    WHERE id = p_id; " +
+        "END; " +
+        "$$;";
   }
 
   private static String createUsersTable() {
@@ -138,5 +178,48 @@ public class DatabaseInitializer {
         "qr_code VARCHAR(50) UNIQUE NOT NULL, " +
         "status VARCHAR(20) NOT NULL, " +
         "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
+  }
+
+  // New tables
+  private static String createStopsTable() {
+    return "CREATE TABLE IF NOT EXISTS stops (" +
+        "id SERIAL PRIMARY KEY, " +
+        "name VARCHAR(100) NOT NULL)";
+  }
+
+  private static String createRouteSegmentsTable() {
+    return "CREATE TABLE IF NOT EXISTS route_segments (" +
+        "id SERIAL PRIMARY KEY, " +
+        "route_id INT REFERENCES routes(id), " +
+        "from_stop_id INT REFERENCES stops(id), " +
+        "to_stop_id INT REFERENCES stops(id), " +
+        "distance DOUBLE PRECISION NOT NULL, " +
+        "price DOUBLE PRECISION NOT NULL)";
+  }
+
+  private static String createSeatClassesTable() {
+    return "CREATE TABLE IF NOT EXISTS seat_classes (" +
+        "id SERIAL PRIMARY KEY, " +
+        "name VARCHAR(50) NOT NULL, " +
+        "base_fare DOUBLE PRECISION NOT NULL, " +
+        "description TEXT)";
+  }
+
+  private static String createSeatsTable() {
+    return "CREATE TABLE IF NOT EXISTS seats (" +
+        "id SERIAL PRIMARY KEY, " +
+        "schedule_id INT REFERENCES schedules(id), " +
+        "seat_class_id INT REFERENCES seat_classes(id), " +
+        "is_booked BOOLEAN DEFAULT FALSE)";
+  }
+
+  private static String createStatisticsTable() {
+    return "CREATE TABLE IF NOT EXISTS statistics (" +
+        "id SERIAL PRIMARY KEY, " +
+        "schedule_id INT REFERENCES schedules(id), " +
+        "day_of_week VARCHAR(10) NOT NULL, " +
+        "departure_time TIME NOT NULL, " +
+        "seat_class_id INT REFERENCES seat_classes(id), " +
+        "seats_sold INT NOT NULL)";
   }
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="mainBorderPane" prefHeight="800.0" prefWidth="1280.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.StaffController">
+
+    <!-- LEFT SIDEBAR -->
+    <left>
+        <VBox alignment="TOP_CENTER" prefWidth="240" spacing="20" style="-fx-background-color: #2C3E50;">
+
+            <padding>
+                <Insets bottom="20" left="15" right="15" top="30" />
+            </padding>
+
+            <Label style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" text="Staff Panel" />
+
+            <Separator />
+
+            <!-- Navigation Buttons -->
+            <Button fx:id="btnDashboard" onAction="#showDashboard" prefHeight="45" prefWidth="200" style="-fx-background-color: #1ABC9C; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Dashboard" />
+
+            <Button fx:id="btnComplaints" onAction="#showComplaints" prefHeight="45" prefWidth="200" style="-fx-background-color: #34495E; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Handle Complaints" />
+
+            <Button fx:id="btnConfirmBookings" onAction="#showBookings" prefHeight="45" prefWidth="200" style="-fx-background-color: #34495E; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Confirm Bookings" />
+
+            <Button fx:id="btnTicketValidation" onAction="#showValidation" prefHeight="45" prefWidth="200" style="-fx-background-color: #34495E; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Ticket Validation" />
+
+            <Button fx:id="btnNotifications" onAction="#showNotifications" prefHeight="45" prefWidth="200" style="-fx-background-color: #34495E; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Notifications" />
+
+            <Button fx:id="btnTrainStatus" onAction="#showTrainStatus" prefHeight="45" prefWidth="200" style="-fx-background-color:#34495E ; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Update Train Status" />
+
+            <VBox VBox.vgrow="ALWAYS" />
+
+            <Button fx:id="btnLogout" onAction="#handleLogout" prefHeight="45" prefWidth="200" style="-fx-background-color: #C0392B; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Logout" />
+        </VBox>
+    </left>
+
+    <!-- MAIN CONTENT AREA -->
+    <center>
+        <StackPane fx:id="contentArea" style="-fx-background-color: #ECF0F1;" />
+    </center>
+
+</BorderPane>

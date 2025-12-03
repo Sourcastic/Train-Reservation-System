@@ -24,6 +24,12 @@ public class UserSession {
 
   public void login(User user) {
     this.currentUser = user;
+
+    // Preload user data into cache
+    DataCache.getInstance().loadUserData(user.getId());
+
+    // Load notifications
+    NotificationService.getInstance().loadNotificationsForUser(user.getId());
   }
 
   public User getCurrentUser() {
@@ -32,6 +38,14 @@ public class UserSession {
 
   public void logout() {
     this.currentUser = null;
+
+    // Clear cached data
+    DataCache.getInstance().clearCache();
+    NotificationService.getInstance().clear();
+  }
+
+  public void clearSession() {
+    logout();
   }
 
   public boolean isLoggedIn() {

@@ -1,75 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.geometry.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.trainreservationsystem.controllers.StaffDashboardController"
-            prefWidth="1280" prefHeight="800">
-
-    <!-- LEFT SIDEBAR -->
-    <left>
-        <VBox prefWidth="240" spacing="20" alignment="TOP_CENTER"
-              style="-fx-background-color: #2C3E50;">
-
-            <padding>
-                <Insets top="30" bottom="20" left="15" right="15"/>
-            </padding>
-
-            <Label text="Staff Panel"
-                   style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;"/>
-
-            <Separator/>
-
-            <!-- Navigation Buttons -->
-            <Button text="Dashboard" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color: #1ABC9C; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnDashboard"/>
-
-            <Button text="Handle Complaints" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color: #34495E; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnComplaints"/>
-
-            <Button text="Confirm Bookings" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color: #34495E; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnConfirmBookings"/>
-
-            <Button text="Ticket Validation" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color: #34495E; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnTicketValidation"/>
-
-            <Button text="Notifications" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color: #34495E; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnNotifications"/>
-
-            <!-- Highlight current page -->
-            <Button text="Update Train Status" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color:#34495E ; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnTrainStatus"/>
-
-            <VBox VBox.vgrow="ALWAYS"/>
-
-            <Button text="Logout" prefWidth="200" prefHeight="45"
-                    style="-fx-background-color: #C0392B; -fx-text-fill: white;
-                           -fx-font-size: 15; -fx-background-radius: 10;"
-                    fx:id="btnLogout"/>
-        </VBox>
-    </left>
-
-    <!-- MAIN CONTENT AREA -->
-    <center>
-        <StackPane style="-fx-background-color: #ECF0F1;">
-            <Label text="Welcome, Staff Member"
-                   style="-fx-font-size: 30px; -fx-text-fill: #2C3E50; -fx-font-weight: bold;"/>
-        </StackPane>
-    </center>
-
-</BorderPane>
+<StackPane prefHeight="800.0" prefWidth="1040.0" style="-fx-background-color: #ECF0F1;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.StaffDashboardController">
+    <Label style="-fx-font-size: 30px; -fx-text-fill: #2C3E50; -fx-font-weight: bold;" text="Welcome, Staff Member" />
+</StackPane>

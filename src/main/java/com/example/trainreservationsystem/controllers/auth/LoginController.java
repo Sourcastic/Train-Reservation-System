@@ -3,7 +3,6 @@ package com.example.trainreservationsystem.controllers.auth;
 import com.example.trainreservationsystem.services.AuthService;
 import com.example.trainreservationsystem.services.UserSession;
 import com.example.trainreservationsystem.utils.ui.AlertUtils;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,7 +27,7 @@ public class LoginController {
   @FXML
   private Button loginButton;
 
-  private final AuthService authService = new AuthService();
+    private final AuthService authService = AuthService.getInstance();
 
   @FXML
   public void initialize() {
@@ -41,9 +40,14 @@ public class LoginController {
   }
 
   @FXML
-  public void handleLogin() {
-    errorLabel.setText("");
-    String email = emailField.getText().trim();
+  private void handleLogin() {
+      // Clear any previous error messages
+      if (errorLabel != null) {
+          errorLabel.setText("");
+          errorLabel.setVisible(false);
+      }
+
+      String email = emailField.getText().trim();
     String password = passwordField.getText();
 
     if (!validateInput(email, password)) {
@@ -103,6 +107,34 @@ public class LoginController {
       e.printStackTrace();
     }
   }
+
+    @FXML
+    public void handleResetPassword() {
+        try {
+            Stage stage = (Stage) emailField.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/trainreservationsystem/reset-password-view.fxml"));
+            Parent root = loader.load();
+            stage.setScene(new Scene(root, 1280, 800));
+        } catch (Exception e) {
+            AlertUtils.showError("Error", "Failed to load reset password page");
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleBackToLanding() {
+        try {
+            Stage stage = (Stage) emailField.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/trainreservationsystem/landing-view.fxml"));
+            Parent root = loader.load();
+            stage.setScene(new Scene(root, 1280, 800));
+        } catch (Exception e) {
+            AlertUtils.showError("Error", "Failed to load landing page");
+            e.printStackTrace();
+        }
+    }
 
   private void showError(String message) {
     errorLabel.setText(message);

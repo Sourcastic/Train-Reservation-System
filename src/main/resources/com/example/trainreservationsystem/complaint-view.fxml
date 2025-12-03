@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.ComplaintController">
+<BorderPane stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.ComplaintController">
     <center>
         <VBox alignment="CENTER" maxWidth="500.0" spacing="20.0" styleClass="form-card">
             <padding>
@@ -16,17 +16,17 @@
             </padding>
             <Label styleClass="page-title" text="Submit Complaint / Feedback" />
 
-            <VBox spacing="8.0" maxWidth="Infinity">
-                <Label text="Subject" style="-fx-font-weight: bold;"/>
+            <VBox maxWidth="Infinity" spacing="8.0">
+                <Label style="-fx-font-weight: bold;" text="Subject" />
                 <TextField fx:id="subjectField" promptText="Enter subject" />
             </VBox>
 
-            <VBox spacing="8.0" maxWidth="Infinity">
-                <Label text="Description" style="-fx-font-weight: bold;"/>
-                <TextArea fx:id="descriptionArea" prefRowCount="8" promptText="Describe your issue or feedback..." wrapText="true" />
+            <VBox maxWidth="Infinity" spacing="8.0">
+                <Label style="-fx-font-weight: bold;" text="Description" />
+                <TextArea fx:id="descriptionArea" prefRowCount="8" promptText="Describe your issue or feedback..." styleClass="text-area" wrapText="true" />
             </VBox>
 
-            <Button onAction="#handleSubmit" styleClass="button" text="Submit" maxWidth="Infinity" />
+            <Button maxWidth="Infinity" onAction="#handleSubmit" styleClass="button" text="Submit" />
         </VBox>
     </center>
 </BorderPane>

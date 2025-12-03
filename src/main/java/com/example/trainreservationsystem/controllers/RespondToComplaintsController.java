@@ -1,8 +1,6 @@
 package com.example.trainreservationsystem.controllers;
 
 import com.example.trainreservationsystem.models.Complaint;
-import com.example.trainreservationsystem.services.StaffComplaintService;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,50 +9,54 @@ import javafx.scene.control.*;
 public class RespondToComplaintsController {
 
     @FXML
-    private TableView<Complaint> complaintsTable;
+    private TableView<Complaint> complaintTable;
 
     @FXML
-    private TableColumn<Complaint, String> subjectColumn;
+    private TableColumn<Complaint, String> colId;
 
     @FXML
-    private TableColumn<Complaint, String> trackingIdColumn;
+    private TableColumn<Complaint, String> colCustomer;
 
     @FXML
-    private TableColumn<Complaint, String> dateColumn;
+    private TableColumn<Complaint, String> colStatus;
 
     @FXML
-    private Label selectedSubjectLabel;
+    private TableColumn<Complaint, String> colMessage;
 
     @FXML
-    private Label selectedDescriptionLabel;
+    private Label lblComplaintDetails;
 
     @FXML
-    private TextArea responseArea;
+    private TextArea txtResponse;
 
     @FXML
     private Button btnSubmitResponse;
-
-    //private final StaffComplaintService staffService = com.example.trainreservationsystem.services.ServiceFactory.getStaffComplaintService();
 
     private ObservableList<Complaint> complaintsList;
 
     @FXML
     public void initialize() {
         // Setup columns
-        subjectColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getSubject()));
-        trackingIdColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getTrackingId()));
-        dateColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(
-                data.getValue().getCreatedAt() != null ? data.getValue().getCreatedAt().toString() : ""
-        ));
+        colId.setCellValueFactory(
+                data -> new javafx.beans.property.SimpleStringProperty(String.valueOf(data.getValue().getId())));
+        colCustomer.setCellValueFactory(
+                data -> new javafx.beans.property.SimpleStringProperty(String.valueOf(data.getValue().getUserId())));
+        // colStatus.setCellValueFactory(data -> new
+        // javafx.beans.property.SimpleStringProperty(data.getValue().getStatus())); //
+        // Complaint model missing status
+        colMessage.setCellValueFactory(
+                data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getDescription()));
 
         // Load complaints
         loadComplaints();
 
         // Handle table selection
-        complaintsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        complaintTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                selectedSubjectLabel.setText(newSelection.getSubject());
-                selectedDescriptionLabel.setText(newSelection.getDescription());
+                lblComplaintDetails
+                        .setText("Subject: " + newSelection.getSubject() + "\n\n" + newSelection.getDescription());
+            } else {
+                lblComplaintDetails.setText("Select a complaint to see details.");
             }
         });
 
@@ -63,29 +65,32 @@ public class RespondToComplaintsController {
     }
 
     private void loadComplaints() {
-        //complaintsList = FXCollections.observableArrayList(staffService.getAllComplaints());
-        complaintsTable.setItems(complaintsList);
+        // Placeholder data
+        complaintsList = FXCollections.observableArrayList();
+        // complaintsList.add(new Complaint(1, 101, "Delay", "Train was late", "TRK123",
+        // java.time.LocalDateTime.now()));
+        complaintTable.setItems(complaintsList);
     }
 
     @FXML
     private void handleSendResponse() {
-        Complaint selected = complaintsTable.getSelectionModel().getSelectedItem();
+        Complaint selected = complaintTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert("Error", "Please select a complaint first.");
             return;
         }
 
-        String responseText = responseArea.getText();
+        String responseText = txtResponse.getText();
         if (responseText.isEmpty()) {
             showAlert("Error", "Response cannot be empty.");
             return;
         }
 
-        int staffId = 1; // Replace with actual logged-in staff ID
-        //staffService.respondToComplaint(selected.getId(), responseText, staffId);
+        // Logic to send response
+        System.out.println("Sending response to complaint " + selected.getId() + ": " + responseText);
 
         showAlert("Success", "Response sent successfully!");
-        responseArea.clear();
+        txtResponse.clear();
     }
 
     private void showAlert(String title, String content) {

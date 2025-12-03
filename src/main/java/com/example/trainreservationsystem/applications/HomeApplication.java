@@ -1,17 +1,22 @@
 package com.example.trainreservationsystem.applications;
 
-import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class HomeApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         com.example.trainreservationsystem.utils.database.DatabaseInitializer.initialize();
+
+        // Add shutdown hook to close database connection
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            com.example.trainreservationsystem.utils.database.Database.closeConnection();
+        }));
 
         Parent root = FXMLLoader.load(
                 getClass().getResource("/com/example/trainreservationsystem/landing-view.fxml"));
