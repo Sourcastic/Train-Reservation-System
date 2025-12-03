@@ -1,5 +1,7 @@
 package com.example.trainreservationsystem.controllers.shared.auth;
 
+import com.example.trainreservationsystem.utils.shared.ui.StylesheetHelper;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -31,7 +33,9 @@ public class LandingController {
       Stage stage = (Stage) loginButton.getScene().getWindow();
       FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
       Parent root = loader.load();
-      stage.setScene(new Scene(root, 1280, 800));
+      Scene scene = new Scene(root, 1280, 800);
+      StylesheetHelper.applyStylesheet(scene);
+      stage.setScene(scene);
     } catch (Exception e) {
       e.printStackTrace();
     }

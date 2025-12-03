@@ -11,6 +11,7 @@ import com.example.trainreservationsystem.services.shared.NotificationService;
 import com.example.trainreservationsystem.services.shared.UserSession;
 import com.example.trainreservationsystem.utils.shared.ui.AlertUtils;
 import com.example.trainreservationsystem.utils.shared.ui.IconHelper;
+import com.example.trainreservationsystem.utils.shared.ui.StylesheetHelper;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -105,7 +106,9 @@ public class HomeController {
             Stage stage = (Stage) contentArea.getScene().getWindow();
             Parent root = FXMLLoader.load(
                     getClass().getResource("/com/example/trainreservationsystem/shared/landing-view.fxml"));
-            stage.setScene(new Scene(root, 1280, 800));
+            Scene scene = new Scene(root, 1280, 800);
+            StylesheetHelper.applyStylesheet(scene);
+            stage.setScene(scene);
         } catch (IOException e) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, "Failed to redirect to landing", e);
         }
@@ -207,7 +210,9 @@ public class HomeController {
             Stage notificationStage = new Stage();
             notificationStage.setTitle("Notifications");
             notificationStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
-            notificationStage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            StylesheetHelper.applyStylesheet(scene);
+            notificationStage.setScene(scene);
             notificationStage.setResizable(false);
             notificationStage.showAndWait();
         } catch (IOException e) {

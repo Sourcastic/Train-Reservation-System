@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox spacing="20" alignment="CENTER" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.staff.RespondToComplaintsController">
+<HBox spacing="20" alignment="CENTER" style="-fx-padding: 20;" stylesheets="/com/example/trainreservationsystem/stylesheet.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.staff.RespondToComplaintsController">
     <children>
 
         <!-- Complaints Table -->

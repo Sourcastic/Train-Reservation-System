@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.member.booking.HistoryController">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.member.booking.HistoryController" stylesheets="/com/example/trainreservationsystem/stylesheet.css">
     <center>
         <VBox alignment="TOP_CENTER" maxWidth="1000.0" spacing="24.0" styleClass="form-card">
             <padding>

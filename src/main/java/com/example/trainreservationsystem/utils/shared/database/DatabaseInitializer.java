@@ -10,8 +10,13 @@ import java.sql.Statement;
 public class DatabaseInitializer {
 
   public static boolean initialize() {
-    try (Connection conn = Database.getConnection();
-        Statement stmt = conn.createStatement()) {
+    Connection conn = null;
+    Statement stmt = null;
+    try {
+      // Get connection but don't use try-with-resources since it's a singleton
+      // that should remain open for the application lifetime
+      conn = Database.getConnection();
+      stmt = conn.createStatement();
 
       createTables(stmt);
       createStoredProcedures(stmt);
@@ -27,6 +32,15 @@ public class DatabaseInitializer {
       System.err.println("[ERROR] Database initialization error: " + e.getMessage());
       e.printStackTrace();
       return false;
+    } finally {
+      // Only close the statement, not the connection (it's a singleton)
+      if (stmt != null) {
+        try {
+          stmt.close();
+        } catch (Exception e) {
+          System.err.println("[WARN] Error closing statement: " + e.getMessage());
+        }
+      }
     }
   }
 

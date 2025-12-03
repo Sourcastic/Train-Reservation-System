@@ -3,6 +3,7 @@ package com.example.trainreservationsystem.controllers.shared.auth;
 import com.example.trainreservationsystem.services.shared.AuthService;
 import com.example.trainreservationsystem.services.shared.UserSession;
 import com.example.trainreservationsystem.utils.shared.ui.AlertUtils;
+import com.example.trainreservationsystem.utils.shared.ui.StylesheetHelper;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -85,7 +86,9 @@ public class LoginController {
       FXMLLoader loader = new FXMLLoader(
           getClass().getResource("/com/example/trainreservationsystem/shared/home-view.fxml"));
       Parent root = loader.load();
-      stage.setScene(new Scene(root, 1380, 780));
+      Scene scene = new Scene(root, 1380, 780);
+      StylesheetHelper.applyStylesheet(scene);
+      stage.setScene(scene);
       stage.setTitle("Train Reservation System");
       // HomeController.initialize() will automatically load the appropriate dashboard
       // based on user login status, so no need to call showDashboard() here
@@ -102,7 +105,9 @@ public class LoginController {
       FXMLLoader loader = new FXMLLoader(
           getClass().getResource("/com/example/trainreservationsystem/shared/signup-view.fxml"));
       Parent root = loader.load();
-      stage.setScene(new Scene(root, 1280, 800));
+      Scene scene = new Scene(root, 1280, 800);
+      StylesheetHelper.applyStylesheet(scene);
+      stage.setScene(scene);
     } catch (Exception e) {
       AlertUtils.showError("Error", "Failed to load signup page");
       e.printStackTrace();
@@ -116,7 +121,9 @@ public class LoginController {
       FXMLLoader loader = new FXMLLoader(
           getClass().getResource("/com/example/trainreservationsystem/shared/reset-password-view.fxml"));
       Parent root = loader.load();
-      stage.setScene(new Scene(root, 1280, 800));
+      Scene scene = new Scene(root, 1280, 800);
+      StylesheetHelper.applyStylesheet(scene);
+      stage.setScene(scene);
     } catch (Exception e) {
       AlertUtils.showError("Error", "Failed to load reset password page");
       e.printStackTrace();
@@ -130,7 +137,9 @@ public class LoginController {
       FXMLLoader loader = new FXMLLoader(
           getClass().getResource("/com/example/trainreservationsystem/shared/landing-view.fxml"));
       Parent root = loader.load();
-      stage.setScene(new Scene(root, 1280, 800));
+      Scene scene = new Scene(root, 1280, 800);
+      StylesheetHelper.applyStylesheet(scene);
+      stage.setScene(scene);
     } catch (Exception e) {
       AlertUtils.showError("Error", "Failed to load landing page");
       e.printStackTrace();

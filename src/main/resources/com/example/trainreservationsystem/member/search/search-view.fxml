@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<BorderPane stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.member.search.SearchController">
+<BorderPane stylesheets="/com/example/trainreservationsystem/stylesheet.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.member.search.SearchController">
    <top>
       <VBox alignment="TOP_CENTER" spacing="0.0" styleClass="form-card">
          <padding>
@@ -24,9 +24,9 @@
             <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="searchBox">
                <children>
                   <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                  <SearchableComboBox fx:id="sourceCombo" promptText="From" styleClass="searchable-combobox" stylesheets="@../stylesheet.css" />
+                  <SearchableComboBox fx:id="sourceCombo" promptText="From" styleClass="searchable-combobox" stylesheets="/com/example/trainreservationsystem/stylesheet.css" />
                   <SearchableComboBox fx:id="destinationCombo" promptText="To" styleClass="searchable-combobox" />
-                  <DatePicker fx:id="datePicker" prefHeight="67.0" prefWidth="216.0" promptText="Departure date" styleClass="date-picker" stylesheets="@../stylesheet.css" />
+                  <DatePicker fx:id="datePicker" prefHeight="67.0" prefWidth="216.0" promptText="Departure date" styleClass="date-picker" stylesheets="/com/example/trainreservationsystem/stylesheet.css" />
                   <Button mnemonicParsing="false" onAction="#handleSearch" styleClass="button" text="Search trains" />
                   <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
                </children>

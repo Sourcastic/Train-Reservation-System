@@ -33,16 +33,46 @@ public class Database {
     Database db = getInstance();
 
     // Check if connection exists and is valid
-    if (db.connection == null || db.connection.isClosed() || !db.connection.isValid(2)) {
+    if (db.connection == null || db.connection.isClosed()) {
       synchronized (Database.class) {
         // Double-check after acquiring lock
-        if (db.connection == null || db.connection.isClosed() || !db.connection.isValid(2)) {
+        if (db.connection == null || db.connection.isClosed()) {
+          db.connection = db.createConnection();
+        }
+      }
+    } else {
+      // Validate connection without throwing exception if validation fails
+      try {
+        if (!db.connection.isValid(2)) {
+          synchronized (Database.class) {
+            // Double-check after acquiring lock
+            if (!db.connection.isValid(2)) {
+              try {
+                db.connection.close();
+              } catch (SQLException e) {
+                // Ignore close errors
+              }
+              db.connection = db.createConnection();
+            }
+          }
+        }
+      } catch (SQLException e) {
+        // Connection validation failed, recreate it
+        synchronized (Database.class) {
+          try {
+            if (db.connection != null && !db.connection.isClosed()) {
+              db.connection.close();
+            }
+          } catch (SQLException ex) {
+            // Ignore close errors
+          }
           db.connection = db.createConnection();
         }
       }
     }
 
-    return db.connection;
+    // Return a wrapper that prevents closing the singleton connection
+    return new NonClosingConnection(db.connection);
   }
 
   public static void closeConnection() {

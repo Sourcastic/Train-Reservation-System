@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.trainreservationsystem.controllers.member.payment.SimplePaymentController">
+            fx:controller="com.example.trainreservationsystem.controllers.member.payment.SimplePaymentController" stylesheets="/com/example/trainreservationsystem/stylesheet.css">
     <center>
         <VBox alignment="TOP_CENTER" maxWidth="1200.0" spacing="24.0" styleClass="payment-container">
             <padding>

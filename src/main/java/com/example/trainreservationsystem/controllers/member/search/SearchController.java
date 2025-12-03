@@ -14,8 +14,10 @@ import java.util.Set;
 import org.controlsfx.control.SearchableComboBox;
 
 import com.example.trainreservationsystem.controllers.shared.HomeController;
+import com.example.trainreservationsystem.models.admin.Route;
 import com.example.trainreservationsystem.models.admin.Schedule;
 import com.example.trainreservationsystem.models.member.BookingClass;
+import com.example.trainreservationsystem.services.admin.RouteService;
 import com.example.trainreservationsystem.services.admin.TrainService;
 import com.example.trainreservationsystem.services.member.booking.BookingService;
 import com.example.trainreservationsystem.services.shared.ServiceFactory;
@@ -56,6 +58,7 @@ public class SearchController {
 
   private final TrainService trainService = ServiceFactory.getTrainService();
   private final BookingService bookingService = ServiceFactory.getBookingService();
+  private final RouteService routeService = new RouteService();
   private final List<String> allStations = new ArrayList<>();
   private List<Schedule> currentSchedules = new ArrayList<>();
 
@@ -71,9 +74,34 @@ public class SearchController {
   }
 
   private void initializeStations() {
-    allStations.addAll(List.of("New York", "Boston", "Chicago", "St. Louis"));
-    sourceCombo.setItems(FXCollections.observableArrayList(allStations));
-    destinationCombo.setItems(FXCollections.observableArrayList(allStations));
+    try {
+      // Load stations from routes in database
+      List<Route> routes = routeService.getAllRoutes();
+      Set<String> uniqueStations = new HashSet<>();
+
+      for (Route route : routes) {
+        if (route.getSource() != null && !route.getSource().isEmpty()) {
+          uniqueStations.add(route.getSource());
+        }
+        if (route.getDestination() != null && !route.getDestination().isEmpty()) {
+          uniqueStations.add(route.getDestination());
+        }
+      }
+
+      allStations.clear();
+      allStations.addAll(uniqueStations);
+      allStations.sort(String.CASE_INSENSITIVE_ORDER);
+
+      sourceCombo.setItems(FXCollections.observableArrayList(allStations));
+      destinationCombo.setItems(FXCollections.observableArrayList(allStations));
+    } catch (Exception e) {
+      System.err.println("Error loading stations: " + e.getMessage());
+      e.printStackTrace();
+      // Fallback to empty list if database fails
+      allStations.clear();
+      sourceCombo.setItems(FXCollections.observableArrayList());
+      destinationCombo.setItems(FXCollections.observableArrayList());
+    }
   }
 
   private void setupSortCombo() {
@@ -216,7 +244,10 @@ public class SearchController {
 
     header.getChildren().add(trainName);
     header.getChildren().add(new Label("•"));
-    header.getChildren().add(new Label("Runs on: M T W T F S S"));
+
+    // Get days of week from schedule
+    String daysOfWeekStr = formatDaysOfWeek(schedule.getDaysOfWeek());
+    header.getChildren().add(new Label("Runs on: " + daysOfWeekStr));
 
     // Main Content
     HBox mainContent = new HBox();
@@ -240,7 +271,13 @@ public class SearchController {
     String duration = calculateDuration(schedule.getDepartureTime(), schedule.getArrivalTime());
     Label durationLabel = new Label(duration);
     durationLabel.getStyleClass().add("journey-duration");
-    Label journeyInfo = new Label("6 halts • 1404 kms");
+
+    // Calculate halts and distance from route segments
+    Route route = schedule.getRoute();
+    int halts = route != null && route.getSegments() != null ? route.getSegments().size() : 0;
+    double distance = route != null ? route.totalDistance() : 0.0;
+    String journeyInfoText = halts + " halts • " + String.format("%.0f", distance) + " kms";
+    Label journeyInfo = new Label(journeyInfoText);
     journeyInfo.getStyleClass().add("journey-info");
     journeyBox.getChildren().addAll(durationLabel, journeyInfo);
 
@@ -437,6 +474,41 @@ public class SearchController {
     long hours = duration.toHours();
     long minutes = duration.toMinutes() % 60;
     return hours + " h " + minutes + " m";
+  }
+
+  private String formatDaysOfWeek(List<Schedule.DayOfWeek> daysOfWeek) {
+    if (daysOfWeek == null || daysOfWeek.isEmpty()) {
+      return "N/A";
+    }
+
+    // Map to single letter abbreviations
+    StringBuilder sb = new StringBuilder();
+    for (Schedule.DayOfWeek day : daysOfWeek) {
+      switch (day) {
+        case MONDAY:
+          sb.append("M ");
+          break;
+        case TUESDAY:
+          sb.append("T ");
+          break;
+        case WEDNESDAY:
+          sb.append("W ");
+          break;
+        case THURSDAY:
+          sb.append("T ");
+          break;
+        case FRIDAY:
+          sb.append("F ");
+          break;
+        case SATURDAY:
+          sb.append("S ");
+          break;
+        case SUNDAY:
+          sb.append("S ");
+          break;
+      }
+    }
+    return sb.toString().trim();
   }
 
   private void handleBook(Schedule schedule, BookingClass bookingClass) {

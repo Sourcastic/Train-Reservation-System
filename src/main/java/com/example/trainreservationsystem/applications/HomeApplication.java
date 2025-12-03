@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.example.trainreservationsystem.utils.shared.database.Database;
 import com.example.trainreservationsystem.utils.shared.database.DatabaseInitializer;
+import com.example.trainreservationsystem.utils.shared.ui.StylesheetHelper;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,23 +16,20 @@ import javafx.stage.Stage;
 public class HomeApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        // Initialize database in background thread to avoid blocking UI
-        Thread dbInitThread = new Thread(() -> {
-            try {
-                System.out.println("🔄 Initializing database in background...");
-                boolean success = DatabaseInitializer.initialize();
-                if (success) {
-                    System.out.println("✅ Database initialization completed");
-                } else {
-                    System.err.println("❌ Database initialization failed");
-                }
-            } catch (Exception e) {
-                System.err.println("❌ Database initialization error: " + e.getMessage());
-                e.printStackTrace();
+        // Initialize database first (blocking) to ensure it's ready before starting
+        // scheduled tasks
+        try {
+            System.out.println("🔄 Initializing database...");
+            boolean success = DatabaseInitializer.initialize();
+            if (success) {
+                System.out.println("✅ Database initialization completed");
+            } else {
+                System.err.println("❌ Database initialization failed");
             }
-        });
-        dbInitThread.setDaemon(true);
-        dbInitThread.start();
+        } catch (Exception e) {
+            System.err.println("❌ Database initialization error: " + e.getMessage());
+            e.printStackTrace();
+        }
 
         // Add shutdown hook to close database connection
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -39,7 +37,7 @@ public class HomeApplication extends Application {
             Database.closeConnection();
         }));
 
-        // Start scheduled tasks
+        // Start scheduled tasks after database is initialized
         com.example.trainreservationsystem.services.shared.ScheduledTaskService.getInstance().start();
 
         // Load UI immediately (non-blocking)
@@ -47,6 +45,8 @@ public class HomeApplication extends Application {
                 getClass().getResource("/com/example/trainreservationsystem/shared/landing-view.fxml"));
 
         Scene scene = new Scene(root, 1280, 800);
+        // Apply global stylesheet to the scene
+        StylesheetHelper.applyStylesheet(scene);
         stage.setScene(scene);
         stage.setTitle("Train Reservation System");
         stage.show();

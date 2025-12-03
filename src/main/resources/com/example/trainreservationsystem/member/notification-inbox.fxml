@@ -11,7 +11,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.trainreservationsystem.controllers.member.NotificationController"
-            prefWidth="400.0" prefHeight="600.0">
+            prefWidth="400.0" prefHeight="600.0" stylesheets="/com/example/trainreservationsystem/stylesheet.css">
 
     <top>
         <VBox spacing="12.0" styleClass="notification-header">
