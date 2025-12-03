@@ -178,8 +178,9 @@ public class HomeController {
         if (currentUser == null)
             return;
 
-        if ("ADMIN".equalsIgnoreCase(currentUser.getUserType())) {
-            // Show context menu for Admin
+        if ("ADMIN".equalsIgnoreCase(currentUser.getUserType())
+                || "STAFF".equalsIgnoreCase(currentUser.getUserType())) {
+            // Show context menu for Admin/Staff
             if (menu == null) {
                 menu = new ContextMenu();
                 javafx.scene.control.MenuItem updateProfileItem = new javafx.scene.control.MenuItem("Update Profile");

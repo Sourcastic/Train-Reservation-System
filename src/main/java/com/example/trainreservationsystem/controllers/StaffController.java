@@ -30,6 +30,14 @@ public class StaffController {
     @FXML
     private Button btnTrainStatus;
     @FXML
+    private Button btnManageStops;
+    @FXML
+    private Button btnManageSeatClasses;
+    @FXML
+    private Button btnManageRoutes;
+    @FXML
+    private Button btnManageSchedules;
+    @FXML
     private Button btnLogout;
 
     @FXML
@@ -59,6 +67,10 @@ public class StaffController {
         resetButtonStyle(btnTicketValidation);
         resetButtonStyle(btnNotifications);
         resetButtonStyle(btnTrainStatus);
+        resetButtonStyle(btnManageStops);
+        resetButtonStyle(btnManageSeatClasses);
+        resetButtonStyle(btnManageRoutes);
+        resetButtonStyle(btnManageSchedules);
 
         // Highlight active button
         if (activeButton != null) {
@@ -110,6 +122,26 @@ public class StaffController {
     @FXML
     private void showTrainStatus() {
         loadView("updatetrainstatus-view.fxml", btnTrainStatus);
+    }
+
+    @FXML
+    private void showManageStops() {
+        loadView("manage-stops-view.fxml", btnManageStops);
+    }
+
+    @FXML
+    private void showManageSeatClasses() {
+        loadView("manage-seat-classes-view.fxml", btnManageSeatClasses);
+    }
+
+    @FXML
+    private void showManageRoutes() {
+        loadView("manage-routes-view.fxml", btnManageRoutes);
+    }
+
+    @FXML
+    private void showManageSchedules() {
+        loadView("manage-schedules-view.fxml", btnManageSchedules);
     }
 
     @FXML

@@ -17,7 +17,7 @@ public class ScheduleRepository {
     private final SeatRepository seatRepository = new SeatRepository();
 
     public Schedule addSchedule(Schedule schedule) throws Exception {
-        String sql = "INSERT INTO schedules (route_id, departure_date, departure_time, arrival_time, price, capacity) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO schedules (route_id, departure_date, departure_time, arrival_time, price, capacity, days_of_week) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, schedule.getRoute().getId());
@@ -26,6 +26,13 @@ public class ScheduleRepository {
             stmt.setObject(4, schedule.getArrivalTime());
             stmt.setDouble(5, schedule.getPrice());
             stmt.setInt(6, schedule.getCapacity());
+
+            // Serialize daysOfWeek as comma-separated string
+            String daysOfWeekStr = schedule.getDaysOfWeek().stream()
+                    .map(Enum::name)
+                    .collect(java.util.stream.Collectors.joining(","));
+            stmt.setString(7, daysOfWeekStr.isEmpty() ? null : daysOfWeekStr);
+
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows == 0) {
@@ -59,6 +66,16 @@ public class ScheduleRepository {
                         rs.getTime("arrival_time").toLocalTime(),
                         rs.getDouble("price"),
                         rs.getInt("capacity"));
+
+                // Deserialize daysOfWeek from comma-separated string
+                String daysOfWeekStr = rs.getString("days_of_week");
+                if (daysOfWeekStr != null && !daysOfWeekStr.isEmpty()) {
+                    List<Schedule.DayOfWeek> daysOfWeek = java.util.Arrays.stream(daysOfWeekStr.split(","))
+                            .map(Schedule.DayOfWeek::valueOf)
+                            .collect(java.util.stream.Collectors.toList());
+                    schedule.setDaysOfWeek(daysOfWeek);
+                }
+
                 schedule.setSeats(seatRepository.getSeatsByScheduleId(schedule.getId()));
                 schedules.add(schedule);
             }
@@ -82,6 +99,16 @@ public class ScheduleRepository {
                             rs.getTime("arrival_time").toLocalTime(),
                             rs.getDouble("price"),
                             rs.getInt("capacity"));
+
+                    // Deserialize daysOfWeek from comma-separated string
+                    String daysOfWeekStr = rs.getString("days_of_week");
+                    if (daysOfWeekStr != null && !daysOfWeekStr.isEmpty()) {
+                        List<Schedule.DayOfWeek> daysOfWeek = java.util.Arrays.stream(daysOfWeekStr.split(","))
+                                .map(Schedule.DayOfWeek::valueOf)
+                                .collect(java.util.stream.Collectors.toList());
+                        schedule.setDaysOfWeek(daysOfWeek);
+                    }
+
                     schedule.setSeats(seatRepository.getSeatsByScheduleId(id));
                     return schedule;
                 }
@@ -91,7 +118,7 @@ public class ScheduleRepository {
     }
 
     public void updateSchedule(Schedule schedule) throws Exception {
-        String sql = "UPDATE schedules SET route_id = ?, departure_date = ?, departure_time = ?, arrival_time = ?, price = ?, capacity = ? WHERE id = ?";
+        String sql = "UPDATE schedules SET route_id = ?, departure_date = ?, departure_time = ?, arrival_time = ?, price = ?, capacity = ?, days_of_week = ? WHERE id = ?";
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, schedule.getRoute().getId());
@@ -100,7 +127,14 @@ public class ScheduleRepository {
             stmt.setObject(4, schedule.getArrivalTime());
             stmt.setDouble(5, schedule.getPrice());
             stmt.setInt(6, schedule.getCapacity());
-            stmt.setInt(7, schedule.getId());
+
+            // Serialize daysOfWeek as comma-separated string
+            String daysOfWeekStr = schedule.getDaysOfWeek().stream()
+                    .map(Enum::name)
+                    .collect(java.util.stream.Collectors.joining(","));
+            stmt.setString(7, daysOfWeekStr.isEmpty() ? null : daysOfWeekStr);
+
+            stmt.setInt(8, schedule.getId());
             stmt.executeUpdate();
         }
     }

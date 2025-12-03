@@ -35,6 +35,14 @@
 
             <Button fx:id="btnTrainStatus" onAction="#showTrainStatus" prefHeight="45" prefWidth="200" style="-fx-background-color:#34495E ; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Update Train Status" />
 
+            <Button fx:id="btnManageStops" onAction="#showManageStops" prefHeight="45" prefWidth="200" style="-fx-background-color:#34495E ; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Manage Stops" />
+
+            <Button fx:id="btnManageSeatClasses" onAction="#showManageSeatClasses" prefHeight="45" prefWidth="200" style="-fx-background-color:#34495E ; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Manage Seat Classes" />
+
+            <Button fx:id="btnManageRoutes" onAction="#showManageRoutes" prefHeight="45" prefWidth="200" style="-fx-background-color:#34495E ; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Manage Routes" />
+
+            <Button fx:id="btnManageSchedules" onAction="#showManageSchedules" prefHeight="45" prefWidth="200" style="-fx-background-color:#34495E ; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Manage Schedules" />
+
             <VBox VBox.vgrow="ALWAYS" />
 
             <Button fx:id="btnLogout" onAction="#handleLogout" prefHeight="45" prefWidth="200" style="-fx-background-color: #C0392B; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Logout" />

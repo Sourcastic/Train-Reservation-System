@@ -11,6 +11,11 @@ import java.util.stream.Collectors;
  * Represents a train schedule (a specific run of a route).
  */
 public class Schedule {
+
+  public enum DayOfWeek {
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
+  }
+
   private int id;
   private Route route;
   private LocalDate departureDate;
@@ -18,6 +23,7 @@ public class Schedule {
   private LocalTime arrivalTime;
   private double price;
   private int capacity;
+  private List<DayOfWeek> daysOfWeek = new ArrayList<>();
   private List<Seat> seats = new ArrayList<>();
   private List<Booking> bookings = new ArrayList<>();
 
@@ -90,6 +96,14 @@ public class Schedule {
 
   public void setCapacity(int capacity) {
     this.capacity = capacity;
+  }
+
+  public List<DayOfWeek> getDaysOfWeek() {
+    return daysOfWeek;
+  }
+
+  public void setDaysOfWeek(List<DayOfWeek> daysOfWeek) {
+    this.daysOfWeek = daysOfWeek;
   }
 
   public List<Seat> getSeats() {

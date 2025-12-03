@@ -49,8 +49,42 @@ public class DatabaseInitializer {
   }
 
   private static void createStoredProcedures(Statement stmt) throws Exception {
+    stmt.execute(createAuthenticateUserFunction());
+    stmt.execute(createRegisterUserProcedure());
     stmt.execute(createUpdatePasswordProcedure());
     stmt.execute(createUpdateUserProcedure());
+  }
+
+  private static String createAuthenticateUserFunction() {
+    return "CREATE OR REPLACE FUNCTION sp_authenticate_user(" +
+        "p_email VARCHAR, " +
+        "p_password VARCHAR) " +
+        "RETURNS TABLE(id INT, username VARCHAR, email VARCHAR, user_type VARCHAR) " +
+        "LANGUAGE plpgsql " +
+        "AS $$ " +
+        "BEGIN " +
+        "    RETURN QUERY " +
+        "    SELECT u.id, u.username, u.email, u.user_type " +
+        "    FROM users u " +
+        "    WHERE u.email = p_email AND u.password = p_password; " +
+        "END; " +
+        "$$;";
+  }
+
+  private static String createRegisterUserProcedure() {
+    return "CREATE OR REPLACE PROCEDURE sp_register_user(" +
+        "p_username VARCHAR, " +
+        "p_password VARCHAR, " +
+        "p_email VARCHAR, " +
+        "p_phone_no VARCHAR, " +
+        "p_user_type VARCHAR) " +
+        "LANGUAGE plpgsql " +
+        "AS $$ " +
+        "BEGIN " +
+        "    INSERT INTO users (username, password, email, phone_no, user_type, loyalty_points) " +
+        "    VALUES (p_username, p_password, p_email, p_phone_no, p_user_type, 0); " +
+        "END; " +
+        "$$;";
   }
 
   private static String createUpdatePasswordProcedure() {
@@ -91,6 +125,7 @@ public class DatabaseInitializer {
         "username VARCHAR(50) UNIQUE NOT NULL, " +
         "password VARCHAR(255) NOT NULL, " +
         "email VARCHAR(100) NOT NULL, " +
+        "phone_no VARCHAR(20), " +
         "loyalty_points INT DEFAULT 0, " +
         "user_type VARCHAR(20) DEFAULT 'CUSTOMER')";
   }
@@ -111,7 +146,8 @@ public class DatabaseInitializer {
         "departure_time TIME NOT NULL, " +
         "arrival_time TIME NOT NULL, " +
         "capacity INT NOT NULL, " +
-        "price DECIMAL(10, 2) NOT NULL)";
+        "price DECIMAL(10, 2) NOT NULL, " +
+        "days_of_week VARCHAR(255))";
   }
 
   private static String createBookingsTable() {
