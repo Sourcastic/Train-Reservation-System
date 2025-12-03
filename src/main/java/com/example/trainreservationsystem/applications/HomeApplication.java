@@ -2,29 +2,57 @@ package com.example.trainreservationsystem.applications;
 
 import java.io.IOException;
 
+import com.example.trainreservationsystem.utils.shared.database.Database;
+import com.example.trainreservationsystem.utils.shared.database.DatabaseInitializer;
+import com.example.trainreservationsystem.utils.shared.ui.StylesheetHelper;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+//./mvnw clean javafx:run
 public class HomeApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        // Commenting out DB init for now to run on dummy data only
-        // com.example.trainreservationsystem.utils.DatabaseInitializer.initialize();
-
-        // Mock login since we aren't hitting the DB
-        com.example.trainreservationsystem.models.User user = new com.example.trainreservationsystem.models.User(1,
-                "demo", "demo123", "demo@example.com");
-        com.example.trainreservationsystem.services.UserSession.getInstance().login(user);
-
+        // Load UI immediately (non-blocking) - show UI first for better UX
         Parent root = FXMLLoader.load(
-                getClass().getResource("/com/example/trainreservationsystem/home-view.fxml"));
+                getClass().getResource("/com/example/trainreservationsystem/shared/landing-view.fxml"));
 
-        Scene scene = new Scene(root, 1380, 780);
+        Scene scene = new Scene(root, 1280, 800);
+        // Apply global stylesheet to the scene
+        StylesheetHelper.applyStylesheet(scene);
         stage.setScene(scene);
         stage.setTitle("Train Reservation System");
         stage.show();
+
+        // Initialize database in background thread to avoid blocking UI
+        Thread dbInitThread = new Thread(() -> {
+            try {
+                System.out.println("🔄 Initializing database in background...");
+                boolean success = DatabaseInitializer.initialize();
+                if (success) {
+                    System.out.println("✅ Database initialization completed");
+                    // Start scheduled tasks after database is initialized
+                    javafx.application.Platform.runLater(() -> {
+                        com.example.trainreservationsystem.services.shared.ScheduledTaskService.getInstance().start();
+                    });
+                } else {
+                    System.err.println("❌ Database initialization failed");
+                }
+            } catch (Exception e) {
+                System.err.println("❌ Database initialization error: " + e.getMessage());
+                e.printStackTrace();
+            }
+        });
+        dbInitThread.setDaemon(true);
+        dbInitThread.start();
+
+        // Add shutdown hook to close database connection
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            com.example.trainreservationsystem.services.shared.ScheduledTaskService.getInstance().shutdown();
+            Database.closeConnection();
+        }));
     }
 }

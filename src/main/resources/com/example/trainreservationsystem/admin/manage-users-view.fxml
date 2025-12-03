@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20" style="-fx-padding: 30;" stylesheets="/com/example/trainreservationsystem/stylesheet.css"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.trainreservationsystem.controllers.admin.ManageUsersController">
+
+    <!-- TITLE -->
+    <Label text="Manage Users" style="-fx-font-size: 30px; -fx-font-weight: bold;"/>
+
+    <!-- USERS TABLE -->
+    <TableView fx:id="usersTable" prefHeight="500" prefWidth="1200">
+        <columns>
+            <TableColumn fx:id="colUserId" text="User ID" prefWidth="80"/>
+            <TableColumn fx:id="colUsername" text="Username" prefWidth="150"/>
+            <TableColumn fx:id="colEmail" text="Email" prefWidth="200"/>
+            <TableColumn fx:id="colPhone" text="Phone" prefWidth="150"/>
+            <TableColumn fx:id="colUserType" text="User Type" prefWidth="120"/>
+            <TableColumn fx:id="colLoyaltyPoints" text="Loyalty Points" prefWidth="120"/>
+            <TableColumn fx:id="colActions" text="Actions" prefWidth="150"/>
+        </columns>
+    </TableView>
+
+    <!-- ACTION BUTTONS -->
+    <HBox spacing="20" alignment="CENTER">
+        <Button text="Refresh" onAction="#handleRefresh"
+                prefWidth="150" prefHeight="40"
+                style="-fx-background-color: #3498DB; -fx-text-fill: white; -fx-font-size: 14; -fx-background-radius: 8;"/>
+        <Button text="Back" onAction="#handleBack"
+                prefWidth="150" prefHeight="40"
+                style="-fx-background-color: #95A5A6; -fx-text-fill: white; -fx-font-size: 14; -fx-background-radius: 8;"/>
+    </HBox>
+
+</VBox>
+

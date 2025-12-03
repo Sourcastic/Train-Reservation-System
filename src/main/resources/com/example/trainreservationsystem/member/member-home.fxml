@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_LEFT" spacing="24.0" styleClass="member-root" stylesheets="/com/example/trainreservationsystem/stylesheet.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.member.MemberHomeController">
+
+    <padding>
+        <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
+    </padding>
+
+    <children>
+        <!-- Header with subtle train image -->
+        <StackPane styleClass="dashboard-header">
+            <children>
+                <ImageView fitHeight="180.0" fitWidth="900.0" opacity="0.18" preserveRatio="true">
+                    <!-- Place a train image at resources path: /com/example/trainreservationsystem/images/train-header.jpg -->
+                    <image>
+                        <Image url="@images/train-header.jpg" />
+                    </image>
+                </ImageView>
+
+                <VBox alignment="CENTER_LEFT" spacing="8.0" styleClass="dashboard-header-content">
+                    <Label styleClass="dashboard-header-title" text="Welcome aboard" />
+                    <Label styleClass="dashboard-header-subtitle" text="Plan your next journey, manage trips, and track your bookings in one place." wrapText="true" />
+                    <Label fx:id="loyaltyPointsLabel" styleClass="loyalty-points-label" text="Loyalty Points: 0" />
+                </VBox>
+            </children>
+        </StackPane>
+
+        <!-- Quick actions as large buttons -->
+        <VBox spacing="16.0">
+            <Label styleClass="section-title" text="Quick actions" />
+
+            <HBox spacing="12.0">
+                <Button onAction="#goToSearch" styleClass="quick-action-button" text="Search Trains" />
+                <Button onAction="#goToHistory" styleClass="quick-action-button" text="View History" />
+            </HBox>
+        </VBox>
+    </children>
+</VBox>

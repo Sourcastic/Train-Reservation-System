@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="/com/example/trainreservationsystem/stylesheet.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.member.UpdateProfileController">
+
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+            <children>
+
+                <!-- Page Title -->
+                <Label style="-fx-font-size: 32px; -fx-font-weight: bold;" text="Update Profile" />
+
+                <HBox>
+                    <children>
+
+                        <Region prefWidth="200" HBox.hgrow="ALWAYS" />
+
+                        <!-- Form Card -->
+                        <VBox alignment="CENTER" spacing="15" style="-fx-padding: 40; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0.3, 0, 4);" styleClass="form-card">
+
+                            <!-- Error Label -->
+                            <Label fx:id="errorLabel" styleClass="error-label" text="" />
+                            <Label fx:id="successLabel" style="-fx-text-fill: green; -fx-font-size: 14px;" text="" />
+
+                            <!-- Name -->
+                            <HBox spacing="10">
+                                <Label prefWidth="100" style="-fx-font-size: 16px;" text="Name:" />
+                                <TextField fx:id="nameField" prefWidth="300" promptText="Enter new name" />
+                            </HBox>
+
+                            <!-- Email -->
+                            <HBox spacing="10">
+                                <Label prefWidth="100" style="-fx-font-size: 16px;" text="Email:" />
+                                <TextField fx:id="emailField" prefWidth="300" promptText="Enter new email" />
+                            </HBox>
+
+                            <!-- Phone -->
+                            <HBox spacing="10">
+                                <Label prefWidth="100" style="-fx-font-size: 16px;" text="Phone No:" />
+                                <TextField fx:id="phoneField" prefWidth="300" promptText="Enter new phone number" />
+                            </HBox>
+
+                            <!-- Confirm Button -->
+                            <Button fx:id="confirmButton" onAction="#handleConfirm" prefWidth="200" style="-fx-font-size: 18px; -fx-padding: 10 30; -fx-background-radius: 15;" text="Confirm">
+                                <rotationAxis>
+                                   <Point3D />
+                                </rotationAxis>
+                            </Button>
+
+                        </VBox>
+
+                        <Region prefWidth="200" HBox.hgrow="ALWAYS" />
+
+                    </children>
+                </HBox>
+
+            </children>
+        </VBox>
+
+    </center>
+
+</BorderPane>

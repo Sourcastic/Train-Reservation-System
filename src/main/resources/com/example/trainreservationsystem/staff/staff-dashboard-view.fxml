@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20" style="-fx-background-color: #ECF0F1;" stylesheets="/com/example/trainreservationsystem/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.staff.StaffDashboardController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="Staff Dashboard" />
+
+    <!-- Statistics Cards -->
+    <HBox spacing="15">
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15;" HBox.hgrow="ALWAYS">
+            <Label style="-fx-font-size: 14px; -fx-text-fill: #7F8C8D;" text="Total Bookings" />
+            <Label fx:id="totalBookingsLabel" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="0" />
+        </VBox>
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15;" HBox.hgrow="ALWAYS">
+            <Label style="-fx-font-size: 14px; -fx-text-fill: #7F8C8D;" text="Pending" />
+            <Label fx:id="pendingBookingsLabel" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #F39C12;" text="0" />
+        </VBox>
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15;" HBox.hgrow="ALWAYS">
+            <Label style="-fx-font-size: 14px; -fx-text-fill: #7F8C8D;" text="Confirmed" />
+            <Label fx:id="confirmedBookingsLabel" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #27AE60;" text="0" />
+        </VBox>
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15;" HBox.hgrow="ALWAYS">
+            <Label style="-fx-font-size: 14px; -fx-text-fill: #7F8C8D;" text="Cancelled" />
+            <Label fx:id="cancelledBookingsLabel" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #E74C3C;" text="0" />
+        </VBox>
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15;" HBox.hgrow="ALWAYS">
+            <Label style="-fx-font-size: 14px; -fx-text-fill: #7F8C8D;" text="Total Revenue" />
+            <Label fx:id="totalRevenueLabel" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="0.00" />
+        </VBox>
+    </HBox>
+
+    <!-- Action Buttons -->
+    <HBox spacing="10">
+        <Button fx:id="btnManageDiscounts" text="Manage Discounts" onAction="#handleManageDiscounts" />
+        <Button fx:id="btnManageCancellationPolicies" text="Manage Cancellation Policies" onAction="#handleManageCancellationPolicies" />
+        <Button fx:id="btnManageUsers" text="Manage Users" onAction="#handleManageUsers" />
+        <Button fx:id="btnClearBookings" text="Clear Bookings" onAction="#handleClearBookings" />
+        <Button fx:id="btnGenerateReport" text="Generate Report" onAction="#handleGenerateReport" />
+        <Button text="Refresh" onAction="#handleRefresh" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="Back" onAction="#handleBack" />
+    </HBox>
+
+    <!-- Schedule Statistics Table -->
+    <VBox spacing="10" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;" VBox.vgrow="ALWAYS">
+        <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="Schedule Statistics" />
+        <TableView fx:id="schedulesTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="routeCol" prefWidth="200" text="Route" />
+                <TableColumn fx:id="dateCol" prefWidth="120" text="Departure Date" />
+                <TableColumn fx:id="timeCol" prefWidth="120" text="Departure Time" />
+                <TableColumn fx:id="bookingsCol" prefWidth="100" text="Bookings" />
+            </columns>
+        </TableView>
+    </VBox>
+</VBox>
