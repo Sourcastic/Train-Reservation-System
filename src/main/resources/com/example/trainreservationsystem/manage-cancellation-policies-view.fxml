@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20" style="-fx-background-color: #ECF0F1;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.admin.ManageCancellationPoliciesController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+
+    <!-- LEFT SECTION: Policies Table -->
+    <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;" HBox.hgrow="ALWAYS">
+        <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="Cancellation Policies" />
+        <Label fx:id="activePolicyLabel" style="-fx-font-size: 14px; -fx-text-fill: #27AE60; -fx-font-weight: bold;" />
+
+        <TableView fx:id="policiesTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="nameCol" prefWidth="150" text="Name" />
+                <TableColumn fx:id="descriptionCol" prefWidth="200" text="Description" />
+                <TableColumn fx:id="hoursCol" prefWidth="100" text="Max Hours" />
+                <TableColumn fx:id="minHoursCol" prefWidth="100" text="Min Hours" />
+                <TableColumn fx:id="refundCol" prefWidth="100" text="Refund %" />
+                <TableColumn fx:id="allowCol" prefWidth="100" text="Allowed" />
+            </columns>
+        </TableView>
+    </VBox>
+
+    <!-- RIGHT SECTION: Form -->
+    <VBox fx:id="formBox" spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;" prefWidth="400">
+        <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="Policy Details" />
+
+        <TextField fx:id="nameField" promptText="Policy Name" />
+        <TextArea fx:id="descriptionField" promptText="Description" prefRowCount="3" />
+
+        <HBox spacing="10">
+            <TextField fx:id="hoursField" promptText="Max Hours Before Departure" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="minHoursField" promptText="Min Hours" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <TextField fx:id="refundField" promptText="Refund Percentage (0-100)" />
+
+        <CheckBox fx:id="allowCancellationCheckbox" text="Allow Cancellation" selected="true" />
+
+        <HBox spacing="10">
+            <Button fx:id="saveButton" text="Save" HBox.hgrow="ALWAYS" />
+            <Button fx:id="clearButton" text="Clear" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <Button fx:id="setActiveButton" text="Set as Active" style="-fx-background-color: #27AE60; -fx-text-fill: white;" disable="true" />
+        <Button fx:id="deleteButton" text="Delete" onAction="#handleDelete" style="-fx-background-color: #d20f39; -fx-text-fill: white;" disable="true" />
+        <Button text="Back" onAction="#handleBack" />
+    </VBox>
+</HBox>
+

@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.trainreservationsystem.models.Notification;
-import com.example.trainreservationsystem.utils.database.Database;
+import com.example.trainreservationsystem.models.member.Notification;
+import com.example.trainreservationsystem.utils.shared.database.Database;
 
 public class NotificationRepository {
 

@@ -1,12 +1,16 @@
 package com.example.trainreservationsystem.repositories;
 
-import com.example.trainreservationsystem.models.Booking;
-import com.example.trainreservationsystem.models.Passenger;
-import com.example.trainreservationsystem.utils.database.Database;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.trainreservationsystem.models.member.Booking;
+import com.example.trainreservationsystem.models.member.Passenger;
+import com.example.trainreservationsystem.utils.shared.database.Database;
 
 public class BookingRepository {
 
@@ -40,7 +44,7 @@ public class BookingRepository {
             stmt.setInt(3, p.getAge());
             stmt.setBoolean(4, p.isBringPet());
             stmt.setBoolean(5, p.isHasWheelchair());
-              stmt.setInt(6, p.getSeatNumber());
+            stmt.setInt(6, p.getSeatNumber());
             stmt.addBatch();
           }
           stmt.executeBatch();
@@ -59,7 +63,7 @@ public class BookingRepository {
       }
       System.err.println("Error creating booking: " + e.getMessage());
       e.printStackTrace();
-        throw new RuntimeException("Failed to create booking", e);
+      throw new RuntimeException("Failed to create booking", e);
     } finally {
       if (conn != null) {
         try {
@@ -89,6 +93,22 @@ public class BookingRepository {
     return bookings;
   }
 
+  public Booking getBookingById(int bookingId) {
+    String query = "SELECT * FROM bookings WHERE id = ?";
+    try (Connection conn = Database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query)) {
+      stmt.setInt(1, bookingId);
+      ResultSet rs = stmt.executeQuery();
+      if (rs.next()) {
+        return mapResultSetToBooking(rs);
+      }
+    } catch (Exception e) {
+      System.err.println("Error getting booking by ID: " + e.getMessage());
+      e.printStackTrace();
+    }
+    return null;
+  }
+
   public boolean updateBookingStatus(int bookingId, String status) {
     String query = "UPDATE bookings SET status = ? WHERE id = ?";
     try (Connection conn = Database.getConnection();
@@ -100,7 +120,7 @@ public class BookingRepository {
     } catch (Exception e) {
       System.err.println("Error updating booking status: " + e.getMessage());
       e.printStackTrace();
-        return false;
+      return false;
     }
   }
 
@@ -142,5 +162,82 @@ public class BookingRepository {
 
   public boolean isSeatBooked(int scheduleId, int seatNumber) {
     return getOccupiedSeats(scheduleId).contains(seatNumber);
+  }
+
+  /**
+   * Gets all PENDING bookings.
+   */
+  public List<Booking> getPendingBookings() {
+    List<Booking> bookings = new ArrayList<>();
+    String query = "SELECT * FROM bookings WHERE status = 'PENDING' ORDER BY booking_date ASC";
+    try (Connection conn = Database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query)) {
+      ResultSet rs = stmt.executeQuery();
+      while (rs.next()) {
+        bookings.add(mapResultSetToBooking(rs));
+      }
+    } catch (Exception e) {
+      System.err.println("Error getting pending bookings: " + e.getMessage());
+      e.printStackTrace();
+    }
+    return bookings;
+  }
+
+  /**
+   * Gets all CONFIRMED bookings.
+   */
+  public List<Booking> getConfirmedBookings() {
+    List<Booking> bookings = new ArrayList<>();
+    String query = "SELECT * FROM bookings WHERE status = 'CONFIRMED' ORDER BY booking_date ASC";
+    try (Connection conn = Database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query)) {
+      ResultSet rs = stmt.executeQuery();
+      while (rs.next()) {
+        bookings.add(mapResultSetToBooking(rs));
+      }
+    } catch (Exception e) {
+      System.err.println("Error getting confirmed bookings: " + e.getMessage());
+      e.printStackTrace();
+    }
+    return bookings;
+  }
+
+  /**
+   * Gets all bookings (for statistics).
+   */
+  public List<Booking> getAllBookings() {
+    List<Booking> bookings = new ArrayList<>();
+    String query = "SELECT * FROM bookings ORDER BY booking_date DESC";
+    try (Connection conn = Database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query)) {
+      ResultSet rs = stmt.executeQuery();
+      while (rs.next()) {
+        bookings.add(mapResultSetToBooking(rs));
+      }
+    } catch (Exception e) {
+      System.err.println("Error getting all bookings: " + e.getMessage());
+      e.printStackTrace();
+    }
+    return bookings;
+  }
+
+  /**
+   * Gets bookings by schedule ID.
+   */
+  public List<Booking> getBookingsByScheduleId(int scheduleId) {
+    List<Booking> bookings = new ArrayList<>();
+    String query = "SELECT * FROM bookings WHERE schedule_id = ? ORDER BY booking_date DESC";
+    try (Connection conn = Database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query)) {
+      stmt.setInt(1, scheduleId);
+      ResultSet rs = stmt.executeQuery();
+      while (rs.next()) {
+        bookings.add(mapResultSetToBooking(rs));
+      }
+    } catch (Exception e) {
+      System.err.println("Error getting bookings by schedule: " + e.getMessage());
+      e.printStackTrace();
+    }
+    return bookings;
   }
 }

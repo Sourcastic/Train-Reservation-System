@@ -1,6 +1,6 @@
 package com.example.trainreservationsystem.repositories;
 
-import com.example.trainreservationsystem.models.Complaint;
+import com.example.trainreservationsystem.models.shared.Complaint;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="800.0" prefWidth="1040.0" spacing="20" style="-fx-background-color: #ECF0F1;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.ManageStopsController">
+<HBox prefHeight="800.0" prefWidth="1040.0" spacing="20" style="-fx-background-color: #ECF0F1;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.admin.ManageStopsController">
     
     <padding>
         <Insets bottom="20" left="20" right="20" top="20" />

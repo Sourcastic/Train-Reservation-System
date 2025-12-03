@@ -1,7 +1,7 @@
 package com.example.trainreservationsystem.repositories;
 
-import com.example.trainreservationsystem.models.SeatClass;
-import com.example.trainreservationsystem.utils.database.Database;
+import com.example.trainreservationsystem.models.admin.SeatClass;
+import com.example.trainreservationsystem.utils.shared.database.Database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

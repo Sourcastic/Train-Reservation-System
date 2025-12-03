@@ -1,5 +1,6 @@
 module com.example.trainreservationsystem {
     requires javafx.controls;
+    requires javafx.graphics;
     requires javafx.fxml;
 
     requires org.controlsfx.controls;

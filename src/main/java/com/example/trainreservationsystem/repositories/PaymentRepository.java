@@ -1,14 +1,14 @@
 package com.example.trainreservationsystem.repositories;
 
-import com.example.trainreservationsystem.models.Payment;
-import com.example.trainreservationsystem.models.PaymentMethod;
-import com.example.trainreservationsystem.utils.database.Database;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.trainreservationsystem.models.member.Payment;
+import com.example.trainreservationsystem.models.member.PaymentMethod;
+import com.example.trainreservationsystem.utils.shared.database.Database;
 
 public class PaymentRepository {
 
@@ -47,7 +47,7 @@ public class PaymentRepository {
     } catch (Exception e) {
       System.err.println("Error saving payment method: " + e.getMessage());
       e.printStackTrace();
-        throw new RuntimeException("Failed to save payment method", e);
+      throw new RuntimeException("Failed to save payment method", e);
     }
   }
 
@@ -63,31 +63,50 @@ public class PaymentRepository {
     } catch (Exception e) {
       System.err.println("Error saving payment: " + e.getMessage());
       e.printStackTrace();
-        throw new RuntimeException("Failed to save payment", e);
+      throw new RuntimeException("Failed to save payment", e);
     }
   }
 
-    public List<Payment> getPaymentsByUserId(int userId) {
-        List<Payment> payments = new ArrayList<>();
-        String query = "SELECT p.* FROM payments p " +
-                "JOIN bookings b ON p.booking_id = b.id " +
-                "WHERE b.user_id = ? ORDER BY p.payment_date DESC";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, userId);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Payment payment = new Payment();
-                payment.setBookingId(rs.getInt("booking_id"));
-                payment.setAmount(rs.getDouble("amount"));
-                payment.setPaymentMethodId(rs.getInt("payment_method_id"));
-                payment.setStatus(rs.getString("status"));
-                payments.add(payment);
-            }
-        } catch (Exception e) {
-            System.err.println("Error getting payments: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return payments;
+  public List<Payment> getPaymentsByUserId(int userId) {
+    List<Payment> payments = new ArrayList<>();
+    String query = "SELECT p.* FROM payments p " +
+        "JOIN bookings b ON p.booking_id = b.id " +
+        "WHERE b.user_id = ? ORDER BY p.payment_date DESC";
+    try (Connection conn = Database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query)) {
+      stmt.setInt(1, userId);
+      ResultSet rs = stmt.executeQuery();
+      while (rs.next()) {
+        Payment payment = new Payment();
+        payment.setBookingId(rs.getInt("booking_id"));
+        payment.setAmount(rs.getDouble("amount"));
+        payment.setPaymentMethodId(rs.getInt("payment_method_id"));
+        payment.setStatus(rs.getString("status"));
+        payments.add(payment);
+      }
+    } catch (Exception e) {
+      System.err.println("Error getting payments: " + e.getMessage());
+      e.printStackTrace();
+    }
+    return payments;
+  }
+
+  /**
+   * Checks if a booking has a payment associated with it.
+   */
+  public boolean hasPaymentForBooking(int bookingId) {
+    String query = "SELECT COUNT(*) FROM payments WHERE booking_id = ? AND status = 'SUCCESS'";
+    try (Connection conn = Database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query)) {
+      stmt.setInt(1, bookingId);
+      ResultSet rs = stmt.executeQuery();
+      if (rs.next()) {
+        return rs.getInt(1) > 0;
+      }
+    } catch (Exception e) {
+      System.err.println("Error checking payment for booking: " + e.getMessage());
+      e.printStackTrace();
+    }
+    return false;
   }
 }

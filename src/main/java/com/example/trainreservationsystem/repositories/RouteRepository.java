@@ -1,20 +1,19 @@
 package com.example.trainreservationsystem.repositories;
 
-import com.example.trainreservationsystem.models.Route;
-import com.example.trainreservationsystem.models.RouteSegment;
-import com.example.trainreservationsystem.models.Stop;
-import com.example.trainreservationsystem.utils.database.Database;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import com.example.trainreservationsystem.models.admin.Route;
+import com.example.trainreservationsystem.models.admin.RouteSegment;
+import com.example.trainreservationsystem.models.admin.Stop;
+import com.example.trainreservationsystem.utils.shared.database.Database;
 
 public class RouteRepository {
-
-    private final StopRepository stopRepository = new StopRepository();
 
     public Route addRoute(Route route) throws Exception {
         String sql = "INSERT INTO routes (name, source, destination) VALUES (?, ?, ?)";
@@ -42,18 +41,35 @@ public class RouteRepository {
 
     public List<Route> getAllRoutes() throws Exception {
         List<Route> routes = new ArrayList<>();
-        String sql = "SELECT * FROM routes";
+        String sql = "SELECT * FROM routes ORDER BY id";
         try (Connection conn = Database.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+
+            // Collect route IDs for batch loading segments
+            List<Integer> routeIds = new ArrayList<>();
+            java.util.Map<Integer, Route> routeMap = new java.util.HashMap<>();
+
             while (rs.next()) {
+                int routeId = rs.getInt("id");
+                routeIds.add(routeId);
+
                 Route route = new Route(
-                        rs.getInt("id"),
+                        routeId,
                         rs.getString("name"),
                         rs.getString("source"),
                         rs.getString("destination"));
-                route.setSegments(getSegmentsByRouteId(route.getId()));
+                routeMap.put(routeId, route);
                 routes.add(route);
+            }
+
+            // Batch load all segments for all routes (fixes N+1)
+            if (!routeIds.isEmpty()) {
+                java.util.Map<Integer, List<RouteSegment>> segmentsByRoute = getSegmentsByRouteIds(routeIds);
+                for (Route route : routes) {
+                    List<RouteSegment> segments = segmentsByRoute.getOrDefault(route.getId(), new ArrayList<>());
+                    route.setSegments(segments);
+                }
             }
         }
         return routes;
@@ -122,24 +138,65 @@ public class RouteRepository {
     }
 
     public List<RouteSegment> getSegmentsByRouteId(int routeId) throws Exception {
-        List<RouteSegment> segments = new ArrayList<>();
-        String sql = "SELECT * FROM route_segments WHERE route_id = ? ORDER BY id";
+        List<Integer> routeIds = new ArrayList<>();
+        routeIds.add(routeId);
+        Map<Integer, List<RouteSegment>> result = getSegmentsByRouteIds(routeIds);
+        return result.getOrDefault(routeId, new ArrayList<>());
+    }
+
+    /**
+     * Batch loads segments for multiple routes with JOINs to avoid N+1 queries.
+     * Returns a map of routeId -> list of segments.
+     */
+    public Map<Integer, List<RouteSegment>> getSegmentsByRouteIds(List<Integer> routeIds) throws Exception {
+        Map<Integer, List<RouteSegment>> segmentsByRoute = new java.util.HashMap<>(); // Using fully qualified name
+        if (routeIds == null || routeIds.isEmpty()) {
+            return segmentsByRoute;
+        }
+
+        // Use JOINs to fetch stops in a single query (fixes N+1)
+        String placeholders = routeIds.stream().map(id -> "?").collect(java.util.stream.Collectors.joining(","));
+        String sql = "SELECT rs.*, " +
+                "fs.id as from_stop_id, fs.name as from_stop_name, " +
+                "ts.id as to_stop_id, ts.name as to_stop_name " +
+                "FROM route_segments rs " +
+                "LEFT JOIN stops fs ON rs.from_stop_id = fs.id " +
+                "LEFT JOIN stops ts ON rs.to_stop_id = ts.id " +
+                "WHERE rs.route_id IN (" + placeholders + ") " +
+                "ORDER BY rs.route_id, rs.id";
+
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, routeId);
+            for (int i = 0; i < routeIds.size(); i++) {
+                stmt.setInt(i + 1, routeIds.get(i));
+            }
+
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Stop fromStop = stopRepository.getStopById(rs.getInt("from_stop_id"));
-                    Stop toStop = stopRepository.getStopById(rs.getInt("to_stop_id"));
-                    segments.add(new RouteSegment(
+                    int routeId = rs.getInt("route_id");
+
+                    // Build stops from JOIN results
+                    Stop fromStop = null;
+                    if (rs.getInt("from_stop_id") > 0) {
+                        fromStop = new Stop(rs.getInt("from_stop_id"), rs.getString("from_stop_name"));
+                    }
+
+                    Stop toStop = null;
+                    if (rs.getInt("to_stop_id") > 0) {
+                        toStop = new Stop(rs.getInt("to_stop_id"), rs.getString("to_stop_name"));
+                    }
+
+                    RouteSegment segment = new RouteSegment(
                             rs.getInt("id"),
                             fromStop,
                             toStop,
                             rs.getDouble("distance"),
-                            rs.getDouble("price")));
+                            rs.getDouble("price"));
+
+                    segmentsByRoute.computeIfAbsent(routeId, k -> new ArrayList<>()).add(segment);
                 }
             }
         }
-        return segments;
+        return segmentsByRoute;
     }
 }

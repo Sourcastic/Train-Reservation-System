@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<BorderPane stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.search.SearchController">
+<BorderPane stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.member.search.SearchController">
    <top>
       <VBox alignment="TOP_CENTER" spacing="0.0" styleClass="form-card">
          <padding>

@@ -1,8 +1,8 @@
 package com.example.trainreservationsystem.repositories;
 
-import com.example.trainreservationsystem.models.Route;
-import com.example.trainreservationsystem.models.Schedule;
-import com.example.trainreservationsystem.utils.database.Database;
+import com.example.trainreservationsystem.models.admin.Route;
+import com.example.trainreservationsystem.models.admin.Schedule;
+import com.example.trainreservationsystem.utils.shared.database.Database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +13,6 @@ import java.util.List;
 
 public class ScheduleRepository {
 
-    private final RouteRepository routeRepository = new RouteRepository();
     private final SeatRepository seatRepository = new SeatRepository();
 
     public Schedule addSchedule(Schedule schedule) throws Exception {
@@ -52,14 +51,35 @@ public class ScheduleRepository {
 
     public List<Schedule> getAllSchedules() throws Exception {
         List<Schedule> schedules = new ArrayList<>();
-        String sql = "SELECT * FROM schedules";
+        // Use JOIN to fetch routes in a single query (fixes N+1)
+        String sql = "SELECT s.*, r.id as route_id, r.name as route_name, r.source, r.destination " +
+                "FROM schedules s " +
+                "LEFT JOIN routes r ON s.route_id = r.id " +
+                "ORDER BY s.id";
         try (Connection conn = Database.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+
+            // Collect schedule IDs for batch loading seats
+            List<Integer> scheduleIds = new ArrayList<>();
+            java.util.Map<Integer, Schedule> scheduleMap = new java.util.HashMap<>();
+
             while (rs.next()) {
-                Route route = routeRepository.getRouteById(rs.getInt("route_id"));
+                int scheduleId = rs.getInt("id");
+                scheduleIds.add(scheduleId);
+
+                // Build route from JOIN result
+                Route route = null;
+                if (rs.getInt("route_id") > 0) {
+                    route = new Route(
+                            rs.getInt("route_id"),
+                            rs.getString("route_name"),
+                            rs.getString("source"),
+                            rs.getString("destination"));
+                }
+
                 Schedule schedule = new Schedule(
-                        rs.getInt("id"),
+                        scheduleId,
                         route,
                         rs.getDate("departure_date").toLocalDate(),
                         rs.getTime("departure_time").toLocalTime(),
@@ -76,21 +96,45 @@ public class ScheduleRepository {
                     schedule.setDaysOfWeek(daysOfWeek);
                 }
 
-                schedule.setSeats(seatRepository.getSeatsByScheduleId(schedule.getId()));
+                scheduleMap.put(scheduleId, schedule);
                 schedules.add(schedule);
+            }
+
+            // Batch load all seats for all schedules (fixes N+1)
+            if (!scheduleIds.isEmpty()) {
+                java.util.Map<Integer, List<com.example.trainreservationsystem.models.Seat>> seatsBySchedule = seatRepository
+                        .getSeatsByScheduleIds(scheduleIds);
+                for (Schedule schedule : schedules) {
+                    List<com.example.trainreservationsystem.models.Seat> seats = seatsBySchedule
+                            .getOrDefault(schedule.getId(), new ArrayList<>());
+                    schedule.setSeats(seats);
+                }
             }
         }
         return schedules;
     }
 
     public Schedule getScheduleById(int id) throws Exception {
-        String sql = "SELECT * FROM schedules WHERE id = ?";
+        // Use JOIN to fetch route in a single query (fixes N+1)
+        String sql = "SELECT s.*, r.id as route_id, r.name as route_name, r.source, r.destination " +
+                "FROM schedules s " +
+                "LEFT JOIN routes r ON s.route_id = r.id " +
+                "WHERE s.id = ?";
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Route route = routeRepository.getRouteById(rs.getInt("route_id"));
+                    // Build route from JOIN result
+                    Route route = null;
+                    if (rs.getInt("route_id") > 0) {
+                        route = new Route(
+                                rs.getInt("route_id"),
+                                rs.getString("route_name"),
+                                rs.getString("source"),
+                                rs.getString("destination"));
+                    }
+
                     Schedule schedule = new Schedule(
                             rs.getInt("id"),
                             route,

@@ -1,8 +1,8 @@
 package com.example.trainreservationsystem.repositories;
 
-import com.example.trainreservationsystem.models.Route;
-import com.example.trainreservationsystem.models.Schedule;
-import com.example.trainreservationsystem.utils.database.Database;
+import com.example.trainreservationsystem.models.admin.Route;
+import com.example.trainreservationsystem.models.admin.Schedule;
+import com.example.trainreservationsystem.utils.shared.database.Database;
 
 import java.sql.*;
 import java.time.LocalDate;

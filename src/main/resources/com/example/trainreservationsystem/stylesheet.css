@@ -25,6 +25,23 @@
     -fx-text-fill: #170d13;
 }
 
+/* ================================
+   LANDING PAGE STYLES
+   ================================ */
+.landing-page {
+    -fx-background-color: #ebd6e1;
+}
+
+.landing-train-bg {
+    -fx-opacity: 0.10;
+    -fx-effect: dropshadow(gaussian, rgba(169, 106, 138, 0.1), 20, 0, 0, 0);
+}
+
+.landing-content {
+    -fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 10, 0, 0, 0);
+}
+
 .page-title {
     -fx-font-size: 24px;
     -fx-font-weight: 700;
@@ -135,6 +152,14 @@
     -fx-text-fill: #170d13;
     -fx-font-style: italic;
     -fx-font-family: "DM Serif Display", sans-serif;
+}
+
+.loyalty-points-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #a96a8a;
+    -fx-font-family: "DM Serif Display", sans-serif;
+    -fx-padding: 8 0 0 0;
 }
 
 .quick-action-button {
