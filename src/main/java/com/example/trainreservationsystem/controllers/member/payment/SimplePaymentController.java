@@ -24,12 +24,15 @@ import com.example.trainreservationsystem.utils.shared.ui.AlertUtils;
 import com.example.trainreservationsystem.utils.shared.ui.IconHelper;
 import com.example.trainreservationsystem.utils.shared.ui.InputFormatter;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.util.Duration;
 
 /**
  * Controller for payment processing.
@@ -77,6 +80,7 @@ public class SimplePaymentController {
   private String appliedDiscountCode;
   private double originalAmount;
   private double discountAmount = 0;
+  private Timeline paymentTimer;
 
   @FXML
   public void initialize() {
@@ -87,8 +91,39 @@ public class SimplePaymentController {
       setupPaymentAccordion();
       setupInputValidation();
       loadLoyaltyPoints();
+      startPaymentTimer();
     } else {
       AlertUtils.showError("Error", "No booking information found");
+    }
+  }
+
+  private void startPaymentTimer() {
+    // Stop any existing timer
+    if (paymentTimer != null) {
+      paymentTimer.stop();
+    }
+
+    // Create a 60-second timer
+    paymentTimer = new Timeline(
+        new KeyFrame(Duration.seconds(60), e -> {
+          // Time ran out - redirect to home
+          if (AlertUtils.showConfirmation("Payment Timeout",
+              "Your payment session has expired. You will be redirected to the home page.")) {
+            UserSession.getInstance().setPendingBooking(null);
+            HomeController.getInstance().showSearch();
+          } else {
+            // User dismissed, still redirect
+            UserSession.getInstance().setPendingBooking(null);
+            HomeController.getInstance().showSearch();
+          }
+        }));
+    paymentTimer.setCycleCount(1);
+    paymentTimer.play();
+  }
+
+  private void stopPaymentTimer() {
+    if (paymentTimer != null) {
+      paymentTimer.stop();
     }
   }
 
@@ -320,9 +355,13 @@ public class SimplePaymentController {
   }
 
   private void processPayment(PaymentAdapter adapter, Map<String, String> paymentDetails) {
+    stopPaymentTimer(); // Stop timer when payment is being processed
     PaymentProcessor.process(booking, bookingService, adapter, paymentDetails, appliedDiscountCode,
         () -> showSuccessAndRedirect(adapter.getMethodName()),
-        () -> AlertUtils.showError("Payment Failed", "Failed to process payment"));
+        () -> {
+          AlertUtils.showError("Payment Failed", "Failed to process payment");
+          startPaymentTimer(); // Restart timer if payment fails
+        });
   }
 
   private void showSuccessAndRedirect(String paymentMethod) {
@@ -331,9 +370,12 @@ public class SimplePaymentController {
 
   @FXML
   public void handleCancel() {
+    stopPaymentTimer();
     if (AlertUtils.showConfirmation("Cancel Payment", "Are you sure you want to cancel this payment?")) {
       UserSession.getInstance().setPendingBooking(null);
       HomeController.getInstance().showSearch();
+    } else {
+      startPaymentTimer(); // Restart timer if user cancels the cancellation
     }
   }
 }

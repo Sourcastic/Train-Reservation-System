@@ -85,4 +85,44 @@ public class TicketRepository {
             return false;
         }
     }
+
+    public List<Ticket> getAllTickets() {
+        List<Ticket> tickets = new ArrayList<>();
+        String query = "SELECT * FROM tickets ORDER BY created_at DESC";
+        try (Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                tickets.add(new Ticket(
+                        rs.getInt("id"),
+                        rs.getInt("booking_id"),
+                        rs.getString("qr_code"),
+                        rs.getString("status")));
+            }
+        } catch (Exception e) {
+            System.err.println("Error getting all tickets: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return tickets;
+    }
+
+    public Ticket getTicketById(int ticketId) {
+        String query = "SELECT * FROM tickets WHERE id = ?";
+        try (Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, ticketId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Ticket(
+                        rs.getInt("id"),
+                        rs.getInt("booking_id"),
+                        rs.getString("qr_code"),
+                        rs.getString("status"));
+            }
+        } catch (Exception e) {
+            System.err.println("Error getting ticket by ID: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

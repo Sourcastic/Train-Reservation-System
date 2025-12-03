@@ -27,11 +27,9 @@
 
             <Button fx:id="btnComplaints" onAction="#showComplaints" prefHeight="45" prefWidth="200" style="-fx-background-color: #34495E; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Handle Complaints" />
 
-            <Button fx:id="btnConfirmBookings" onAction="#showBookings" prefHeight="45" prefWidth="200" style="-fx-background-color: #34495E; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Confirm Bookings" />
+            <Button fx:id="btnConfirmBookings" onAction="#showBookings" prefHeight="45" prefWidth="200" style="-fx-background-color: #34495E; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Manage Tickets" />
 
             <Button fx:id="btnTicketValidation" onAction="#showValidation" prefHeight="45" prefWidth="200" style="-fx-background-color: #34495E; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Ticket Validation" />
-
-            <Button fx:id="btnNotifications" onAction="#showNotifications" prefHeight="45" prefWidth="200" style="-fx-background-color: #34495E; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Notifications" />
 
             <Button fx:id="btnTrainStatus" onAction="#showTrainStatus" prefHeight="45" prefWidth="200" style="-fx-background-color:#34495E ; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Update Train Status" />
 
@@ -42,6 +40,10 @@
             <Button fx:id="btnManageRoutes" onAction="#showManageRoutes" prefHeight="45" prefWidth="200" style="-fx-background-color:#34495E ; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Manage Routes" />
 
             <Button fx:id="btnManageSchedules" onAction="#showManageSchedules" prefHeight="45" prefWidth="200" style="-fx-background-color:#34495E ; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Manage Schedules" />
+
+            <Button fx:id="btnManageDiscounts" onAction="#showManageDiscounts" prefHeight="45" prefWidth="200" style="-fx-background-color:#34495E ; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Manage Discounts" />
+
+            <Button fx:id="btnManageUsers" onAction="#showManageUsers" prefHeight="45" prefWidth="200" style="-fx-background-color:#34495E ; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;" text="Manage Users" />
 
             <VBox VBox.vgrow="ALWAYS" />
 

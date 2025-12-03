@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20" style="-fx-padding: 30;" stylesheets="/com/example/trainreservationsystem/stylesheet.css"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.trainreservationsystem.controllers.staff.ManageTicketsController">
+
+    <!-- TITLE -->
+    <Label text="Manage Tickets" style="-fx-font-size: 30px; -fx-font-weight: bold;"/>
+
+    <!-- BOOKINGS TABLE -->
+    <TableView fx:id="bookingsTable" prefHeight="500" prefWidth="1200">
+        <columns>
+            <TableColumn fx:id="colBookingId" text="Booking ID" prefWidth="100"/>
+            <TableColumn fx:id="colUserId" text="User ID" prefWidth="100"/>
+            <TableColumn fx:id="colRoute" text="Route" prefWidth="200"/>
+            <TableColumn fx:id="colDate" text="Departure Date" prefWidth="150"/>
+            <TableColumn fx:id="colTime" text="Departure Time" prefWidth="150"/>
+            <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+            <TableColumn fx:id="colAmount" text="Amount" prefWidth="100"/>
+            <TableColumn fx:id="colBookingDate" text="Booking Date" prefWidth="150"/>
+            <TableColumn fx:id="colActions" text="Actions" prefWidth="150"/>
+        </columns>
+    </TableView>
+
+    <!-- ACTION BUTTONS -->
+    <HBox spacing="20" alignment="CENTER">
+        <Button text="Refresh" onAction="#handleRefresh"
+                prefWidth="150" prefHeight="40"
+                style="-fx-background-color: #3498DB; -fx-text-fill: white; -fx-font-size: 14; -fx-background-radius: 8;"/>
+        <Button text="Back" onAction="#handleBack"
+                prefWidth="150" prefHeight="40"
+                style="-fx-background-color: #95A5A6; -fx-text-fill: white; -fx-font-size: 14; -fx-background-radius: 8;"/>
+    </HBox>
+
+</VBox>
+

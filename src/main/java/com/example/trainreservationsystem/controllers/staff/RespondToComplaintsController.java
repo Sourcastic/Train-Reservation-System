@@ -1,10 +1,18 @@
 package com.example.trainreservationsystem.controllers.staff;
 
 import com.example.trainreservationsystem.models.shared.Complaint;
+import com.example.trainreservationsystem.repositories.RepositoryFactory;
+import com.example.trainreservationsystem.repositories.shared.ComplaintRepository;
+import com.example.trainreservationsystem.services.shared.UserSession;
+import com.example.trainreservationsystem.utils.shared.ui.AlertUtils;
+
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 
 public class RespondToComplaintsController {
 
@@ -18,9 +26,6 @@ public class RespondToComplaintsController {
     private TableColumn<Complaint, String> colCustomer;
 
     @FXML
-    private TableColumn<Complaint, String> colStatus;
-
-    @FXML
     private TableColumn<Complaint, String> colMessage;
 
     @FXML
@@ -32,7 +37,7 @@ public class RespondToComplaintsController {
     @FXML
     private Button btnSubmitResponse;
 
-    private ObservableList<Complaint> complaintsList;
+    private final ComplaintRepository complaintRepository = RepositoryFactory.getComplaintRepository();
 
     @FXML
     public void initialize() {
@@ -41,9 +46,6 @@ public class RespondToComplaintsController {
                 data -> new javafx.beans.property.SimpleStringProperty(String.valueOf(data.getValue().getId())));
         colCustomer.setCellValueFactory(
                 data -> new javafx.beans.property.SimpleStringProperty(String.valueOf(data.getValue().getUserId())));
-        // colStatus.setCellValueFactory(data -> new
-        // javafx.beans.property.SimpleStringProperty(data.getValue().getStatus())); //
-        // Complaint model missing status
         colMessage.setCellValueFactory(
                 data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getDescription()));
 
@@ -54,7 +56,9 @@ public class RespondToComplaintsController {
         complaintTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 lblComplaintDetails
-                        .setText("Subject: " + newSelection.getSubject() + "\n\n" + newSelection.getDescription());
+                        .setText("Subject: " + newSelection.getSubject() + "\n\nDescription: "
+                                + newSelection.getDescription() +
+                                "\n\nTracking ID: " + newSelection.getTrackingId());
             } else {
                 lblComplaintDetails.setText("Select a complaint to see details.");
             }
@@ -65,38 +69,39 @@ public class RespondToComplaintsController {
     }
 
     private void loadComplaints() {
-        // Placeholder data
-        complaintsList = FXCollections.observableArrayList();
-        // complaintsList.add(new Complaint(1, 101, "Delay", "Train was late", "TRK123",
-        // java.time.LocalDateTime.now()));
-        complaintTable.setItems(complaintsList);
+        try {
+            var complaints = complaintRepository.getAllComplaints();
+            complaintTable.setItems(FXCollections.observableArrayList(complaints));
+        } catch (Exception e) {
+            AlertUtils.showError("Error", "Failed to load complaints: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void handleSendResponse() {
         Complaint selected = complaintTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            showAlert("Error", "Please select a complaint first.");
+            AlertUtils.showWarning("Error", "Please select a complaint first.");
             return;
         }
 
-        String responseText = txtResponse.getText();
+        String responseText = txtResponse.getText().trim();
         if (responseText.isEmpty()) {
-            showAlert("Error", "Response cannot be empty.");
+            AlertUtils.showWarning("Error", "Response cannot be empty.");
             return;
         }
 
-        // Logic to send response
-        System.out.println("Sending response to complaint " + selected.getId() + ": " + responseText);
-
-        showAlert("Success", "Response sent successfully!");
-        txtResponse.clear();
-    }
-
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(content);
-        alert.showAndWait();
+        try {
+            int staffId = UserSession.getInstance().getCurrentUser().getId();
+            complaintRepository.saveComplaintResponse(selected.getId(), responseText, staffId);
+            AlertUtils.showSuccess("Success", "Response sent successfully! The user has been notified.");
+            txtResponse.clear();
+            // Optionally reload complaints
+            loadComplaints();
+        } catch (Exception e) {
+            AlertUtils.showError("Error", "Failed to send response: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

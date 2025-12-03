@@ -117,17 +117,25 @@ public class PaymentProcessor {
 
   private static void sendNotifications(Booking booking, String paymentMethod, String details,
       String discountCode, double originalAmount) {
+    int userId = booking.getUserId();
+
+    // Send booking confirmation notification
     NotificationService.getInstance().add(
-        "Payment successful via " + paymentMethod + "! Booking #" + booking.getId() + " confirmed");
+        "Booking confirmed! Your booking #" + booking.getId() + " has been confirmed. Payment successful via "
+            + paymentMethod + ".",
+        userId);
+
     NotificationService.getInstance().add(
         "E-ticket generated for " + booking.getSchedule().getRoute().getSource() +
-            " to " + booking.getSchedule().getRoute().getDestination());
+            " to " + booking.getSchedule().getRoute().getDestination(),
+        userId);
 
     if (discountCode != null && !discountCode.trim().isEmpty()) {
       NotificationService.getInstance().add(
-          "Discount code '" + discountCode + "' applied successfully!");
+          "Discount code '" + discountCode + "' applied successfully!",
+          userId);
     }
 
-    NotificationService.getInstance().add("Payment Details: " + details);
+    NotificationService.getInstance().add("Payment Details: " + details, userId);
   }
 }

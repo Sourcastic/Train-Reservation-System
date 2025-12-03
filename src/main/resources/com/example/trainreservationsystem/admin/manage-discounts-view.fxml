@@ -19,7 +19,7 @@
                 <TableColumn fx:id="nameCol" prefWidth="120" text="Name" />
                 <TableColumn fx:id="typeCol" prefWidth="100" text="Type" />
                 <TableColumn fx:id="descriptionCol" prefWidth="150" text="Description" />
-                <TableColumn fx:id="percentageCol" prefWidth="80" text="%" />
+                <TableColumn fx:id="percentageCol" prefWidth="80" text="Percent" />
                 <TableColumn fx:id="amountCol" prefWidth="80" text="Amount" />
                 <TableColumn fx:id="validFromCol" prefWidth="100" text="Valid From" />
                 <TableColumn fx:id="validToCol" prefWidth="100" text="Valid To" />

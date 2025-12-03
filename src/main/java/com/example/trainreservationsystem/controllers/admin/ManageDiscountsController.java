@@ -19,6 +19,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
@@ -36,7 +37,9 @@ public class ManageDiscountsController {
   @FXML
   private TableColumn<Discount, LocalDate> validFromCol, validToCol;
   @FXML
-  private TextField nameField, codeField, descriptionField, percentageField, amountField, maxUsesField;
+  private TextField nameField, codeField, percentageField, amountField, maxUsesField;
+  @FXML
+  private TextArea descriptionField;
   @FXML
   private ComboBox<String> typeCombo;
   @FXML

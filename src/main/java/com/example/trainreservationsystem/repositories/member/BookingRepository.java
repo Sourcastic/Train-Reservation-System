@@ -240,4 +240,23 @@ public class BookingRepository {
     }
     return bookings;
   }
+
+  /**
+   * Gets all active bookings (PENDING and CONFIRMED status).
+   */
+  public List<Booking> getActiveBookings() {
+    List<Booking> bookings = new ArrayList<>();
+    String query = "SELECT * FROM bookings WHERE status IN ('PENDING', 'CONFIRMED') ORDER BY booking_date DESC";
+    try (Connection conn = Database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query)) {
+      ResultSet rs = stmt.executeQuery();
+      while (rs.next()) {
+        bookings.add(mapResultSetToBooking(rs));
+      }
+    } catch (Exception e) {
+      System.err.println("Error getting active bookings: " + e.getMessage());
+      e.printStackTrace();
+    }
+    return bookings;
+  }
 }

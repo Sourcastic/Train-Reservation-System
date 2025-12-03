@@ -27,8 +27,6 @@ public class StaffController {
     @FXML
     private Button btnTicketValidation;
     @FXML
-    private Button btnNotifications;
-    @FXML
     private Button btnTrainStatus;
     @FXML
     private Button btnManageStops;
@@ -39,12 +37,45 @@ public class StaffController {
     @FXML
     private Button btnManageSchedules;
     @FXML
+    private Button btnManageDiscounts;
+    @FXML
+    private Button btnManageUsers;
+    @FXML
     private Button btnLogout;
 
     @FXML
     public void initialize() {
         // Load Dashboard by default
         showDashboard();
+        // Hide admin-only features from staff
+        setupRoleBasedVisibility();
+    }
+
+    private void setupRoleBasedVisibility() {
+        com.example.trainreservationsystem.services.shared.UserSession session = com.example.trainreservationsystem.services.shared.UserSession
+                .getInstance();
+
+        if (session.isLoggedIn()) {
+            String userType = session.getCurrentUser().getUserType();
+            boolean isAdmin = "ADMIN".equalsIgnoreCase(userType);
+
+            // Hide admin-only features from staff
+            if (!isAdmin) {
+                // Staff cannot access these features
+                btnManageUsers.setVisible(false);
+                btnManageUsers.setManaged(false);
+                btnManageDiscounts.setVisible(false);
+                btnManageDiscounts.setManaged(false);
+                btnManageStops.setVisible(false);
+                btnManageStops.setManaged(false);
+                btnManageSeatClasses.setVisible(false);
+                btnManageSeatClasses.setManaged(false);
+                btnManageRoutes.setVisible(false);
+                btnManageRoutes.setManaged(false);
+                btnManageSchedules.setVisible(false);
+                btnManageSchedules.setManaged(false);
+            }
+        }
     }
 
     private void loadView(String fxmlFile, Button activeButton) {
@@ -66,12 +97,13 @@ public class StaffController {
         resetButtonStyle(btnComplaints);
         resetButtonStyle(btnConfirmBookings);
         resetButtonStyle(btnTicketValidation);
-        resetButtonStyle(btnNotifications);
         resetButtonStyle(btnTrainStatus);
         resetButtonStyle(btnManageStops);
         resetButtonStyle(btnManageSeatClasses);
         resetButtonStyle(btnManageRoutes);
         resetButtonStyle(btnManageSchedules);
+        resetButtonStyle(btnManageDiscounts);
+        resetButtonStyle(btnManageUsers);
 
         // Highlight active button
         if (activeButton != null) {
@@ -81,8 +113,10 @@ public class StaffController {
     }
 
     private void resetButtonStyle(Button button) {
-        button.setStyle(
-                "-fx-background-color: #34495E; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;");
+        if (button != null) {
+            button.setStyle(
+                    "-fx-background-color: #34495E; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 10;");
+        }
     }
 
     @FXML
@@ -98,26 +132,12 @@ public class StaffController {
 
     @FXML
     private void showBookings() {
-        // Placeholder or actual view
-        // loadView("confirm-bookings-view.fxml", btnConfirmBookings);
-        System.out.println("Show Bookings clicked");
-        updateActiveButton(btnConfirmBookings);
+        loadView("staff/manage-tickets-view.fxml", btnConfirmBookings);
     }
 
     @FXML
     private void showValidation() {
-        // Placeholder or actual view
-        // loadView("ticket-validation-view.fxml", btnTicketValidation);
-        System.out.println("Show Validation clicked");
-        updateActiveButton(btnTicketValidation);
-    }
-
-    @FXML
-    private void showNotifications() {
-        // Placeholder or actual view
-        // loadView("notifications-view.fxml", btnNotifications);
-        System.out.println("Show Notifications clicked");
-        updateActiveButton(btnNotifications);
+        loadView("staff/ticket-validation-view.fxml", btnTicketValidation);
     }
 
     @FXML
@@ -143,6 +163,16 @@ public class StaffController {
     @FXML
     private void showManageSchedules() {
         loadView("admin/manage-schedules-view.fxml", btnManageSchedules);
+    }
+
+    @FXML
+    private void showManageDiscounts() {
+        loadView("admin/manage-discounts-view.fxml", btnManageDiscounts);
+    }
+
+    @FXML
+    private void showManageUsers() {
+        loadView("admin/manage-users-view.fxml", btnManageUsers);
     }
 
     @FXML

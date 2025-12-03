@@ -152,4 +152,56 @@ public class UserRepository {
       }
     }
   }
+
+  /**
+   * Gets all users (for admin management).
+   */
+  public java.util.List<User> getAllUsers() throws Exception {
+    java.util.List<User> users = new java.util.ArrayList<>();
+    try (Connection conn = Database.getConnection()) {
+      String sql = "SELECT * FROM users ORDER BY id";
+      try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+          users.add(new User(
+              rs.getInt("id"),
+              rs.getString("username"),
+              rs.getString("password"),
+              rs.getString("email"),
+              rs.getString("phone_no"),
+              rs.getString("user_type"),
+              rs.getInt("loyalty_points")));
+        }
+      }
+    }
+    return users;
+  }
+
+  /**
+   * Deletes a user by ID (admin only).
+   */
+  public boolean deleteUser(int userId) throws Exception {
+    try (Connection conn = Database.getConnection()) {
+      String sql = "DELETE FROM users WHERE id = ?";
+      try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, userId);
+        return stmt.executeUpdate() > 0;
+      }
+    }
+  }
+
+  /**
+   * Updates user type (admin only).
+   * Used to promote customers to staff or change user roles.
+   */
+  public boolean updateUserType(int userId, String userType) throws Exception {
+    try (Connection conn = Database.getConnection()) {
+      String sql = "UPDATE users SET user_type = ? WHERE id = ?";
+      try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, userType);
+        stmt.setInt(2, userId);
+        return stmt.executeUpdate() > 0;
+      }
+    }
+  }
 }

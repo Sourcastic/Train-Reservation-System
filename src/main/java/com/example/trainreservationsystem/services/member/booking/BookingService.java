@@ -121,6 +121,9 @@ public class BookingService {
 
   /**
    * Calculates refund amount for a cancelled booking.
+   * Refund is only given if cancelled at least X hours before departure (default
+   * 24).
+   * Otherwise, no refund is given.
    */
   public double calculateRefund(int bookingId) {
     Booking booking = bookingRepository.getBookingById(bookingId);
@@ -143,10 +146,18 @@ public class BookingService {
     LocalDateTime now = LocalDateTime.now();
     long hoursUntilDeparture = ChronoUnit.HOURS.between(now, departureDateTime);
 
-    // Get cancellation policy
+    // Get cancellation policy to get the refund threshold
     CancellationPolicy policy = cancellationPolicyRepository.getActivePolicy();
+    int refundThresholdHours = policy.getHoursBeforeDeparture();
 
-    return policy.calculateRefund(booking.getTotalAmount(), hoursUntilDeparture);
+    // Only refund if cancelled at least X hours before departure
+    if (hoursUntilDeparture >= refundThresholdHours) {
+      // Full refund (or use policy's refund percentage if configured)
+      return booking.getTotalAmount() * (policy.getRefundPercentage() / 100.0);
+    } else {
+      // No refund if less than threshold hours before departure
+      return 0;
+    }
   }
 
   public void confirmBooking(int bookingId) {
