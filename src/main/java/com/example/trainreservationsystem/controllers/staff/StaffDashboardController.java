@@ -3,11 +3,12 @@ package com.example.trainreservationsystem.controllers.staff;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.example.trainreservationsystem.models.member.Booking;
+import com.example.trainreservationsystem.controllers.shared.HomeController;
 import com.example.trainreservationsystem.models.admin.Schedule;
-import com.example.trainreservationsystem.repositories.BookingRepository;
+import com.example.trainreservationsystem.models.member.Booking;
 import com.example.trainreservationsystem.repositories.RepositoryFactory;
-import com.example.trainreservationsystem.repositories.ScheduleRepository;
+import com.example.trainreservationsystem.repositories.admin.ScheduleRepository;
+import com.example.trainreservationsystem.repositories.member.BookingRepository;
 import com.example.trainreservationsystem.utils.shared.ui.AlertUtils;
 
 import javafx.collections.FXCollections;
@@ -118,12 +119,13 @@ public class StaffDashboardController {
 
   @FXML
   public void handleManageDiscounts() {
-    HomeController.getInstance().loadView("/com/example/trainreservationsystem/manage-discounts-view.fxml");
+    HomeController.getInstance().loadView("/com/example/trainreservationsystem/admin/manage-discounts-view.fxml");
   }
 
   @FXML
   public void handleManageCancellationPolicies() {
-    HomeController.getInstance().loadView("/com/example/trainreservationsystem/manage-cancellation-policies-view.fxml");
+    HomeController.getInstance()
+        .loadView("/com/example/trainreservationsystem/admin/manage-cancellation-policies-view.fxml");
   }
 
   @FXML

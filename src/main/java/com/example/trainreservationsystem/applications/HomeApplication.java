@@ -35,16 +35,16 @@ public class HomeApplication extends Application {
 
         // Add shutdown hook to close database connection
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            com.example.trainreservationsystem.services.ScheduledTaskService.getInstance().shutdown();
+            com.example.trainreservationsystem.services.shared.ScheduledTaskService.getInstance().shutdown();
             Database.closeConnection();
         }));
 
         // Start scheduled tasks
-        com.example.trainreservationsystem.services.ScheduledTaskService.getInstance().start();
+        com.example.trainreservationsystem.services.shared.ScheduledTaskService.getInstance().start();
 
         // Load UI immediately (non-blocking)
         Parent root = FXMLLoader.load(
-                getClass().getResource("/com/example/trainreservationsystem/landing-view.fxml"));
+                getClass().getResource("/com/example/trainreservationsystem/shared/landing-view.fxml"));
 
         Scene scene = new Scene(root, 1280, 800);
         stage.setScene(scene);

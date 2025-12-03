@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.trainreservationsystem.models.member.Notification;
-import com.example.trainreservationsystem.repositories.NotificationRepository;
+import com.example.trainreservationsystem.repositories.member.NotificationRepository;
 
 public class NotificationService {
   private static NotificationService instance;

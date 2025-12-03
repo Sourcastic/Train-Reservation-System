@@ -3,7 +3,7 @@ package com.example.trainreservationsystem.services.shared;
 import java.util.UUID;
 
 import com.example.trainreservationsystem.models.shared.Complaint;
-import com.example.trainreservationsystem.repositories.ComplaintRepository;
+import com.example.trainreservationsystem.repositories.shared.ComplaintRepository;
 
 public class ComplaintService {
   private final ComplaintRepository repository;

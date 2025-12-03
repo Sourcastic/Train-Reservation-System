@@ -1,7 +1,7 @@
 package com.example.trainreservationsystem.services.shared;
 
 import com.example.trainreservationsystem.models.shared.User;
-import com.example.trainreservationsystem.repositories.UserRepository;
+import com.example.trainreservationsystem.repositories.shared.UserRepository;
 
 public class AuthService {
     private final UserRepository userRepository;

@@ -3,7 +3,7 @@ package com.example.trainreservationsystem.utils.shared.payment.adapters;
 import java.util.Map;
 
 import com.example.trainreservationsystem.repositories.RepositoryFactory;
-import com.example.trainreservationsystem.repositories.UserRepository;
+import com.example.trainreservationsystem.repositories.shared.UserRepository;
 import com.example.trainreservationsystem.services.shared.UserSession;
 import com.example.trainreservationsystem.utils.shared.payment.PaymentAdapter;
 

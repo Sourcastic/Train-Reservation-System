@@ -4,14 +4,14 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import com.example.trainreservationsystem.models.member.Booking;
 import com.example.trainreservationsystem.models.admin.CancellationPolicy;
-import com.example.trainreservationsystem.models.member.Passenger;
 import com.example.trainreservationsystem.models.admin.Schedule;
-import com.example.trainreservationsystem.repositories.BookingRepository;
-import com.example.trainreservationsystem.repositories.CancellationPolicyRepository;
+import com.example.trainreservationsystem.models.member.Booking;
+import com.example.trainreservationsystem.models.member.Passenger;
 import com.example.trainreservationsystem.repositories.RepositoryFactory;
-import com.example.trainreservationsystem.repositories.TrainRepository;
+import com.example.trainreservationsystem.repositories.admin.CancellationPolicyRepository;
+import com.example.trainreservationsystem.repositories.admin.TrainRepository;
+import com.example.trainreservationsystem.repositories.member.BookingRepository;
 
 /**
  * Service for booking operations.

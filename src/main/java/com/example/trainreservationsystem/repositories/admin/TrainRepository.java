@@ -1,13 +1,17 @@
-package com.example.trainreservationsystem.repositories;
+package com.example.trainreservationsystem.repositories.admin;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.trainreservationsystem.models.admin.Route;
 import com.example.trainreservationsystem.models.admin.Schedule;
 import com.example.trainreservationsystem.utils.shared.database.Database;
-
-import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TrainRepository {
 

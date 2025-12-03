@@ -3,6 +3,7 @@ package com.example.trainreservationsystem.controllers.shared.auth;
 import com.example.trainreservationsystem.services.shared.AuthService;
 import com.example.trainreservationsystem.services.shared.UserSession;
 import com.example.trainreservationsystem.utils.shared.ui.AlertUtils;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -82,7 +83,7 @@ public class LoginController {
     try {
       Stage stage = (Stage) emailField.getScene().getWindow();
       FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("/com/example/trainreservationsystem/home-view.fxml"));
+          getClass().getResource("/com/example/trainreservationsystem/shared/home-view.fxml"));
       Parent root = loader.load();
       stage.setScene(new Scene(root, 1380, 780));
       stage.setTitle("Train Reservation System");
@@ -99,7 +100,7 @@ public class LoginController {
     try {
       Stage stage = (Stage) emailField.getScene().getWindow();
       FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("/com/example/trainreservationsystem/signup-view.fxml"));
+          getClass().getResource("/com/example/trainreservationsystem/shared/signup-view.fxml"));
       Parent root = loader.load();
       stage.setScene(new Scene(root, 1280, 800));
     } catch (Exception e) {
@@ -113,7 +114,7 @@ public class LoginController {
     try {
       Stage stage = (Stage) emailField.getScene().getWindow();
       FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("/com/example/trainreservationsystem/reset-password-view.fxml"));
+          getClass().getResource("/com/example/trainreservationsystem/shared/reset-password-view.fxml"));
       Parent root = loader.load();
       stage.setScene(new Scene(root, 1280, 800));
     } catch (Exception e) {
@@ -127,7 +128,7 @@ public class LoginController {
     try {
       Stage stage = (Stage) emailField.getScene().getWindow();
       FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("/com/example/trainreservationsystem/landing-view.fxml"));
+          getClass().getResource("/com/example/trainreservationsystem/shared/landing-view.fxml"));
       Parent root = loader.load();
       stage.setScene(new Scene(root, 1280, 800));
     } catch (Exception e) {

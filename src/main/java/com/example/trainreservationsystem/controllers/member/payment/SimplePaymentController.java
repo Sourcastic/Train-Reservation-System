@@ -68,9 +68,9 @@ public class SimplePaymentController {
   @FXML
   private Label loyaltyPointsLabel;
 
-  private final com.example.trainreservationsystem.services.booking.BookingService bookingService = ServiceFactory
+  private final com.example.trainreservationsystem.services.member.booking.BookingService bookingService = ServiceFactory
       .getBookingService();
-  private final com.example.trainreservationsystem.services.payment.PaymentService paymentService = ServiceFactory
+  private final com.example.trainreservationsystem.services.member.payment.PaymentService paymentService = ServiceFactory
       .getPaymentService();
   private final LoyaltyPointsService loyaltyPointsService = ServiceFactory.getLoyaltyPointsService();
   private Booking booking;

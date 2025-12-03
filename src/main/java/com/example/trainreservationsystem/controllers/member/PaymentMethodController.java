@@ -1,10 +1,11 @@
 package com.example.trainreservationsystem.controllers.member;
 
+import com.example.trainreservationsystem.controllers.shared.HomeController;
 import com.example.trainreservationsystem.models.member.PaymentMethod;
+import com.example.trainreservationsystem.services.member.payment.PaymentService;
 import com.example.trainreservationsystem.services.shared.NotificationService;
 import com.example.trainreservationsystem.services.shared.ServiceFactory;
 import com.example.trainreservationsystem.services.shared.UserSession;
-import com.example.trainreservationsystem.services.member.payment.PaymentService;
 import com.example.trainreservationsystem.utils.shared.ui.AlertUtils;
 
 import javafx.fxml.FXML;
@@ -51,9 +52,9 @@ public class PaymentMethodController {
 
     // Go back to payment screen if there's a pending booking
     if (UserSession.getInstance().getPendingBooking() != null) {
-      HomeController.getInstance().loadView("/com/example/trainreservationsystem/payment/payment-view.fxml");
+      HomeController.getInstance().loadView("/com/example/trainreservationsystem/member/payment/payment-view.fxml");
     } else {
-      HomeController.getInstance().loadView("/com/example/trainreservationsystem/search/search-view.fxml");
+      HomeController.getInstance().loadView("/com/example/trainreservationsystem/member/search/search-view.fxml");
     }
   }
 }

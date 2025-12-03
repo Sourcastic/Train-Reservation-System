@@ -1,4 +1,4 @@
-package com.example.trainreservationsystem.repositories;
+package com.example.trainreservationsystem.repositories.shared;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,8 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.trainreservationsystem.models.shared.Seat;
 import com.example.trainreservationsystem.models.admin.SeatClass;
+import com.example.trainreservationsystem.models.shared.Seat;
 import com.example.trainreservationsystem.utils.shared.database.Database;
 
 public class SeatRepository {

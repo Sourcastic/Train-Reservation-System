@@ -3,6 +3,9 @@ package com.example.trainreservationsystem.models.member;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.trainreservationsystem.models.admin.Schedule;
+import com.example.trainreservationsystem.models.shared.Seat;
+
 public class Booking {
   private int id;
   private int userId;

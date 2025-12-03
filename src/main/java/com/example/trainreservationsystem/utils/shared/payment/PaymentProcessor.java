@@ -83,14 +83,14 @@ public class PaymentProcessor {
 
   private static PaymentAdapter createAdapterForMethod(String methodName) {
     if (methodName.contains("Card")) {
-      return new com.example.trainreservationsystem.utils.payment.adapters.CardPaymentAdapter();
+      return new com.example.trainreservationsystem.utils.shared.payment.adapters.CardPaymentAdapter();
     } else if (methodName.contains("Bank") || methodName.contains("Transfer")) {
-      return new com.example.trainreservationsystem.utils.payment.adapters.BankTransferPaymentAdapter();
+      return new com.example.trainreservationsystem.utils.shared.payment.adapters.BankTransferPaymentAdapter();
     } else if (methodName.contains("Wallet")) {
-      return new com.example.trainreservationsystem.utils.payment.adapters.WalletPaymentAdapter();
+      return new com.example.trainreservationsystem.utils.shared.payment.adapters.WalletPaymentAdapter();
     }
     // Default to card adapter
-    return new com.example.trainreservationsystem.utils.payment.adapters.CardPaymentAdapter();
+    return new com.example.trainreservationsystem.utils.shared.payment.adapters.CardPaymentAdapter();
   }
 
   private static Map<String, String> parseDetailsString(String details) {

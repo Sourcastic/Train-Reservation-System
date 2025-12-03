@@ -1,6 +1,12 @@
 package com.example.trainreservationsystem.controllers.shared.auth;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 import com.example.trainreservationsystem.services.shared.AuthService;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,11 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
 public class ResetPasswordController {
 
@@ -106,7 +107,7 @@ public class ResetPasswordController {
         try {
             Stage stage = (Stage) backButton.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/example/trainreservationsystem/login-view.fxml"));
+                    getClass().getResource("/com/example/trainreservationsystem/shared/login-view.fxml"));
             Parent root = loader.load();
             stage.setScene(new Scene(root, 1280, 800));
         } catch (IOException e) {

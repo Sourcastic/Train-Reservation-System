@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.example.trainreservationsystem.models.admin.Schedule;
-import com.example.trainreservationsystem.repositories.TrainRepository;
+import com.example.trainreservationsystem.repositories.admin.TrainRepository;
 
 public class TrainService {
   private final TrainRepository repository;

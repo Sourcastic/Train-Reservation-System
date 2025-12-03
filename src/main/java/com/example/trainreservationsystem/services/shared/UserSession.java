@@ -7,7 +7,7 @@ public class UserSession {
   private static UserSession instance;
   private User currentUser;
   private Schedule selectedSchedule;
-  private com.example.trainreservationsystem.models.Booking pendingBooking;
+  private com.example.trainreservationsystem.models.member.Booking pendingBooking;
   private String selectedClass; // SL, 3A, 2A
   private double selectedClassPriceMultiplier; // Price multiplier for selected class
   private Integer preselectedSeat; // Seat number preselected from class card
@@ -60,11 +60,11 @@ public class UserSession {
     return selectedSchedule;
   }
 
-  public void setPendingBooking(com.example.trainreservationsystem.models.Booking booking) {
+  public void setPendingBooking(com.example.trainreservationsystem.models.member.Booking booking) {
     this.pendingBooking = booking;
   }
 
-  public com.example.trainreservationsystem.models.Booking getPendingBooking() {
+  public com.example.trainreservationsystem.models.member.Booking getPendingBooking() {
     return pendingBooking;
   }
 

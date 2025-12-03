@@ -6,9 +6,9 @@ import java.util.List;
 import com.example.trainreservationsystem.models.member.Booking;
 import com.example.trainreservationsystem.models.member.PaymentMethod;
 import com.example.trainreservationsystem.models.member.Ticket;
-import com.example.trainreservationsystem.repositories.BookingRepository;
-import com.example.trainreservationsystem.repositories.PaymentRepository;
-import com.example.trainreservationsystem.repositories.TicketRepository;
+import com.example.trainreservationsystem.repositories.member.BookingRepository;
+import com.example.trainreservationsystem.repositories.member.PaymentRepository;
+import com.example.trainreservationsystem.repositories.member.TicketRepository;
 
 /**
  * Singleton service that caches user data in memory using write-through

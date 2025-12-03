@@ -1,10 +1,10 @@
 package com.example.trainreservationsystem.controllers.member.booking;
 
 import com.example.trainreservationsystem.models.member.Booking;
+import com.example.trainreservationsystem.services.member.booking.BookingService;
 import com.example.trainreservationsystem.services.shared.NotificationService;
 import com.example.trainreservationsystem.services.shared.ServiceFactory;
 import com.example.trainreservationsystem.services.shared.UserSession;
-import com.example.trainreservationsystem.services.member.booking.BookingService;
 import com.example.trainreservationsystem.utils.shared.ui.AlertUtils;
 
 import javafx.beans.binding.Bindings;
@@ -177,7 +177,7 @@ public class HistoryController {
   private void openTicketWindow(Booking booking) {
     try {
       FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("/com/example/trainreservationsystem/booking/ticket-view.fxml"));
+          getClass().getResource("/com/example/trainreservationsystem/member/booking/ticket-view.fxml"));
       Parent root = loader.load();
       TicketViewController controller = loader.getController();
       controller.setBooking(booking);

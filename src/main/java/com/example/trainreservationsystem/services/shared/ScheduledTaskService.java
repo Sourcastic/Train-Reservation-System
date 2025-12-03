@@ -8,10 +8,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.example.trainreservationsystem.models.member.Booking;
-import com.example.trainreservationsystem.repositories.BookingRepository;
-import com.example.trainreservationsystem.repositories.PaymentRepository;
 import com.example.trainreservationsystem.repositories.RepositoryFactory;
-import com.example.trainreservationsystem.repositories.TrainRepository;
+import com.example.trainreservationsystem.repositories.admin.TrainRepository;
+import com.example.trainreservationsystem.repositories.member.BookingRepository;
+import com.example.trainreservationsystem.repositories.member.PaymentRepository;
 
 /**
  * Service for running scheduled background tasks.

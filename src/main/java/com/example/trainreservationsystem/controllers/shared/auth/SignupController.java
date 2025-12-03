@@ -144,7 +144,7 @@ public class SignupController {
     try {
       Stage stage = (Stage) nameField.getScene().getWindow();
       FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("/com/example/trainreservationsystem/login-view.fxml"));
+          getClass().getResource("/com/example/trainreservationsystem/shared/login-view.fxml"));
       Parent root = loader.load();
       stage.setScene(new Scene(root, 1280, 800));
     } catch (Exception e) {
@@ -158,7 +158,7 @@ public class SignupController {
     try {
       Stage stage = (Stage) nameField.getScene().getWindow();
       FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("/com/example/trainreservationsystem/landing-view.fxml"));
+          getClass().getResource("/com/example/trainreservationsystem/shared/landing-view.fxml"));
       Parent root = loader.load();
       stage.setScene(new Scene(root, 1280, 800));
     } catch (Exception e) {

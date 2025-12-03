@@ -14,12 +14,12 @@ import java.util.Set;
 import org.controlsfx.control.SearchableComboBox;
 
 import com.example.trainreservationsystem.controllers.shared.HomeController;
-import com.example.trainreservationsystem.models.member.BookingClass;
 import com.example.trainreservationsystem.models.admin.Schedule;
-import com.example.trainreservationsystem.services.shared.ServiceFactory;
+import com.example.trainreservationsystem.models.member.BookingClass;
 import com.example.trainreservationsystem.services.admin.TrainService;
-import com.example.trainreservationsystem.services.shared.UserSession;
 import com.example.trainreservationsystem.services.member.booking.BookingService;
+import com.example.trainreservationsystem.services.shared.ServiceFactory;
+import com.example.trainreservationsystem.services.shared.UserSession;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -450,7 +450,7 @@ public class SearchController {
       UserSession.getInstance().setPreselectedSeat(firstAvailableSeat);
     }
 
-    HomeController.getInstance().loadView("/com/example/trainreservationsystem/booking/booking-view.fxml");
+    HomeController.getInstance().loadView("/com/example/trainreservationsystem/member/booking/booking-view.fxml");
   }
 
   private Integer findFirstAvailableSeat(BookingClass bookingClass, List<Integer> occupiedSeats) {

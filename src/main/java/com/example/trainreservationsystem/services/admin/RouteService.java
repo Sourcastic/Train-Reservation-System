@@ -1,11 +1,11 @@
 package com.example.trainreservationsystem.services.admin;
 
+import java.util.List;
+
 import com.example.trainreservationsystem.models.admin.Route;
 import com.example.trainreservationsystem.models.admin.RouteSegment;
 import com.example.trainreservationsystem.repositories.RepositoryFactory;
-import com.example.trainreservationsystem.repositories.RouteRepository;
-
-import java.util.List;
+import com.example.trainreservationsystem.repositories.admin.RouteRepository;
 
 public class RouteService {
 

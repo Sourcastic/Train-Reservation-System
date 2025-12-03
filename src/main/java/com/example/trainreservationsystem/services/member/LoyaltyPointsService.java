@@ -1,6 +1,7 @@
 package com.example.trainreservationsystem.services.member;
 
-import com.example.trainreservationsystem.repositories.UserRepository;
+import com.example.trainreservationsystem.repositories.shared.UserRepository;
+import com.example.trainreservationsystem.services.shared.NotificationService;
 
 /**
  * Service for managing loyalty points.

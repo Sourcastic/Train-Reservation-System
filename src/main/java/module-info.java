@@ -17,24 +17,50 @@ module com.example.trainreservationsystem {
 
     opens com.example.trainreservationsystem.applications to javafx.fxml;
 
-    exports com.example.trainreservationsystem.controllers;
-    exports com.example.trainreservationsystem.controllers.auth;
-    exports com.example.trainreservationsystem.controllers.booking;
-    exports com.example.trainreservationsystem.controllers.payment;
-    exports com.example.trainreservationsystem.controllers.search;
-    exports com.example.trainreservationsystem.services;
-    exports com.example.trainreservationsystem.services.booking;
-    exports com.example.trainreservationsystem.services.payment;
-    exports com.example.trainreservationsystem.models;
-    exports com.example.trainreservationsystem.utils.booking;
-    exports com.example.trainreservationsystem.utils.payment;
-    exports com.example.trainreservationsystem.utils.ui;
-    exports com.example.trainreservationsystem.utils.database;
-    exports com.example.trainreservationsystem.repositories;
+    // Controllers
+    exports com.example.trainreservationsystem.controllers.admin;
+    exports com.example.trainreservationsystem.controllers.member;
+    exports com.example.trainreservationsystem.controllers.member.booking;
+    exports com.example.trainreservationsystem.controllers.member.payment;
+    exports com.example.trainreservationsystem.controllers.member.search;
+    exports com.example.trainreservationsystem.controllers.shared;
+    exports com.example.trainreservationsystem.controllers.shared.auth;
+    exports com.example.trainreservationsystem.controllers.staff;
 
-    opens com.example.trainreservationsystem.controllers to javafx.fxml;
-    opens com.example.trainreservationsystem.controllers.auth to javafx.fxml;
-    opens com.example.trainreservationsystem.controllers.booking to javafx.fxml;
-    opens com.example.trainreservationsystem.controllers.payment to javafx.fxml;
-    opens com.example.trainreservationsystem.controllers.search to javafx.fxml;
+    opens com.example.trainreservationsystem.controllers.admin to javafx.fxml;
+    opens com.example.trainreservationsystem.controllers.member to javafx.fxml;
+    opens com.example.trainreservationsystem.controllers.member.booking to javafx.fxml;
+    opens com.example.trainreservationsystem.controllers.member.payment to javafx.fxml;
+    opens com.example.trainreservationsystem.controllers.member.search to javafx.fxml;
+    opens com.example.trainreservationsystem.controllers.shared to javafx.fxml;
+    opens com.example.trainreservationsystem.controllers.shared.auth to javafx.fxml;
+    opens com.example.trainreservationsystem.controllers.staff to javafx.fxml;
+
+    // Services
+    exports com.example.trainreservationsystem.services.admin;
+    exports com.example.trainreservationsystem.services.member;
+    exports com.example.trainreservationsystem.services.member.booking;
+    exports com.example.trainreservationsystem.services.member.payment;
+    exports com.example.trainreservationsystem.services.shared;
+    exports com.example.trainreservationsystem.services.staff;
+
+    // Models
+    exports com.example.trainreservationsystem.models.admin;
+    exports com.example.trainreservationsystem.models.member;
+    exports com.example.trainreservationsystem.models.member.booking;
+    exports com.example.trainreservationsystem.models.shared;
+
+    // Utils
+    exports com.example.trainreservationsystem.utils.member.booking;
+    exports com.example.trainreservationsystem.utils.shared.database;
+    exports com.example.trainreservationsystem.utils.shared.payment;
+    exports com.example.trainreservationsystem.utils.shared.payment.adapters;
+    exports com.example.trainreservationsystem.utils.shared.ui;
+
+    // Repositories
+    exports com.example.trainreservationsystem.repositories;
+    exports com.example.trainreservationsystem.repositories.admin;
+    exports com.example.trainreservationsystem.repositories.member;
+    exports com.example.trainreservationsystem.repositories.shared;
+    exports com.example.trainreservationsystem.repositories.staff;
 }

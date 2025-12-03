@@ -3,11 +3,12 @@ package com.example.trainreservationsystem.controllers.admin;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.example.trainreservationsystem.controllers.shared.HomeController;
 import com.example.trainreservationsystem.models.admin.Discount;
 import com.example.trainreservationsystem.models.admin.Schedule;
-import com.example.trainreservationsystem.repositories.DiscountRepository;
 import com.example.trainreservationsystem.repositories.RepositoryFactory;
-import com.example.trainreservationsystem.repositories.ScheduleRepository;
+import com.example.trainreservationsystem.repositories.admin.DiscountRepository;
+import com.example.trainreservationsystem.repositories.admin.ScheduleRepository;
 import com.example.trainreservationsystem.utils.shared.ui.AlertUtils;
 
 import javafx.collections.FXCollections;

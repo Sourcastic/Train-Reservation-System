@@ -6,9 +6,9 @@ import java.util.Map;
 import com.example.trainreservationsystem.models.admin.Schedule;
 import com.example.trainreservationsystem.models.admin.Statistics;
 import com.example.trainreservationsystem.repositories.RepositoryFactory;
-import com.example.trainreservationsystem.repositories.ScheduleRepository;
-import com.example.trainreservationsystem.repositories.SeatRepository;
-import com.example.trainreservationsystem.repositories.StatisticsRepository;
+import com.example.trainreservationsystem.repositories.admin.ScheduleRepository;
+import com.example.trainreservationsystem.repositories.admin.StatisticsRepository;
+import com.example.trainreservationsystem.repositories.shared.SeatRepository;
 
 public class ScheduleService {
 
@@ -68,7 +68,7 @@ public class ScheduleService {
 
         if (timeChanged) {
             try {
-                List<com.example.trainreservationsystem.models.Booking> bookings = com.example.trainreservationsystem.repositories.RepositoryFactory
+                List<com.example.trainreservationsystem.models.member.Booking> bookings = com.example.trainreservationsystem.repositories.RepositoryFactory
                         .getBookingRepository()
                         .getBookingsByScheduleId(newSchedule.getId());
 
@@ -81,9 +81,9 @@ public class ScheduleService {
                         newSchedule.getDepartureDate(),
                         newSchedule.getDepartureTime());
 
-                for (com.example.trainreservationsystem.models.Booking booking : bookings) {
+                for (com.example.trainreservationsystem.models.member.Booking booking : bookings) {
                     if ("CONFIRMED".equals(booking.getStatus()) || "PENDING".equals(booking.getStatus())) {
-                        com.example.trainreservationsystem.services.NotificationService.getInstance()
+                        com.example.trainreservationsystem.services.shared.NotificationService.getInstance()
                                 .add(message, booking.getUserId());
                     }
                 }

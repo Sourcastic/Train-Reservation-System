@@ -1,5 +1,22 @@
 package com.example.trainreservationsystem.repositories;
 
+import com.example.trainreservationsystem.repositories.admin.CancellationPolicyRepository;
+import com.example.trainreservationsystem.repositories.admin.DiscountRepository;
+import com.example.trainreservationsystem.repositories.admin.RouteRepository;
+import com.example.trainreservationsystem.repositories.admin.ScheduleRepository;
+import com.example.trainreservationsystem.repositories.admin.SeatClassRepository;
+import com.example.trainreservationsystem.repositories.admin.StatisticsRepository;
+import com.example.trainreservationsystem.repositories.admin.StopRepository;
+import com.example.trainreservationsystem.repositories.admin.TrainRepository;
+import com.example.trainreservationsystem.repositories.member.BookingRepository;
+import com.example.trainreservationsystem.repositories.member.NotificationRepository;
+import com.example.trainreservationsystem.repositories.member.PaymentRepository;
+import com.example.trainreservationsystem.repositories.member.TicketRepository;
+import com.example.trainreservationsystem.repositories.shared.ComplaintRepository;
+import com.example.trainreservationsystem.repositories.shared.SeatRepository;
+import com.example.trainreservationsystem.repositories.shared.UserRepository;
+import com.example.trainreservationsystem.repositories.staff.StaffComplaintRepository;
+
 /**
  * Factory for creating repository instances.
  * Uses singleton pattern to reuse repository instances.

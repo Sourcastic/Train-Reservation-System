@@ -1,8 +1,4 @@
-package com.example.trainreservationsystem.repositories;
-
-import com.example.trainreservationsystem.models.admin.Route;
-import com.example.trainreservationsystem.models.admin.Schedule;
-import com.example.trainreservationsystem.utils.shared.database.Database;
+package com.example.trainreservationsystem.repositories.admin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +6,12 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.trainreservationsystem.models.admin.Route;
+import com.example.trainreservationsystem.models.admin.Schedule;
+import com.example.trainreservationsystem.models.shared.Seat;
+import com.example.trainreservationsystem.repositories.shared.SeatRepository;
+import com.example.trainreservationsystem.utils.shared.database.Database;
 
 public class ScheduleRepository {
 
@@ -102,10 +104,10 @@ public class ScheduleRepository {
 
             // Batch load all seats for all schedules (fixes N+1)
             if (!scheduleIds.isEmpty()) {
-                java.util.Map<Integer, List<com.example.trainreservationsystem.models.Seat>> seatsBySchedule = seatRepository
+                java.util.Map<Integer, List<Seat>> seatsBySchedule = seatRepository
                         .getSeatsByScheduleIds(scheduleIds);
                 for (Schedule schedule : schedules) {
-                    List<com.example.trainreservationsystem.models.Seat> seats = seatsBySchedule
+                    List<Seat> seats = seatsBySchedule
                             .getOrDefault(schedule.getId(), new ArrayList<>());
                     schedule.setSeats(seats);
                 }

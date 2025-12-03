@@ -1,4 +1,4 @@
-package com.example.trainreservationsystem.repositories;
+package com.example.trainreservationsystem.repositories.shared;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;

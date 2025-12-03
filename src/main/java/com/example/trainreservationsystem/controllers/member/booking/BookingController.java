@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Set;
 
 import com.example.trainreservationsystem.controllers.shared.HomeController;
+import com.example.trainreservationsystem.models.admin.Schedule;
 import com.example.trainreservationsystem.models.member.Booking;
 import com.example.trainreservationsystem.models.member.BookingClass;
 import com.example.trainreservationsystem.models.member.Passenger;
-import com.example.trainreservationsystem.models.admin.Schedule;
+import com.example.trainreservationsystem.services.member.booking.BookingService;
 import com.example.trainreservationsystem.services.shared.ServiceFactory;
 import com.example.trainreservationsystem.services.shared.UserSession;
-import com.example.trainreservationsystem.services.member.booking.BookingService;
 import com.example.trainreservationsystem.utils.member.booking.BookingHelper;
 import com.example.trainreservationsystem.utils.member.booking.SeatGridHelper;
 import com.example.trainreservationsystem.utils.shared.ui.AlertUtils;
@@ -539,6 +539,6 @@ public class BookingController {
 
   private void saveBookingAndRedirect(Booking booking) {
     BookingHelper.saveBooking(booking, schedule, selectedSeats.size());
-    HomeController.getInstance().loadView("/com/example/trainreservationsystem/payment/payment-view.fxml");
+    HomeController.getInstance().loadView("/com/example/trainreservationsystem/member/payment/payment-view.fxml");
   }
 }

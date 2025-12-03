@@ -18,12 +18,12 @@ public class LandingController {
 
   @FXML
   public void handleLogin() {
-    navigateTo("/com/example/trainreservationsystem/login-view.fxml");
+    navigateTo("/com/example/trainreservationsystem/shared/login-view.fxml");
   }
 
   @FXML
   public void handleSignup() {
-    navigateTo("/com/example/trainreservationsystem/signup-view.fxml");
+    navigateTo("/com/example/trainreservationsystem/shared/signup-view.fxml");
   }
 
   private void navigateTo(String fxmlPath) {

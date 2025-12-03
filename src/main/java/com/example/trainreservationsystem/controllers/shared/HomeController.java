@@ -95,8 +95,8 @@ public class HomeController {
 
         String userType = UserSession.getInstance().getCurrentUser().getUserType();
         String viewPath = ("CUSTOMER".equals(userType) || "MEMBER".equals(userType))
-                ? "/com/example/trainreservationsystem/member-home.fxml"
-                : "/com/example/trainreservationsystem/search/search-view.fxml";
+                ? "/com/example/trainreservationsystem/member/member-home.fxml"
+                : "/com/example/trainreservationsystem/member/search/search-view.fxml";
         loadView(viewPath);
     }
 
@@ -104,7 +104,7 @@ public class HomeController {
         try {
             Stage stage = (Stage) contentArea.getScene().getWindow();
             Parent root = FXMLLoader.load(
-                    getClass().getResource("/com/example/trainreservationsystem/landing-view.fxml"));
+                    getClass().getResource("/com/example/trainreservationsystem/shared/landing-view.fxml"));
             stage.setScene(new Scene(root, 1280, 800));
         } catch (IOException e) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, "Failed to redirect to landing", e);
@@ -121,21 +121,21 @@ public class HomeController {
 
     @FXML
     public void showDashboard() {
-        loadView("/com/example/trainreservationsystem/member-home.fxml");
+        loadView("/com/example/trainreservationsystem/member/member-home.fxml");
     }
 
     @FXML
     public void showSearch() {
-        loadView("/com/example/trainreservationsystem/search/search-view.fxml");
+        loadView("/com/example/trainreservationsystem/member/search/search-view.fxml");
     }
 
     @FXML
     public void showHistory() {
-        loadView("/com/example/trainreservationsystem/booking/booking-history.fxml");
+        loadView("/com/example/trainreservationsystem/member/booking/booking-history.fxml");
     }
 
     public void showStaffDashboard() {
-        loadView("/com/example/trainreservationsystem/staff-dashboard-view.fxml");
+        loadView("/com/example/trainreservationsystem/staff/staff-dashboard-view.fxml");
     }
 
     @FXML
@@ -171,7 +171,7 @@ public class HomeController {
     private void navigateToStaffDashboard() {
         try {
             Parent root = FXMLLoader.load(
-                    getClass().getResource("/com/example/trainreservationsystem/staff-view.fxml"));
+                    getClass().getResource("/com/example/trainreservationsystem/staff/staff-view.fxml"));
             Stage stage = (Stage) userNameLabel.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
@@ -184,7 +184,7 @@ public class HomeController {
     private void navigateToUpdateProfile() {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/example/trainreservationsystem/update-profile-view.fxml"));
+                    getClass().getResource("/com/example/trainreservationsystem/member/update-profile-view.fxml"));
             Parent view = loader.load();
             contentArea.getChildren().clear();
             contentArea.getChildren().add(view);
@@ -196,14 +196,14 @@ public class HomeController {
 
     @FXML
     private void showComplaint() {
-        loadView("/com/example/trainreservationsystem/complaint-view.fxml");
+        loadView("/com/example/trainreservationsystem/member/complaint-view.fxml");
     }
 
     @FXML
     private void openNotifications() {
         try {
             Parent root = FXMLLoader.load(
-                    getClass().getResource("/com/example/trainreservationsystem/notification-inbox.fxml"));
+                    getClass().getResource("/com/example/trainreservationsystem/member/notification-inbox.fxml"));
             Stage notificationStage = new Stage();
             notificationStage.setTitle("Notifications");
             notificationStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);

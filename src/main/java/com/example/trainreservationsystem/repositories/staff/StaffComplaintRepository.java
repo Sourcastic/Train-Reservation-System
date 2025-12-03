@@ -1,9 +1,9 @@
-package com.example.trainreservationsystem.repositories;
-
-import com.example.trainreservationsystem.models.shared.Complaint;
+package com.example.trainreservationsystem.repositories.staff;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.trainreservationsystem.models.shared.Complaint;
 
 public class StaffComplaintRepository {
 

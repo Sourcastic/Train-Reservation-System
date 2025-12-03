@@ -1,27 +1,37 @@
 package com.example.trainreservationsystem.controllers.admin;
 
-import com.example.trainreservationsystem.models.admin.Route;
-import com.example.trainreservationsystem.models.admin.Schedule;
-import com.example.trainreservationsystem.models.admin.SeatClass;
-import com.example.trainreservationsystem.repositories.RouteRepository;
-import com.example.trainreservationsystem.repositories.ScheduleRepository;
-import com.example.trainreservationsystem.repositories.SeatClassRepository;
-import com.example.trainreservationsystem.repositories.SeatRepository;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.example.trainreservationsystem.models.admin.Route;
+import com.example.trainreservationsystem.models.admin.Schedule;
+import com.example.trainreservationsystem.models.admin.SeatClass;
+import com.example.trainreservationsystem.repositories.admin.RouteRepository;
+import com.example.trainreservationsystem.repositories.admin.ScheduleRepository;
+import com.example.trainreservationsystem.repositories.admin.SeatClassRepository;
+import com.example.trainreservationsystem.repositories.shared.SeatRepository;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class ManageSchedulesController {
 
@@ -303,7 +313,7 @@ public class ManageSchedulesController {
 
                 int quantity = Integer.parseInt(qtyStr);
                 for (int i = 0; i < quantity; i++) {
-                    com.example.trainreservationsystem.models.Seat seat = new com.example.trainreservationsystem.models.Seat();
+                    com.example.trainreservationsystem.models.shared.Seat seat = new com.example.trainreservationsystem.models.shared.Seat();
                     seat.setSeatClass(sc);
                     seat.setBooked(false);
                     seatRepository.addSeat(seat, savedSchedule.getId());

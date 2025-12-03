@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.example.trainreservationsystem.models.member.Booking;
+import com.example.trainreservationsystem.models.shared.Seat;
+
 /**
  * Represents a train schedule (a specific run of a route).
  */
@@ -148,7 +151,7 @@ public class Schedule {
    */
   public Map<Integer, Long> freeSeatsByClass() {
     return seats.stream()
-        .filter(seat -> !seat.isBooked())
+        .filter(seat -> !seat.isBooked() && seat.getSeatClass() != null)
         .collect(Collectors.groupingBy(seat -> seat.getSeatClass().getId(), Collectors.counting()));
   }
 
@@ -156,7 +159,10 @@ public class Schedule {
    * Calculate total price for a given seat (route price + class base fare).
    */
   public double calculateSeatPrice(Seat seat) {
-    double routePrice = route.totalPrice();
+    if (seat == null || seat.getSeatClass() == null) {
+      return route != null ? route.totalPrice() : 0.0;
+    }
+    double routePrice = route != null ? route.totalPrice() : 0.0;
     return routePrice + seat.getSeatClass().getBaseFare();
   }
 
@@ -178,6 +184,7 @@ public class Schedule {
     stats.setDepartureTime(this.departureTime);
     // For each seat class, record seats sold
     Map<Integer, Long> soldPerClass = bookings.stream()
+        .filter(b -> b.getSeat() != null && b.getSeat().getSeatClass() != null)
         .collect(Collectors.groupingBy(b -> b.getSeat().getSeatClass().getId(), Collectors.counting()));
     stats.setSeatsSoldPerClass(soldPerClass);
     return stats;

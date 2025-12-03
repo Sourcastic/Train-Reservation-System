@@ -1,5 +1,6 @@
 package com.example.trainreservationsystem.controllers.member;
 
+import com.example.trainreservationsystem.controllers.shared.HomeController;
 import com.example.trainreservationsystem.services.member.LoyaltyPointsService;
 import com.example.trainreservationsystem.services.shared.ServiceFactory;
 import com.example.trainreservationsystem.services.shared.UserSession;
@@ -29,7 +30,7 @@ public class MemberHomeController {
 
   @FXML
   private void goToBook() {
-    HomeController.getInstance().loadView("/com/example/trainreservationsystem/booking/booking-view.fxml");
+    HomeController.getInstance().loadView("/com/example/trainreservationsystem/member/booking/booking-view.fxml");
   }
 
   @FXML

@@ -1,7 +1,10 @@
 package com.example.trainreservationsystem.controllers.staff;
 
+import java.io.IOException;
+
 import com.example.trainreservationsystem.applications.HomeApplication;
 import com.example.trainreservationsystem.services.shared.UserSession;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,8 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class StaffController {
 
@@ -86,13 +87,13 @@ public class StaffController {
 
     @FXML
     private void showDashboard() {
-        loadView("staff-dashboard-view.fxml", btnDashboard);
+        loadView("staff/staff-dashboard-view.fxml", btnDashboard);
     }
 
     @FXML
     private void showComplaints() {
         // Assuming respondtocomplaints-view.fxml is the staff complaint view
-        loadView("respondtocomplaints-view.fxml", btnComplaints);
+        loadView("staff/respondtocomplaints-view.fxml", btnComplaints);
     }
 
     @FXML
@@ -121,27 +122,27 @@ public class StaffController {
 
     @FXML
     private void showTrainStatus() {
-        loadView("updatetrainstatus-view.fxml", btnTrainStatus);
+        loadView("staff/updatetrainstatus-view.fxml", btnTrainStatus);
     }
 
     @FXML
     private void showManageStops() {
-        loadView("manage-stops-view.fxml", btnManageStops);
+        loadView("admin/manage-stops-view.fxml", btnManageStops);
     }
 
     @FXML
     private void showManageSeatClasses() {
-        loadView("manage-seat-classes-view.fxml", btnManageSeatClasses);
+        loadView("admin/manage-seat-classes-view.fxml", btnManageSeatClasses);
     }
 
     @FXML
     private void showManageRoutes() {
-        loadView("manage-routes-view.fxml", btnManageRoutes);
+        loadView("admin/manage-routes-view.fxml", btnManageRoutes);
     }
 
     @FXML
     private void showManageSchedules() {
-        loadView("manage-schedules-view.fxml", btnManageSchedules);
+        loadView("admin/manage-schedules-view.fxml", btnManageSchedules);
     }
 
     @FXML
@@ -149,7 +150,7 @@ public class StaffController {
         UserSession.getInstance().clearSession();
         try {
             FXMLLoader loader = new FXMLLoader(
-                    HomeApplication.class.getResource("/com/example/trainreservationsystem/login-view.fxml"));
+                    HomeApplication.class.getResource("/com/example/trainreservationsystem/shared/login-view.fxml"));
             Scene scene = new Scene(loader.load());
             Stage stage = (Stage) btnLogout.getScene().getWindow();
             stage.setScene(scene);

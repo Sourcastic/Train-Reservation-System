@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.example.trainreservationsystem.models.member.Booking;
 import com.example.trainreservationsystem.models.admin.Discount;
+import com.example.trainreservationsystem.models.member.Booking;
 import com.example.trainreservationsystem.models.member.Payment;
 import com.example.trainreservationsystem.models.member.PaymentMethod;
-import com.example.trainreservationsystem.repositories.BookingRepository;
-import com.example.trainreservationsystem.repositories.DiscountRepository;
-import com.example.trainreservationsystem.repositories.PaymentRepository;
+import com.example.trainreservationsystem.repositories.admin.DiscountRepository;
+import com.example.trainreservationsystem.repositories.member.BookingRepository;
+import com.example.trainreservationsystem.repositories.member.PaymentRepository;
 import com.example.trainreservationsystem.services.member.LoyaltyPointsService;
 import com.example.trainreservationsystem.utils.shared.payment.PaymentAdapter;
 

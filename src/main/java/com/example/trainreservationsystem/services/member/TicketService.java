@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import com.example.trainreservationsystem.models.member.Ticket;
 import com.example.trainreservationsystem.repositories.RepositoryFactory;
-import com.example.trainreservationsystem.repositories.TicketRepository;
+import com.example.trainreservationsystem.repositories.member.TicketRepository;
 
 public class TicketService {
     private final TicketRepository ticketRepository = RepositoryFactory.getTicketRepository();

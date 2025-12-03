@@ -1,6 +1,8 @@
 package com.example.trainreservationsystem.services.shared;
 
 import com.example.trainreservationsystem.repositories.RepositoryFactory;
+import com.example.trainreservationsystem.services.admin.TrainService;
+import com.example.trainreservationsystem.services.member.LoyaltyPointsService;
 import com.example.trainreservationsystem.services.member.booking.BookingService;
 import com.example.trainreservationsystem.services.member.payment.PaymentService;
 
@@ -45,7 +47,7 @@ public class ServiceFactory {
     return loyaltyPointsService;
   }
 
-  public static com.example.trainreservationsystem.repositories.DiscountRepository getDiscountRepository() {
+  public static com.example.trainreservationsystem.repositories.admin.DiscountRepository getDiscountRepository() {
     return RepositoryFactory.getDiscountRepository();
   }
 

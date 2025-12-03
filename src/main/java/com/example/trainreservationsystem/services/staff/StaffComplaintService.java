@@ -1,9 +1,9 @@
 package com.example.trainreservationsystem.services.staff;
 
-import com.example.trainreservationsystem.models.shared.Complaint;
-import com.example.trainreservationsystem.repositories.StaffComplaintRepository;
-
 import java.util.List;
+
+import com.example.trainreservationsystem.models.shared.Complaint;
+import com.example.trainreservationsystem.repositories.staff.StaffComplaintRepository;
 
 public class StaffComplaintService {
 

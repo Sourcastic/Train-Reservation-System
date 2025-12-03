@@ -1,4 +1,4 @@
-package com.example.trainreservationsystem.repositories;
+package com.example.trainreservationsystem.repositories.member;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
