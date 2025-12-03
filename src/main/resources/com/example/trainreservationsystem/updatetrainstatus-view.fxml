@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20.0" xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.trainreservationsystem.controllers.updatetrainstatuscontroller">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Update Train Status" styleClass="searchbox-label" />
+
+    <!-- Table of schedules -->
+    <TableView fx:id="scheduleTable" prefHeight="300">
+        <columns>
+            <TableColumn text="ID" fx:id="idColumn" prefWidth="50"/>
+            <TableColumn text="Route" fx:id="routeColumn" prefWidth="200"/>
+            <TableColumn text="Departure" fx:id="departureColumn" prefWidth="100"/>
+            <TableColumn text="Arrival" fx:id="arrivalColumn" prefWidth="100"/>
+            <TableColumn text="Status" fx:id="statusColumn" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+    <!-- Status update controls -->
+    <HBox spacing="10">
+        <Label text="New Status:"/>
+        <ComboBox fx:id="statusComboBox"/>
+        <Button text="Update Status" onAction="#handleUpdateStatus"/>
+    </HBox>
+
+</VBox>

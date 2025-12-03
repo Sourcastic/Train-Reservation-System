@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.trainreservationsystem.controllers.RespondToComplaintsController">
+    <top>
+        <HBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <Label text="Staff: Respond to Complaints" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button fx:id="refreshButton" text="Refresh" />
+            <Button fx:id="respondButton" text="View / Respond" />
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="complaintsTable" prefWidth="700" prefHeight="400">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" prefWidth="60"/>
+                <TableColumn fx:id="subjectColumn" text="Subject" prefWidth="240"/>
+                <TableColumn fx:id="trackingColumn" text="Tracking ID" prefWidth="180"/>
+                <TableColumn fx:id="createdAtColumn" text="Created At" prefWidth="220"/>
+            </columns>
+        </TableView>
+    </center>
+
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+</BorderPane>

@@ -12,6 +12,7 @@ module com.example.trainreservationsystem {
     requires org.kordamp.bootstrapfx.core;
     requires io.github.cdimascio.dotenv.java;
     requires java.sql;
+//    requires com.example.trainreservationsystem;
 
     exports com.example.trainreservationsystem.applications;
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trainreservationsystem.controllers.PaymentController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <Label styleClass="searchbox-label" text="Payment" />
+
+    <Label fx:id="bookingDetailsLabel" />
+    <Label fx:id="amountLabel" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+
+    <Label text="Select Payment Method:" />
+    <ComboBox fx:id="paymentMethodCombo" prefWidth="300.0" />
+
+    <Button fx:id="addPaymentMethodButton" text="Add Payment Method" onAction="#handleAddPaymentMethod" />
+    <Button fx:id="payButton" text="Pay Now" onAction="#handlePay" />
+</VBox>
+
