@@ -23,6 +23,7 @@ import com.example.trainreservationsystem.services.member.booking.BookingService
 import com.example.trainreservationsystem.services.shared.ServiceFactory;
 import com.example.trainreservationsystem.services.shared.UserSession;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -64,44 +65,67 @@ public class SearchController {
 
   @FXML
   public void initialize() {
-    initializeStations();
     setupStationFilters();
     setupSortCombo();
     emptyStatePane.managedProperty().bind(emptyStatePane.visibleProperty());
     if (resultsArea != null) {
       resultsArea.managedProperty().bind(resultsArea.visibleProperty());
     }
+    // Load stations asynchronously to avoid blocking UI
+    initializeStationsAsync();
   }
 
-  private void initializeStations() {
-    try {
-      // Load stations from routes in database
-      List<Route> routes = routeService.getAllRoutes();
-      Set<String> uniqueStations = new HashSet<>();
+  private void initializeStationsAsync() {
+    // Show loading state
+    sourceCombo.setItems(FXCollections.observableArrayList("Loading..."));
+    destinationCombo.setItems(FXCollections.observableArrayList("Loading..."));
+    sourceCombo.setDisable(true);
+    destinationCombo.setDisable(true);
 
-      for (Route route : routes) {
-        if (route.getSource() != null && !route.getSource().isEmpty()) {
-          uniqueStations.add(route.getSource());
+    // Load stations in background thread
+    Thread loadStationsThread = new Thread(() -> {
+      try {
+        // Load stations from routes in database
+        List<Route> routes = routeService.getAllRoutes();
+        Set<String> uniqueStations = new HashSet<>();
+
+        for (Route route : routes) {
+          if (route.getSource() != null && !route.getSource().isEmpty()) {
+            uniqueStations.add(route.getSource());
+          }
+          if (route.getDestination() != null && !route.getDestination().isEmpty()) {
+            uniqueStations.add(route.getDestination());
+          }
         }
-        if (route.getDestination() != null && !route.getDestination().isEmpty()) {
-          uniqueStations.add(route.getDestination());
-        }
+
+        List<String> sortedStations = new ArrayList<>(uniqueStations);
+        sortedStations.sort(String.CASE_INSENSITIVE_ORDER);
+
+        // Update UI on JavaFX thread
+        Platform.runLater(() -> {
+          allStations.clear();
+          allStations.addAll(sortedStations);
+
+          sourceCombo.setItems(FXCollections.observableArrayList(allStations));
+          destinationCombo.setItems(FXCollections.observableArrayList(allStations));
+          sourceCombo.setDisable(false);
+          destinationCombo.setDisable(false);
+        });
+      } catch (Exception e) {
+        System.err.println("Error loading stations: " + e.getMessage());
+        e.printStackTrace();
+        // Update UI on JavaFX thread with error state
+        Platform.runLater(() -> {
+          allStations.clear();
+          sourceCombo.setItems(FXCollections.observableArrayList());
+          destinationCombo.setItems(FXCollections.observableArrayList());
+          sourceCombo.setDisable(false);
+          destinationCombo.setDisable(false);
+        });
       }
-
-      allStations.clear();
-      allStations.addAll(uniqueStations);
-      allStations.sort(String.CASE_INSENSITIVE_ORDER);
-
-      sourceCombo.setItems(FXCollections.observableArrayList(allStations));
-      destinationCombo.setItems(FXCollections.observableArrayList(allStations));
-    } catch (Exception e) {
-      System.err.println("Error loading stations: " + e.getMessage());
-      e.printStackTrace();
-      // Fallback to empty list if database fails
-      allStations.clear();
-      sourceCombo.setItems(FXCollections.observableArrayList());
-      destinationCombo.setItems(FXCollections.observableArrayList());
-    }
+    });
+    loadStationsThread.setDaemon(true);
+    loadStationsThread.start();
   }
 
   private void setupSortCombo() {

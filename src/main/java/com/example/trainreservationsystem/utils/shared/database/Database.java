@@ -17,6 +17,8 @@ public class Database {
   private static final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
   private static Database instance;
   private Connection connection;
+  private long lastValidationTime = 0;
+  private static final long VALIDATION_CACHE_MS = 5000; // Cache validation for 5 seconds
 
   private Database() {
     // Private constructor for singleton
@@ -32,41 +34,49 @@ public class Database {
   public static Connection getConnection() throws Exception {
     Database db = getInstance();
 
-    // Check if connection exists and is valid
+    // Check if connection exists and is closed
     if (db.connection == null || db.connection.isClosed()) {
       synchronized (Database.class) {
         // Double-check after acquiring lock
         if (db.connection == null || db.connection.isClosed()) {
           db.connection = db.createConnection();
+          db.lastValidationTime = System.currentTimeMillis();
         }
       }
     } else {
-      // Validate connection without throwing exception if validation fails
-      try {
-        if (!db.connection.isValid(2)) {
-          synchronized (Database.class) {
-            // Double-check after acquiring lock
-            if (!db.connection.isValid(2)) {
-              try {
-                db.connection.close();
-              } catch (SQLException e) {
-                // Ignore close errors
+      // Only validate connection if cache expired (reduce overhead)
+      long now = System.currentTimeMillis();
+      if (now - db.lastValidationTime > VALIDATION_CACHE_MS) {
+        try {
+          if (!db.connection.isValid(1)) { // Reduced timeout from 2 to 1 second
+            synchronized (Database.class) {
+              // Double-check after acquiring lock
+              if (!db.connection.isValid(1)) {
+                try {
+                  db.connection.close();
+                } catch (SQLException e) {
+                  // Ignore close errors
+                }
+                db.connection = db.createConnection();
+                db.lastValidationTime = System.currentTimeMillis();
               }
-              db.connection = db.createConnection();
             }
+          } else {
+            db.lastValidationTime = now;
           }
-        }
-      } catch (SQLException e) {
-        // Connection validation failed, recreate it
-        synchronized (Database.class) {
-          try {
-            if (db.connection != null && !db.connection.isClosed()) {
-              db.connection.close();
+        } catch (SQLException e) {
+          // Connection validation failed, recreate it
+          synchronized (Database.class) {
+            try {
+              if (db.connection != null && !db.connection.isClosed()) {
+                db.connection.close();
+              }
+            } catch (SQLException ex) {
+              // Ignore close errors
             }
-          } catch (SQLException ex) {
-            // Ignore close errors
+            db.connection = db.createConnection();
+            db.lastValidationTime = System.currentTimeMillis();
           }
-          db.connection = db.createConnection();
         }
       }
     }
