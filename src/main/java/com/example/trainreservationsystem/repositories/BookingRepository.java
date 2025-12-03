@@ -149,7 +149,7 @@ public class BookingRepository {
     public List<Booking> getBookingsByJourneyDate(LocalDate date) {
         List<Booking> bookings = new ArrayList<>();
         try (Connection conn = Database.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM bookings WHERE journey_date = ?")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM bookings WHERE DATE(journey_date) = ?")) {
 
             ps.setDate(1, Date.valueOf(date));
             ResultSet rs = ps.executeQuery();
@@ -161,4 +161,23 @@ public class BookingRepository {
         }
         return bookings;
     }
+
+    public List<Booking> getBookingsForTomorrow() {
+        List<Booking> bookings = new ArrayList<>();
+        try (Connection conn = Database.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "SELECT * FROM bookings WHERE DATE(journey_date) = DATE(NOW() + INTERVAL 1 DAY)"
+             )) {
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                bookings.add(mapResultSetToBooking(rs));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+
 }

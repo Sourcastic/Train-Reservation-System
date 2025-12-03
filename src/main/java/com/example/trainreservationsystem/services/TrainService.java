@@ -55,12 +55,13 @@ public class TrainService {
         }
     }
 
-    // Fetch all upcoming bookings for a specific date and send reminders
-    public void sendRemindersForUpcomingJourneys(LocalDate date) {
-        List<Booking> bookings = bookingRepository.getBookingsByJourneyDate(date);
+    public void sendTomorrowReminders() {
+        List<Booking> bookings = bookingRepository.getBookingsForTomorrow();
+
         for (Booking b : bookings) {
             notificationService.sendReminderForBooking(b);
         }
     }
+
 
 }
