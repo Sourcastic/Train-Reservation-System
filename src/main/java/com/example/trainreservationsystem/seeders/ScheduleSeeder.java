@@ -1,83 +1,46 @@
 package com.example.trainreservationsystem.seeders;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 /**
  * Seeds schedule data into the database.
- * Only seeds if the schedules table is empty.
- * Creates schedules for the next 7 days.
+ * Includes Schedules and Seats.
  */
 public class ScheduleSeeder {
 
-  /**
-   * Seeds train schedules into the database.
-   * Creates multiple schedules per route for the next week.
-   *
-   * @param conn Database connection
-   * @return true if data was seeded, false if table already had data
-   */
   public static boolean seed(Connection conn) {
     try (Statement stmt = conn.createStatement()) {
       // Check if schedules table is empty
       ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM schedules");
       if (rs.next() && rs.getInt(1) > 0) {
-        System.out.println("ℹ️  Schedules table already has data, skipping seed");
+        System.out.println("ℹ️  Schedules already seeded, skipping.");
         return false;
       }
 
-      LocalDate today = LocalDate.now();
-      StringBuilder sql = new StringBuilder(
-          "INSERT INTO schedules (route_id, departure_date, departure_time, arrival_time, capacity, price) VALUES ");
+      System.out.println("🌱 Seeding Schedules and Seats...");
 
-      // Generate schedules for next 7 days
-      for (int day = 1; day <= 7; day++) {
-        LocalDate scheduleDate = today.plusDays(day);
+      // Seed Schedules & Seats
+      // Tezgam: Karachi -> Rawalpindi
+      seedSchedule(conn, "Tezgam", "17:00:00", "19:30:00", 3000.0,
+          "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY");
 
-        // Route 1: New York to Boston (2 schedules per day)
-        addSchedule(sql, 1, scheduleDate, LocalTime.of(8, 0), LocalTime.of(12, 0), 100, 50.00);
-        addSchedule(sql, 1, scheduleDate, LocalTime.of(14, 0), LocalTime.of(18, 0), 100, 55.00);
+      // Green Line: Karachi -> Islamabad
+      seedSchedule(conn, "Green Line", "22:00:00", "20:00:00", 5000.0,
+          "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY");
 
-        // Route 2: Boston to New York (2 schedules per day)
-        addSchedule(sql, 2, scheduleDate, LocalTime.of(9, 0), LocalTime.of(13, 0), 100, 50.00);
-        addSchedule(sql, 2, scheduleDate, LocalTime.of(15, 30), LocalTime.of(19, 30), 100, 55.00);
+      // Khyber Mail: Karachi -> Peshawar
+      seedSchedule(conn, "Khyber Mail", "22:15:00", "22:00:00", 2500.0,
+          "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY");
 
-        // Route 3: Chicago to St. Louis (2 schedules per day)
-        addSchedule(sql, 3, scheduleDate, LocalTime.of(9, 30), LocalTime.of(14, 30), 80, 40.00);
-        addSchedule(sql, 3, scheduleDate, LocalTime.of(16, 0), LocalTime.of(21, 0), 80, 45.00);
+      // Jaffer Express: Quetta -> Peshawar
+      seedSchedule(conn, "Jaffer Express", "09:00:00", "14:00:00", 3500.0,
+          "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY");
 
-        // Route 4: St. Louis to Chicago (1 schedule per day)
-        addSchedule(sql, 4, scheduleDate, LocalTime.of(10, 0), LocalTime.of(15, 0), 80, 40.00);
-
-        // Route 5: Los Angeles to San Francisco (2 schedules per day)
-        addSchedule(sql, 5, scheduleDate, LocalTime.of(10, 0), LocalTime.of(15, 30), 120, 75.00);
-        addSchedule(sql, 5, scheduleDate, LocalTime.of(18, 0), LocalTime.of(23, 30), 120, 80.00);
-
-        // Route 6: San Francisco to Los Angeles (1 schedule per day)
-        addSchedule(sql, 6, scheduleDate, LocalTime.of(11, 0), LocalTime.of(16, 30), 120, 75.00);
-
-        // Route 7: Washington DC to New York (2 schedules per day)
-        addSchedule(sql, 7, scheduleDate, LocalTime.of(7, 30), LocalTime.of(11, 0), 90, 60.00);
-        addSchedule(sql, 7, scheduleDate, LocalTime.of(13, 0), LocalTime.of(16, 30), 90, 65.00);
-
-        // Route 8: New York to Washington DC (1 schedule per day)
-        addSchedule(sql, 8, scheduleDate, LocalTime.of(8, 30), LocalTime.of(12, 0), 90, 60.00);
-
-        // Route 9: Atlanta to Miami (1 schedule per day)
-        addSchedule(sql, 9, scheduleDate, LocalTime.of(9, 0), LocalTime.of(17, 0), 110, 85.00);
-
-        // Route 10: Miami to Atlanta (1 schedule per day)
-        addSchedule(sql, 10, scheduleDate, LocalTime.of(10, 0), LocalTime.of(18, 0), 110, 85.00);
-      }
-
-      // Remove trailing comma and execute
-      String finalSql = sql.toString().replaceAll(",\\s*$", "");
-      stmt.executeUpdate(finalSql);
-
-      System.out.println("✅ Seeded schedules for next 7 days");
+      System.out.println("✅ Seeded Schedules and Seats");
       return true;
     } catch (Exception e) {
       System.err.println("❌ Error seeding schedules: " + e.getMessage());
@@ -86,14 +49,72 @@ public class ScheduleSeeder {
     }
   }
 
-  /**
-   * Helper method to add a schedule to the SQL statement.
-   */
-  private static void addSchedule(StringBuilder sql, int routeId, LocalDate date,
-      LocalTime departure, LocalTime arrival,
-      int capacity, double price) {
-    sql.append(String.format(
-        "(%d, '%s', '%s', '%s', %d, %.2f), ",
-        routeId, date, departure, arrival, capacity, price));
+  private static void seedSchedule(Connection conn, String routeName, String depTime, String arrTime, double price,
+      String days) throws Exception {
+    int routeId = getRouteId(conn, routeName);
+    LocalDate tomorrow = LocalDate.now().plusDays(1);
+
+    // Insert Schedule
+    int scheduleId;
+    String insertScheduleSql = "INSERT INTO schedules (route_id, departure_date, departure_time, arrival_time, capacity, price, days_of_week) VALUES (?, ?, CAST(? AS TIME), CAST(? AS TIME), ?, ?, ?) RETURNING id";
+    try (PreparedStatement pstmt = conn.prepareStatement(insertScheduleSql)) {
+      pstmt.setInt(1, routeId);
+      pstmt.setObject(2, tomorrow);
+      pstmt.setString(3, depTime);
+      pstmt.setString(4, arrTime);
+      pstmt.setInt(5, 100); // Total capacity
+      pstmt.setDouble(6, price);
+      pstmt.setString(7, days);
+      ResultSet rs = pstmt.executeQuery();
+      if (rs.next()) {
+        scheduleId = rs.getInt(1);
+      } else {
+        throw new Exception("Failed to retrieve schedule ID for " + routeName);
+      }
+    }
+
+    // Seed Seats using new Seat Classes
+    seedSeats(conn, scheduleId, "Economy", 60);
+    seedSeats(conn, scheduleId, "Business", 30);
+    seedSeats(conn, scheduleId, "First Class", 10);
+  }
+
+  private static void seedSeats(Connection conn, int scheduleId, String className, int count) throws Exception {
+    int classId = getSeatClassId(conn, className);
+    String insertSeatSql = "INSERT INTO seats (schedule_id, seat_class_id, is_booked) VALUES (?, ?, false)";
+    try (PreparedStatement pstmt = conn.prepareStatement(insertSeatSql)) {
+      for (int i = 0; i < count; i++) {
+        pstmt.setInt(1, scheduleId);
+        pstmt.setInt(2, classId);
+        pstmt.addBatch();
+      }
+      pstmt.executeBatch();
+    }
+  }
+
+  private static int getRouteId(Connection conn, String routeName) throws Exception {
+    String sql = "SELECT id FROM routes WHERE name = ?";
+    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+      pstmt.setString(1, routeName);
+      ResultSet rs = pstmt.executeQuery();
+      if (rs.next()) {
+        return rs.getInt("id");
+      } else {
+        throw new Exception("Route not found: " + routeName);
+      }
+    }
+  }
+
+  private static int getSeatClassId(Connection conn, String className) throws Exception {
+    String sql = "SELECT id FROM seat_classes WHERE name = ?";
+    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+      pstmt.setString(1, className);
+      ResultSet rs = pstmt.executeQuery();
+      if (rs.next()) {
+        return rs.getInt("id");
+      } else {
+        throw new Exception("Seat Class not found: " + className);
+      }
+    }
   }
 }

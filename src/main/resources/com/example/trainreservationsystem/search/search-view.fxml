@@ -21,12 +21,14 @@
          </padding>
          <children>
             <Label styleClass="page-title" text="Search Trains" />
+            <Label fx:id="errorLabel" managed="false" visible="false" wrapText="true" style="-fx-text-fill: #e74c3c; -fx-font-size: 14px; -fx-padding: 8px;" />
             <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="searchBox">
                <children>
                   <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
                   <SearchableComboBox fx:id="sourceCombo" promptText="From" styleClass="searchable-combobox" stylesheets="@../stylesheet.css" />
                   <SearchableComboBox fx:id="destinationCombo" promptText="To" styleClass="searchable-combobox" />
-                  <DatePicker fx:id="datePicker" prefHeight="67.0" prefWidth="216.0" promptText="Departure date" styleClass="date-picker" stylesheets="@../stylesheet.css" />
+                  <DatePicker fx:id="datePicker" prefHeight="67.0" prefWidth="216.0" promptText="Departure date" styleClass="searchable-combobox" stylesheets="@../stylesheet.css" />
+                  <ComboBox fx:id="timeCombo" prefHeight="67.0" prefWidth="150.0" promptText="Time" styleClass="combo-box" />
                   <Button mnemonicParsing="false" onAction="#handleSearch" styleClass="button" text="Search trains" />
                   <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
                </children>

@@ -23,12 +23,20 @@ public class DatabaseSeeder {
 
       // Seed in order (respecting foreign key dependencies)
       boolean usersSeeded = UserSeeder.seed(conn);
+      // 2. Seed Seat Classes
+      boolean seatClassesSeeded = SeatClassSeeder.seed(conn);
+
+      // 3. Seed Routes
       boolean routesSeeded = RouteSeeder.seed(conn);
+
+      // 4. Seed Schedules
       boolean schedulesSeeded = ScheduleSeeder.seed(conn);
 
       // Summary
       int seededCount = 0;
       if (usersSeeded)
+        seededCount++;
+      if (seatClassesSeeded)
         seededCount++;
       if (routesSeeded)
         seededCount++;

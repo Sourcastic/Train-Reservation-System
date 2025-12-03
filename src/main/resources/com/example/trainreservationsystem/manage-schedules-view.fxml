@@ -16,7 +16,7 @@
     </padding>
     
     <!-- LEFT SECTION: List of Schedules -->
-    <VBox prefWidth="550" spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;">
+    <VBox prefHeight="-1.0" prefWidth="-1.0" maxHeight="Infinity" maxWidth="Infinity" spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;" HBox.hgrow="ALWAYS">
         <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="All Schedules" />
         
         <TableView fx:id="schedulesTable" VBox.vgrow="ALWAYS">
@@ -32,7 +32,7 @@
     </VBox>
     
     <!-- RIGHT SECTION: Add Schedule Form -->
-    <VBox prefWidth="450" spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;">
+    <VBox prefHeight="-1.0" prefWidth="-1.0" maxHeight="Infinity" maxWidth="Infinity" spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;" HBox.hgrow="ALWAYS">
         <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="Add New Schedule" />
         
         <ScrollPane fitToWidth="true" prefHeight="700" style="-fx-background: transparent; -fx-background-color: transparent;">

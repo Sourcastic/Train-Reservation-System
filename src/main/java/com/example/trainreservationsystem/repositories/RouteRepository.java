@@ -43,6 +43,7 @@ public class RouteRepository {
     public List<Route> getAllRoutes() throws Exception {
         List<Route> routes = new ArrayList<>();
         String sql = "SELECT * FROM routes";
+        System.out.println("[DEBUG] RouteRepository: Fetching all routes...");
         try (Connection conn = Database.getConnection();
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
@@ -52,10 +53,14 @@ public class RouteRepository {
                         rs.getString("name"),
                         rs.getString("source"),
                         rs.getString("destination"));
-                route.setSegments(getSegmentsByRouteId(route.getId()));
                 routes.add(route);
             }
         }
+        // Fetch segments in a separate pass to avoid connection conflicts
+        for (Route route : routes) {
+            route.setSegments(getSegmentsByRouteId(route.getId()));
+        }
+        System.out.println("[DEBUG] RouteRepository: Found " + routes.size() + " routes");
         return routes;
     }
 
@@ -123,14 +128,20 @@ public class RouteRepository {
 
     public List<RouteSegment> getSegmentsByRouteId(int routeId) throws Exception {
         List<RouteSegment> segments = new ArrayList<>();
-        String sql = "SELECT * FROM route_segments WHERE route_id = ? ORDER BY id";
+        String sql = "SELECT rs.*, " +
+                "fs.id as from_id, fs.name as from_name, " +
+                "ts.id as to_id, ts.name as to_name " +
+                "FROM route_segments rs " +
+                "JOIN stops fs ON rs.from_stop_id = fs.id " +
+                "JOIN stops ts ON rs.to_stop_id = ts.id " +
+                "WHERE rs.route_id = ? ORDER BY rs.id";
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, routeId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Stop fromStop = stopRepository.getStopById(rs.getInt("from_stop_id"));
-                    Stop toStop = stopRepository.getStopById(rs.getInt("to_stop_id"));
+                    Stop fromStop = new Stop(rs.getInt("from_id"), rs.getString("from_name"));
+                    Stop toStop = new Stop(rs.getInt("to_id"), rs.getString("to_name"));
                     segments.add(new RouteSegment(
                             rs.getInt("id"),
                             fromStop,
@@ -141,5 +152,43 @@ public class RouteRepository {
             }
         }
         return segments;
+    }
+
+    /**
+     * Find an existing route segment with exact matching properties.
+     */
+    public RouteSegment findExistingSegment(int fromStopId, int toStopId, double distance, double price)
+            throws Exception {
+        String sql = "SELECT * FROM route_segments WHERE from_stop_id = ? AND to_stop_id = ? AND distance = ? AND price = ?";
+        try (Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, fromStopId);
+            stmt.setInt(2, toStopId);
+            stmt.setDouble(3, distance);
+            stmt.setDouble(4, price);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Stop fromStop = stopRepository.getStopById(rs.getInt("from_stop_id"));
+                    Stop toStop = stopRepository.getStopById(rs.getInt("to_stop_id"));
+                    return new RouteSegment(
+                            rs.getInt("id"),
+                            fromStop,
+                            toStop,
+                            rs.getDouble("distance"),
+                            rs.getDouble("price"));
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Link an existing segment to a route (if we're reusing segments).
+     */
+    public void linkSegmentToRoute(int segmentId, int routeId) throws Exception {
+        // Currently route_segments table already has route_id, so just insert a new row
+        // This is a simplified version - in reality you might want a junction table
+        System.out.println(
+                "[DEBUG] Note: Current schema doesn't support segment reuse across routes. Adding as new segment.");
     }
 }

@@ -53,6 +53,8 @@ public class DatabaseInitializer {
     stmt.execute(createRegisterUserProcedure());
     stmt.execute(createUpdatePasswordProcedure());
     stmt.execute(createUpdateUserProcedure());
+    stmt.execute(createAddRouteWithSegmentsProcedure());
+    stmt.execute(createAddScheduleWithSeatsProcedure());
   }
 
   private static String createAuthenticateUserFunction() {
@@ -257,5 +259,75 @@ public class DatabaseInitializer {
         "departure_time TIME NOT NULL, " +
         "seat_class_id INT REFERENCES seat_classes(id), " +
         "seats_sold INT NOT NULL)";
+  }
+
+  private static String createAddRouteWithSegmentsProcedure() {
+    return "CREATE OR REPLACE FUNCTION sp_add_route_with_segments(" +
+        "p_name VARCHAR, " +
+        "p_source VARCHAR, " +
+        "p_destination VARCHAR, " +
+        "p_segments JSONB) " +
+        "RETURNS INT " +
+        "LANGUAGE plpgsql " +
+        "AS $$ " +
+        "DECLARE " +
+        "  v_route_id INT; " +
+        "  v_segment JSONB; " +
+        "BEGIN " +
+        "  INSERT INTO routes (name, source, destination) " +
+        "  VALUES (p_name, p_source, p_destination) " +
+        "  RETURNING id INTO v_route_id; " +
+        "  " +
+        "  FOR v_segment IN SELECT * FROM jsonb_array_elements(p_segments) " +
+        "  LOOP " +
+        "    INSERT INTO route_segments (route_id, from_stop_id, to_stop_id, distance, price) " +
+        "    VALUES (v_route_id, " +
+        "            (v_segment->>'from_stop_id')::INT, " +
+        "            (v_segment->>'to_stop_id')::INT, " +
+        "            (v_segment->>'distance')::DOUBLE PRECISION, " +
+        "            (v_segment->>'price')::DOUBLE PRECISION); " +
+        "  END LOOP; " +
+        "  " +
+        "  RETURN v_route_id; " +
+        "END; " +
+        "$$;";
+  }
+
+  private static String createAddScheduleWithSeatsProcedure() {
+    return "CREATE OR REPLACE FUNCTION sp_add_schedule_with_seats(" +
+        "p_route_id INT, " +
+        "p_departure_date DATE, " +
+        "p_departure_time TIME, " +
+        "p_arrival_time TIME, " +
+        "p_price DECIMAL, " +
+        "p_capacity INT, " +
+        "p_days_of_week VARCHAR, " +
+        "p_seats JSONB) " +
+        "RETURNS INT " +
+        "LANGUAGE plpgsql " +
+        "AS $$ " +
+        "DECLARE " +
+        "  v_schedule_id INT; " +
+        "  v_seat_class JSONB; " +
+        "  v_count INT; " +
+        "BEGIN " +
+        "  INSERT INTO schedules (route_id, departure_date, departure_time, arrival_time, price, capacity, days_of_week) "
+        +
+        "  VALUES (p_route_id, p_departure_date, p_departure_time, p_arrival_time, p_price, p_capacity, p_days_of_week) "
+        +
+        "  RETURNING id INTO v_schedule_id; " +
+        "  " +
+        "  FOR v_seat_class IN SELECT * FROM jsonb_array_elements(p_seats) " +
+        "  LOOP " +
+        "    FOR v_count IN 1..(v_seat_class->>'quantity')::INT " +
+        "    LOOP " +
+        "      INSERT INTO seats (schedule_id, seat_class_id, is_booked) " +
+        "      VALUES (v_schedule_id, (v_seat_class->>'seat_class_id')::INT, false); " +
+        "    END LOOP; " +
+        "  END LOOP; " +
+        "  " +
+        "  RETURN v_schedule_id; " +
+        "END; " +
+        "$$;";
   }
 }

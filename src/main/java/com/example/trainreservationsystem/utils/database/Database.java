@@ -5,7 +5,6 @@ import io.github.cdimascio.dotenv.Dotenv;
 import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -15,52 +14,27 @@ import java.util.Properties;
 public class Database {
 
   private static final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-    private static Database instance;
-    private Connection connection;
+  private static Database instance;
 
-    private Database() {
-        // Private constructor for singleton
-    }
+  private Database() {
+    // Private constructor for singleton
+  }
 
-    public static synchronized Database getInstance() {
-        if (instance == null) {
-            instance = new Database();
-        }
-        return instance;
+  public static synchronized Database getInstance() {
+    if (instance == null) {
+      instance = new Database();
     }
+    return instance;
+  }
 
   public static Connection getConnection() throws Exception {
-      Database db = getInstance();
-
-      // Check if connection exists and is valid
-      if (db.connection == null || db.connection.isClosed() || !db.connection.isValid(2)) {
-          synchronized (Database.class) {
-              // Double-check after acquiring lock
-              if (db.connection == null || db.connection.isClosed() || !db.connection.isValid(2)) {
-                  db.connection = db.createConnection();
-              }
-          }
-    }
-
-      return db.connection;
+    return getInstance().createConnection();
   }
 
-    public static void closeConnection() {
-        Database db = getInstance();
-        if (db.connection != null) {
-            try {
-                db.connection.close();
-                System.out.println("✅ Database connection closed");
-            } catch (SQLException e) {
-                System.err.println("❌ Error closing database connection: " + e.getMessage());
-            }
-        }
-  }
-
-    private Connection createConnection() throws Exception {
+  private Connection createConnection() throws Exception {
     String databaseUrl = dotenv.get("DATABASE_URL");
-        if (databaseUrl == null || databaseUrl.isEmpty()) {
-            throw new Exception("DATABASE_URL not found in environment variables");
+    if (databaseUrl == null || databaseUrl.isEmpty()) {
+      throw new Exception("DATABASE_URL not found in environment variables");
     }
 
     try {
@@ -70,11 +44,11 @@ public class Database {
       return conn;
     } catch (Exception e) {
       System.err.println("❌ Database connection failed: " + e.getMessage());
-        throw e;
+      throw e;
     }
   }
 
-    private String parseDatabaseUrl(String databaseUrl, Properties props) throws Exception {
+  private String parseDatabaseUrl(String databaseUrl, Properties props) throws Exception {
     // Remove jdbc: prefix if present
     String urlPart = databaseUrl.startsWith("jdbc:postgresql://")
         ? databaseUrl.substring("jdbc:postgresql://".length())
@@ -110,7 +84,7 @@ public class Database {
     return "jdbc:postgresql://" + pathPart;
   }
 
-    private void parseCredentials(String credentials, Properties props) {
+  private void parseCredentials(String credentials, Properties props) {
     int colonIndex = credentials.indexOf(':');
     if (colonIndex >= 0) {
       props.setProperty("user", credentials.substring(0, colonIndex));
@@ -125,7 +99,7 @@ public class Database {
     }
   }
 
-    private void parseQueryParams(String query, Properties props) {
+  private void parseQueryParams(String query, Properties props) {
     for (String param : query.split("&")) {
       String[] keyValue = param.split("=", 2);
       if (keyValue.length == 2) {

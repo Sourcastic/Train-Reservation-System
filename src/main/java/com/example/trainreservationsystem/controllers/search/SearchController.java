@@ -16,6 +16,8 @@ import org.controlsfx.control.SearchableComboBox;
 import com.example.trainreservationsystem.controllers.HomeController;
 import com.example.trainreservationsystem.models.BookingClass;
 import com.example.trainreservationsystem.models.Schedule;
+import com.example.trainreservationsystem.models.Stop;
+import com.example.trainreservationsystem.repositories.StopRepository;
 import com.example.trainreservationsystem.services.ServiceFactory;
 import com.example.trainreservationsystem.services.TrainService;
 import com.example.trainreservationsystem.services.UserSession;
@@ -31,6 +33,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -44,6 +47,8 @@ public class SearchController {
   @FXML
   private DatePicker datePicker;
   @FXML
+  private ComboBox<String> timeCombo;
+  @FXML
   private VBox resultsArea;
   @FXML
   private VBox resultsContainer;
@@ -52,16 +57,21 @@ public class SearchController {
   @FXML
   private Label searchSummaryLabel;
   @FXML
+  private Label errorLabel; // For displaying errors
+  @FXML
   private ComboBox<String> sortCombo;
 
   private final TrainService trainService = ServiceFactory.getTrainService();
   private final BookingService bookingService = ServiceFactory.getBookingService();
+  private final StopRepository stopRepository = new StopRepository();
   private final List<String> allStations = new ArrayList<>();
   private List<Schedule> currentSchedules = new ArrayList<>();
 
   @FXML
   public void initialize() {
+    loadStations();
     initializeStations();
+    populateTimeOptions();
     setupStationFilters();
     setupSortCombo();
     emptyStatePane.managedProperty().bind(emptyStatePane.visibleProperty());
@@ -70,10 +80,39 @@ public class SearchController {
     }
   }
 
+  private void loadStations() {
+    try {
+      List<Stop> stops = stopRepository.getAllStops();
+      allStations.clear();
+      for (Stop stop : stops) {
+        allStations.add(stop.getName());
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.err.println("Error loading stations: " + e.getMessage());
+      // Fallback to empty list
+    }
+  }
+
   private void initializeStations() {
-    allStations.addAll(List.of("New York", "Boston", "Chicago", "St. Louis"));
+    // allStations.addAll(List.of("New York", "Boston", "Chicago", "St. Louis")); //
+    // Removed hardcoded stations
     sourceCombo.setItems(FXCollections.observableArrayList(allStations));
     destinationCombo.setItems(FXCollections.observableArrayList(allStations));
+  }
+
+  /**
+   * Populate time dropdown with 15-minute intervals (00:00 to 23:45)
+   */
+  private void populateTimeOptions() {
+    List<String> timeOptions = new ArrayList<>();
+    for (int hour = 0; hour < 24; hour++) {
+      for (int minute = 0; minute < 60; minute += 15) {
+        timeOptions.add(String.format("%02d:%02d", hour, minute));
+      }
+    }
+    timeCombo.setItems(FXCollections.observableArrayList(timeOptions));
+    timeCombo.setValue("00:00"); // Default to midnight
   }
 
   private void setupSortCombo() {
@@ -134,11 +173,48 @@ public class SearchController {
     String source = sourceCombo.getValue();
     String dest = destinationCombo.getValue();
     LocalDate date = datePicker.getValue();
+    String timeStr = timeCombo.getValue();
 
-    if (source != null && dest != null && date != null) {
-      currentSchedules = trainService.searchSchedules(source, dest, date);
-      displayResults();
+    // Clear any previous error messages
+    if (errorLabel != null) {
+      errorLabel.setVisible(false);
+      errorLabel.setManaged(false);
+      errorLabel.setText("");
     }
+
+    if (source == null || dest == null || date == null) {
+      showError("Please select source, destination, and date.");
+      return;
+    }
+
+    LocalTime time = LocalTime.of(0, 0); // Default to midnight
+    if (timeStr != null && !timeStr.trim().isEmpty()) {
+      try {
+        time = LocalTime.parse(timeStr.trim());
+      } catch (Exception e) {
+        // This shouldn't happen with ComboBox, but keep for safety
+        showError("Invalid time selected.");
+        return;
+      }
+    }
+
+    currentSchedules = trainService.searchSchedules(source, dest, date, time);
+    displayResults();
+  }
+
+  private void showError(String message) {
+    if (errorLabel != null) {
+      errorLabel.setText(message);
+      errorLabel.setVisible(true);
+      errorLabel.setManaged(true);
+      errorLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 14px; -fx-padding: 8px;");
+    } else {
+      System.err.println("ERROR: " + message);
+    }
+
+    // Hide results and show empty state
+    resultsArea.setVisible(false);
+    emptyStatePane.setVisible(false);
   }
 
   private void displayResults() {
@@ -214,9 +290,23 @@ public class SearchController {
         schedule.getRoute().getName() != null ? schedule.getRoute().getName() : "Train " + schedule.getId());
     trainName.getStyleClass().add("train-name");
 
-    header.getChildren().add(trainName);
-    header.getChildren().add(new Label("•"));
-    header.getChildren().add(new Label("Runs on: M T W T F S S"));
+    // Show the specific date this schedule instance is for
+    String dateStr = schedule.getDepartureDate() != null
+        ? schedule.getDepartureDate().format(java.time.format.DateTimeFormatter.ofPattern("MMM dd, yyyy"))
+        : "";
+    Label trainFor = new Label("Train for: " + dateStr);
+    trainFor.setStyle("-fx-text-fill: #6c6f85; -fx-font-size: 13px;");
+
+    // Spacer to push runs info to the right
+    Region spacer = new Region();
+    HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
+    // Show days of week on the right
+    String daysStr = formatDaysOfWeek(schedule.getDaysOfWeek());
+    Label runsOn = new Label("Runs on: " + daysStr);
+    runsOn.setStyle("-fx-text-fill: #6c6f85; -fx-font-size: 13px;");
+
+    header.getChildren().addAll(trainName, new Label("•"), trainFor, spacer, runsOn);
 
     // Main Content
     HBox mainContent = new HBox();
@@ -465,5 +555,20 @@ public class SearchController {
       }
     }
     return null;
+  }
+
+  /**
+   * Format days of week for display (e.g., "M W F" or "Daily")
+   */
+  private String formatDaysOfWeek(List<Schedule.DayOfWeek> daysOfWeek) {
+    if (daysOfWeek == null || daysOfWeek.isEmpty()) {
+      return "Daily";
+    }
+
+    StringBuilder sb = new StringBuilder();
+    for (Schedule.DayOfWeek day : daysOfWeek) {
+      sb.append(day.name().charAt(0)).append(" ");
+    }
+    return sb.toString().trim();
   }
 }

@@ -15,7 +15,7 @@ public class HomeApplication extends Application {
 
         // Add shutdown hook to close database connection
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            com.example.trainreservationsystem.utils.database.Database.closeConnection();
+            // Database.closeConnection() call removed as per instruction
         }));
 
         Parent root = FXMLLoader.load(

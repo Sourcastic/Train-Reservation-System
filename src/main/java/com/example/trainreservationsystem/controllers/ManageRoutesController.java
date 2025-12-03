@@ -45,6 +45,7 @@ public class ManageRoutesController {
     private ObservableList<Route> routesList = FXCollections.observableArrayList();
     private List<Stop> allStops = new ArrayList<>();
     private List<SegmentRow> segmentRows = new ArrayList<>();
+    private boolean routesLoaded = false; // Cache flag
 
     @FXML
     public void initialize() {
@@ -89,20 +90,38 @@ public class ManageRoutesController {
 
     private void loadStops() {
         try {
+            System.out.println("[DEBUG] ManageRoutesController: Loading stops...");
             allStops = stopRepository.getAllStops();
+            System.out.println("[DEBUG] ManageRoutesController: Loaded " + allStops.size() + " stops");
         } catch (Exception e) {
+            e.printStackTrace();
             showMessage("Error loading stops: " + e.getMessage(), false);
         }
     }
 
     private void loadRoutes() {
-        try {
-            routesList.clear();
-            routesList.addAll(routeRepository.getAllRoutes());
-            routesTable.setItems(routesList);
-        } catch (Exception e) {
-            showMessage("Error loading routes: " + e.getMessage(), false);
+        if (routesLoaded) {
+            System.out.println("[DEBUG] ManageRoutesController: Routes already loaded, skipping.");
+            return;
         }
+
+        new Thread(() -> {
+            try {
+                System.out.println("[DEBUG] ManageRoutesController: Loading routes in background...");
+                List<Route> routes = routeRepository.getAllRoutes();
+                javafx.application.Platform.runLater(() -> {
+                    routesList.clear();
+                    routesList.addAll(routes);
+                    routesTable.setItems(routesList);
+                    routesLoaded = true;
+                    System.out.println("[DEBUG] ManageRoutesController: Loaded " + routes.size() + " routes");
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                javafx.application.Platform
+                        .runLater(() -> showMessage("Error loading routes: " + e.getMessage(), false));
+            }
+        }).start();
     }
 
     private void addInitialSegmentRow() {
@@ -110,6 +129,7 @@ public class ManageRoutesController {
     }
 
     private void addSegmentRow(boolean isFirst) {
+        System.out.println("[DEBUG] ManageRoutesController: addSegmentRow called, allStops size: " + allStops.size());
         HBox row = new HBox(10);
         row.setPadding(new Insets(5));
         row.setStyle("-fx-background-color: #ECF0F1; -fx-background-radius: 5; -fx-padding: 10;");
@@ -199,6 +219,16 @@ public class ManageRoutesController {
                     return;
                 }
 
+                // Validate segment connectivity
+                if (i > 0) {
+                    Stop previousToStop = segmentRows.get(i - 1).toStopCombo.getValue();
+                    if (fromStop.getId() != previousToStop.getId()) {
+                        showMessage("Segment " + (i + 1) + " must start where segment " + i + " ends ("
+                                + previousToStop.getName() + ")", false);
+                        return;
+                    }
+                }
+
                 double distance = Double.parseDouble(distanceStr);
                 double price = Double.parseDouble(priceStr);
 
@@ -226,18 +256,34 @@ public class ManageRoutesController {
             // Add route to database
             Route savedRoute = routeRepository.addRoute(newRoute);
 
-            // Add segments
+            // Add segments (checking for duplicates)
             for (RouteSegment segment : segments) {
-                routeRepository.addRouteSegment(segment, savedRoute.getId());
+                // Check if this exact segment already exists
+                RouteSegment existingSegment = routeRepository.findExistingSegment(
+                        segment.getFromStop().getId(),
+                        segment.getToStop().getId(),
+                        segment.getDistance(),
+                        segment.getPrice());
+
+                if (existingSegment != null) {
+                    // Use existing segment ID, just link it to this route
+                    System.out.println("[DEBUG] Using existing segment ID: " + existingSegment.getId());
+                    routeRepository.linkSegmentToRoute(existingSegment.getId(), savedRoute.getId());
+                } else {
+                    // Add new segment
+                    routeRepository.addRouteSegment(segment, savedRoute.getId());
+                }
             }
 
             showMessage("Route added successfully!", true);
             clearSegmentRows();
             addInitialSegmentRow();
+            routesLoaded = false; // Force reload
             loadRoutes();
         } catch (NumberFormatException e) {
             showMessage("Invalid distance or price. Please enter valid numbers.", false);
         } catch (Exception e) {
+            e.printStackTrace();
             showMessage("Error adding route: " + e.getMessage(), false);
         }
     }

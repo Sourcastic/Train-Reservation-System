@@ -67,6 +67,7 @@ public class ManageSchedulesController {
     private TextField departureTimeField;
     private TextField arrivalTimeField;
     private List<SeatClassRow> seatClassRows = new ArrayList<>();
+    private boolean dataLoaded = false; // Cache flag
 
     @FXML
     public void initialize() {
@@ -117,15 +118,41 @@ public class ManageSchedulesController {
     }
 
     private void loadData() {
-        try {
-            allRoutes = routeRepository.getAllRoutes();
-            allSeatClasses = seatClassRepository.getAllSeatClasses();
-            schedulesList.clear();
-            schedulesList.addAll(scheduleRepository.getAllSchedules());
-            schedulesTable.setItems(schedulesList);
-        } catch (Exception e) {
-            showMessage("Error loading data: " + e.getMessage(), false);
+        if (dataLoaded) {
+            System.out.println("[DEBUG] ManageSchedulesController: Data already loaded, skipping.");
+            return;
         }
+
+        new Thread(() -> {
+            try {
+                System.out.println("[DEBUG] ManageSchedulesController: Loading data in background...");
+                List<Route> routes = routeRepository.getAllRoutes();
+                List<SeatClass> seatClasses = seatClassRepository.getAllSeatClasses();
+                List<Schedule> schedules = scheduleRepository.getAllSchedules();
+
+                javafx.application.Platform.runLater(() -> {
+                    allRoutes = routes;
+                    allSeatClasses = seatClasses;
+                    schedulesList.clear();
+                    schedulesList.addAll(schedules);
+                    schedulesTable.setItems(schedulesList);
+                    dataLoaded = true;
+                    System.out.println("[DEBUG] ManageSchedulesController: Loaded " + schedules.size() + " schedules");
+
+                    // Refresh form combos
+                    if (routeComboBox != null) {
+                        routeComboBox.setItems(FXCollections.observableArrayList(allRoutes));
+                    }
+                    // Refresh seat class combos in existing rows
+                    for (SeatClassRow row : seatClassRows) {
+                        row.seatClassCombo.setItems(FXCollections.observableArrayList(allSeatClasses));
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                javafx.application.Platform.runLater(() -> showMessage("Error loading data: " + e.getMessage(), false));
+            }
+        }).start();
     }
 
     private void buildForm() {
@@ -312,6 +339,7 @@ public class ManageSchedulesController {
 
             showMessage("Schedule added successfully!", true);
             clearForm();
+            dataLoaded = false; // Force reload
             loadData();
         } catch (Exception e) {
             showMessage("Error adding schedule: " + e.getMessage(), false);

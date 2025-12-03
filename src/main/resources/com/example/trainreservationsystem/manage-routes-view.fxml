@@ -17,7 +17,7 @@
     </padding>
     
     <!-- LEFT SECTION: List of Routes -->
-    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;" HBox.hgrow="ALWAYS">
+    <VBox prefHeight="-1.0" prefWidth="-1.0" maxHeight="Infinity" maxWidth="Infinity" spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;" HBox.hgrow="ALWAYS">
         <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="All Routes" />
         
         <TableView fx:id="routesTable" VBox.vgrow="ALWAYS">
@@ -33,7 +33,7 @@
     </VBox>
     
     <!-- RIGHT SECTION: Add Route Form -->
-    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;" HBox.hgrow="ALWAYS">
+    <VBox prefHeight="-1.0" prefWidth="-1.0" maxHeight="Infinity" maxWidth="Infinity" spacing="20" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;" HBox.hgrow="ALWAYS">
         <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="Add New Route" />
         
         <VBox spacing="10" VBox.vgrow="ALWAYS">

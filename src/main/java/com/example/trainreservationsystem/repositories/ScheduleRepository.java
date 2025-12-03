@@ -53,19 +53,22 @@ public class ScheduleRepository {
     public List<Schedule> getAllSchedules() throws Exception {
         List<Schedule> schedules = new ArrayList<>();
         String sql = "SELECT * FROM schedules";
+        System.out.println("[DEBUG] ScheduleRepository: Fetching all schedules...");
         try (Connection conn = Database.getConnection();
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                Route route = routeRepository.getRouteById(rs.getInt("route_id"));
                 Schedule schedule = new Schedule(
                         rs.getInt("id"),
-                        route,
+                        null, // Set route later
                         rs.getDate("departure_date").toLocalDate(),
                         rs.getTime("departure_time").toLocalTime(),
                         rs.getTime("arrival_time").toLocalTime(),
                         rs.getDouble("price"),
                         rs.getInt("capacity"));
+
+                // Store route_id temporarily
+                schedule.setRoute(new Route(rs.getInt("route_id"), null, null, null));
 
                 // Deserialize daysOfWeek from comma-separated string
                 String daysOfWeekStr = rs.getString("days_of_week");
@@ -76,10 +79,18 @@ public class ScheduleRepository {
                     schedule.setDaysOfWeek(daysOfWeek);
                 }
 
-                schedule.setSeats(seatRepository.getSeatsByScheduleId(schedule.getId()));
                 schedules.add(schedule);
             }
         }
+
+        // Fetch routes and seats in separate passes to avoid connection conflicts
+        for (Schedule schedule : schedules) {
+            Route route = routeRepository.getRouteById(schedule.getRoute().getId());
+            schedule.setRoute(route);
+            schedule.setSeats(seatRepository.getSeatsByScheduleId(schedule.getId()));
+        }
+
+        System.out.println("[DEBUG] ScheduleRepository: Found " + schedules.size() + " schedules");
         return schedules;
     }
 

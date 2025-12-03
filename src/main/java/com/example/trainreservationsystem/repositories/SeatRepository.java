@@ -41,14 +41,25 @@ public class SeatRepository {
 
     public List<Seat> getSeatsByScheduleId(int scheduleId) throws Exception {
         List<Seat> seats = new ArrayList<>();
-        String sql = "SELECT * FROM seats WHERE schedule_id = ? ORDER BY id";
+        String sql = "SELECT s.*, sc.id as class_id, sc.name as class_name, " +
+                "sc.base_fare, sc.description " +
+                "FROM seats s " +
+                "JOIN seat_classes sc ON s.seat_class_id = sc.id " +
+                "WHERE s.schedule_id = ?";
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, scheduleId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    SeatClass seatClass = seatClassRepository.getSeatClassById(rs.getInt("seat_class_id"));
-                    Seat seat = new Seat(rs.getInt("id"), seatClass);
+                    SeatClass seatClass = new SeatClass(
+                            rs.getInt("class_id"),
+                            rs.getString("class_name"),
+                            rs.getDouble("base_fare"),
+                            rs.getString("description"));
+
+                    Seat seat = new Seat(
+                            rs.getInt("id"),
+                            seatClass);
                     seat.setBooked(rs.getBoolean("is_booked"));
                     seats.add(seat);
                 }

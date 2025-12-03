@@ -16,7 +16,7 @@
     </padding>
     
     <!-- LEFT SECTION: List of Seat Classes -->
-    <VBox prefWidth="600" spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;">
+    <VBox prefHeight="-1.0" prefWidth="-1.0" maxHeight="Infinity" maxWidth="Infinity" spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;" HBox.hgrow="ALWAYS">
         <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="All Seat Classes" />
         
         <TableView fx:id="seatClassesTable" VBox.vgrow="ALWAYS">
@@ -31,7 +31,7 @@
     </VBox>
     
     <!-- RIGHT SECTION: Add Seat Class Form -->
-    <VBox prefWidth="400" spacing="20" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;">
+    <VBox prefHeight="-1.0" prefWidth="-1.0" maxHeight="Infinity" maxWidth="Infinity" spacing="20" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;" HBox.hgrow="ALWAYS">
         <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="Add New Seat Class" />
         
         <VBox spacing="10">
