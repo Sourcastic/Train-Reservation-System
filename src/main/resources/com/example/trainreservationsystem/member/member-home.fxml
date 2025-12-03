@@ -40,7 +40,6 @@
 
             <HBox spacing="12.0">
                 <Button onAction="#goToSearch" styleClass="quick-action-button" text="Search Trains" />
-                <Button onAction="#goToBook" styleClass="quick-action-button" text="Book Train" />
                 <Button onAction="#goToHistory" styleClass="quick-action-button" text="View History" />
             </HBox>
         </VBox>
