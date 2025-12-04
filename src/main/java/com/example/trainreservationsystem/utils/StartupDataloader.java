@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.trainreservationsystem.utils.shared.database.Database;
+
 // Simple DTOs for in-memory caching
 class Route {
     int id;
@@ -30,7 +32,8 @@ class Schedule {
     int capacity;
     double price;
 
-    Schedule(int id, int routeId, String departureDate, String departureTime, String arrivalTime, int capacity, double price) {
+    Schedule(int id, int routeId, String departureDate, String departureTime, String arrivalTime, int capacity,
+            double price) {
         this.id = id;
         this.routeId = routeId;
         this.departureDate = departureDate;
@@ -51,20 +54,19 @@ public class StartupDataloader {
 
             // Load Routes
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM routes");
-                 ResultSet rs = ps.executeQuery()) {
+                    ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     routes.add(new Route(
                             rs.getInt("id"),
                             rs.getString("name"),
                             rs.getString("source"),
-                            rs.getString("destination")
-                    ));
+                            rs.getString("destination")));
                 }
             }
 
             // Load Schedules
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM schedules");
-                 ResultSet rs = ps.executeQuery()) {
+                    ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     schedules.add(new Schedule(
                             rs.getInt("id"),
@@ -73,12 +75,12 @@ public class StartupDataloader {
                             rs.getTime("departure_time").toString(),
                             rs.getTime("arrival_time").toString(),
                             rs.getInt("capacity"),
-                            rs.getDouble("price")
-                    ));
+                            rs.getDouble("price")));
                 }
             }
 
-            System.out.println("Startup data loaded: " + routes.size() + " routes, " + schedules.size() + " schedules.");
+            System.out
+                    .println("Startup data loaded: " + routes.size() + " routes, " + schedules.size() + " schedules.");
 
         } catch (Exception e) {
             e.printStackTrace();
