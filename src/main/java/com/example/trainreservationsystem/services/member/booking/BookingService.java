@@ -1,5 +1,6 @@
 package com.example.trainreservationsystem.services.member.booking;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -98,8 +99,10 @@ public class BookingService {
     }
 
     // Calculate hours until departure
-    LocalDateTime departureDateTime = booking.getSchedule().getDepartureDate()
-        .atTime(booking.getSchedule().getDepartureTime());
+    // Use booking date as travel date fallback (in future, add travelDate to
+    // Booking)
+    LocalDate travelDate = booking.getBookingDate() != null ? booking.getBookingDate().toLocalDate() : LocalDate.now();
+    LocalDateTime departureDateTime = travelDate.atTime(booking.getSchedule().getDepartureTime());
     LocalDateTime now = LocalDateTime.now();
 
     if (departureDateTime.isBefore(now)) {
@@ -141,8 +144,10 @@ public class BookingService {
     }
 
     // Calculate hours until departure
-    LocalDateTime departureDateTime = booking.getSchedule().getDepartureDate()
-        .atTime(booking.getSchedule().getDepartureTime());
+    // Use booking date as travel date fallback (in future, add travelDate to
+    // Booking)
+    LocalDate travelDate = booking.getBookingDate() != null ? booking.getBookingDate().toLocalDate() : LocalDate.now();
+    LocalDateTime departureDateTime = travelDate.atTime(booking.getSchedule().getDepartureTime());
     LocalDateTime now = LocalDateTime.now();
     long hoursUntilDeparture = ChronoUnit.HOURS.between(now, departureDateTime);
 

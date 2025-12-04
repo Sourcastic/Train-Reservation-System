@@ -1,6 +1,5 @@
 package com.example.trainreservationsystem.models.admin;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,6 @@ public class Schedule {
 
   private int id;
   private Route route;
-  private LocalDate departureDate;
   private LocalTime departureTime;
   private LocalTime arrivalTime;
   private double price;
@@ -33,11 +31,10 @@ public class Schedule {
   public Schedule() {
   }
 
-  public Schedule(int id, Route route, LocalDate departureDate, LocalTime departureTime, LocalTime arrivalTime,
+  public Schedule(int id, Route route, LocalTime departureTime, LocalTime arrivalTime,
       double price, int capacity) {
     this.id = id;
     this.route = route;
-    this.departureDate = departureDate;
     this.departureTime = departureTime;
     this.arrivalTime = arrivalTime;
     this.price = price;
@@ -59,14 +56,6 @@ public class Schedule {
 
   public void setRoute(Route route) {
     this.route = route;
-  }
-
-  public LocalDate getDepartureDate() {
-    return departureDate;
-  }
-
-  public void setDepartureDate(LocalDate departureDate) {
-    this.departureDate = departureDate;
   }
 
   public LocalTime getDepartureTime() {

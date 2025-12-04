@@ -88,22 +88,54 @@ public class TicketRepository {
 
     public List<Ticket> getAllTickets() {
         List<Ticket> tickets = new ArrayList<>();
-        String query = "SELECT * FROM tickets ORDER BY created_at DESC";
+        // Join with bookings to get amount information
+        String query = "SELECT t.*, b.total_amount FROM tickets t " +
+                "LEFT JOIN bookings b ON t.booking_id = b.id " +
+                "ORDER BY t.created_at DESC";
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                tickets.add(new Ticket(
+                Ticket ticket = new Ticket(
                         rs.getInt("id"),
                         rs.getInt("booking_id"),
                         rs.getString("qr_code"),
-                        rs.getString("status")));
+                        rs.getString("status"));
+                // Store amount in a way we can access it - we'll need to extend Ticket model or
+                // use a wrapper
+                // For now, we'll fetch it separately in the controller
+                tickets.add(ticket);
             }
         } catch (Exception e) {
             System.err.println("Error getting all tickets: " + e.getMessage());
             e.printStackTrace();
         }
         return tickets;
+    }
+
+    /**
+     * Gets ticket with booking amount for display purposes.
+     * Returns a map of ticketId -> amount for efficient lookup.
+     */
+    public java.util.Map<Integer, Double> getTicketAmounts() {
+        java.util.Map<Integer, Double> amounts = new java.util.HashMap<>();
+        String query = "SELECT t.id, b.total_amount FROM tickets t " +
+                "LEFT JOIN bookings b ON t.booking_id = b.id";
+        try (Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                int ticketId = rs.getInt("id");
+                double amount = rs.getDouble("total_amount");
+                if (!rs.wasNull()) {
+                    amounts.put(ticketId, amount);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error getting ticket amounts: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return amounts;
     }
 
     public Ticket getTicketById(int ticketId) {

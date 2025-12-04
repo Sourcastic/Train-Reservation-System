@@ -107,8 +107,13 @@ public class HomeController {
             Parent root = FXMLLoader.load(
                     getClass().getResource("/com/example/trainreservationsystem/shared/landing-view.fxml"));
             Scene scene = new Scene(root, 1280, 800);
+            // Clear any existing stylesheets first to avoid conflicts
+            scene.getStylesheets().clear();
+            // Apply stylesheet programmatically to ensure it's loaded
             StylesheetHelper.applyStylesheet(scene);
             stage.setScene(scene);
+            // Ensure stylesheet is applied after scene is set
+            StylesheetHelper.applyStylesheet(root);
         } catch (IOException e) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, "Failed to redirect to landing", e);
         }

@@ -62,9 +62,8 @@ public class ScheduleService {
             return;
         }
 
-        // Check if departure time or date changed
-        boolean timeChanged = !oldSchedule.getDepartureTime().equals(newSchedule.getDepartureTime()) ||
-                !oldSchedule.getDepartureDate().equals(newSchedule.getDepartureDate());
+        // Check if departure time changed (date is no longer stored)
+        boolean timeChanged = !oldSchedule.getDepartureTime().equals(newSchedule.getDepartureTime());
 
         if (timeChanged) {
             try {
@@ -76,9 +75,8 @@ public class ScheduleService {
                         : "your scheduled train";
 
                 String message = String.format(
-                        "Schedule Change Alert: Your train (%s) departure time has changed. New departure: %s at %s",
+                        "Schedule Change Alert: Your train (%s) departure time has changed. New departure time: %s",
                         routeName,
-                        newSchedule.getDepartureDate(),
                         newSchedule.getDepartureTime());
 
                 for (com.example.trainreservationsystem.models.member.Booking booking : bookings) {

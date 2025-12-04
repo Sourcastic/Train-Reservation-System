@@ -1,6 +1,5 @@
 package com.example.trainreservationsystem.controllers.admin;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -285,7 +284,6 @@ public class ManageSchedulesController {
             // Create schedule
             Schedule newSchedule = new Schedule();
             newSchedule.setRoute(selectedRoute);
-            newSchedule.setDepartureDate(LocalDate.now()); // Default to today
             newSchedule.setDepartureTime(departureTime);
             newSchedule.setArrivalTime(arrivalTime);
             newSchedule.setPrice(selectedRoute.totalPrice());

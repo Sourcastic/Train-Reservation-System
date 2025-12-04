@@ -18,6 +18,7 @@
             <TableColumn fx:id="colBookingId" text="Booking ID" prefWidth="100"/>
             <TableColumn fx:id="colQrCode" text="QR Code" prefWidth="150"/>
             <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+            <TableColumn fx:id="colAmount" text="Amount" prefWidth="120"/>
             <TableColumn fx:id="colActions" text="Actions" prefWidth="200"/>
         </columns>
     </TableView>

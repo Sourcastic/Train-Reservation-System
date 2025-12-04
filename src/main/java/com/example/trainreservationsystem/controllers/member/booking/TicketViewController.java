@@ -58,7 +58,12 @@ public class TicketViewController {
     bookingIdLabel.setText("Booking #" + booking.getId());
     fromLabel.setText(booking.getSchedule().getRoute().getSource());
     toLabel.setText(booking.getSchedule().getRoute().getDestination());
-    dateLabel.setText(booking.getSchedule().getDepartureDate().toString());
+    // Use booking date as fallback - in future, add travelDate field to Booking
+    if (booking.getBookingDate() != null) {
+      dateLabel.setText(booking.getBookingDate().toLocalDate().toString());
+    } else {
+      dateLabel.setText("N/A");
+    }
     timeLabel.setText(booking.getSchedule().getDepartureTime().toString());
     amountLabel.setText("PKR " + String.format("%.2f", booking.getTotalAmount()));
   }

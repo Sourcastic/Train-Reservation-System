@@ -1,6 +1,8 @@
 package com.example.trainreservationsystem.controllers.staff;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.example.trainreservationsystem.controllers.shared.HomeController;
 import com.example.trainreservationsystem.models.member.Ticket;
@@ -33,9 +35,12 @@ public class TicketValidationController {
   @FXML
   private TableColumn<Ticket, String> colStatus;
   @FXML
+  private TableColumn<Ticket, String> colAmount;
+  @FXML
   private TableColumn<Ticket, Void> colActions;
 
   private final TicketRepository ticketRepository = RepositoryFactory.getTicketRepository();
+  private Map<Integer, Double> ticketAmounts = new HashMap<>();
 
   @FXML
   public void initialize() {
@@ -48,6 +53,16 @@ public class TicketValidationController {
     colBookingId.setCellValueFactory(new PropertyValueFactory<>("bookingId"));
     colQrCode.setCellValueFactory(new PropertyValueFactory<>("qrCode"));
     colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+    // Amount column - get from booking via ticketAmounts map
+    colAmount.setCellValueFactory(cellData -> {
+      Ticket ticket = cellData.getValue();
+      if (ticket != null && ticketAmounts.containsKey(ticket.getId())) {
+        double amount = ticketAmounts.get(ticket.getId());
+        return new javafx.beans.property.SimpleStringProperty("PKR " + String.format("%.2f", amount));
+      }
+      return new javafx.beans.property.SimpleStringProperty("N/A");
+    });
 
     // Actions column with close button
     colActions.setCellFactory(new Callback<TableColumn<Ticket, Void>, TableCell<Ticket, Void>>() {
@@ -93,6 +108,8 @@ public class TicketValidationController {
   private void loadTickets() {
     try {
       List<Ticket> tickets = ticketRepository.getAllTickets();
+      // Load ticket amounts for display
+      ticketAmounts = ticketRepository.getTicketAmounts();
       ticketsTable.setItems(FXCollections.observableArrayList(tickets));
     } catch (Exception e) {
       AlertUtils.showError("Error", "Failed to load tickets: " + e.getMessage());

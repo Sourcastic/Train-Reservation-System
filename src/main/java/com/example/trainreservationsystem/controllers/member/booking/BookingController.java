@@ -1,5 +1,6 @@
 package com.example.trainreservationsystem.controllers.member.booking;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,7 +10,6 @@ import java.util.Set;
 import com.example.trainreservationsystem.controllers.shared.HomeController;
 import com.example.trainreservationsystem.models.admin.Schedule;
 import com.example.trainreservationsystem.models.member.Booking;
-import com.example.trainreservationsystem.models.member.BookingClass;
 import com.example.trainreservationsystem.models.member.Passenger;
 import com.example.trainreservationsystem.services.member.booking.BookingService;
 import com.example.trainreservationsystem.services.shared.ServiceFactory;
@@ -21,9 +21,6 @@ import com.example.trainreservationsystem.utils.shared.ui.AlertUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -34,10 +31,6 @@ public class BookingController {
   // UI Components
   @FXML
   private Label routeLabel, dateLabel, timeLabel, priceLabel;
-  @FXML
-  private TextField nameField;
-  @FXML
-  private Spinner<Integer> ageSpinner;
   @FXML
   private GridPane seatGrid;
   @FXML
@@ -50,9 +43,6 @@ public class BookingController {
   private Schedule schedule;
   private Set<Integer> selectedSeats = new HashSet<>();
   private Set<Integer> occupiedSeats = new HashSet<>();
-  private Set<Integer> highlightedSeats = new HashSet<>(); // Nearby available seats
-  private BookingClass selectedBookingClass;
-  private static final int TOTAL_SEATS = 60;
 
   @FXML
   public void initialize() {
@@ -65,9 +55,7 @@ public class BookingController {
     }
 
     try {
-      initializeSelectedClass();
       displayScheduleInfo();
-      initializeAgeSpinner();
       loadOccupiedSeats();
       createSeatGrid();
       preselectSeatIfAvailable();
@@ -89,8 +77,13 @@ public class BookingController {
     }
 
     routeLabel.setText(schedule.getRoute().getSource() + " → " + schedule.getRoute().getDestination());
-    dateLabel
-        .setText("Date: " + (schedule.getDepartureDate() != null ? schedule.getDepartureDate().toString() : "N/A"));
+    // Date is now determined by user's search date, not schedule
+    LocalDate travelDate = UserSession.getInstance().getSelectedTravelDate();
+    if (travelDate != null) {
+      dateLabel.setText("Date: " + travelDate.toString());
+    } else {
+      dateLabel.setText("Date: Not Selected");
+    }
     timeLabel
         .setText("Time: " + (schedule.getDepartureTime() != null ? schedule.getDepartureTime().toString() : "N/A"));
 
@@ -105,11 +98,6 @@ public class BookingController {
     priceLabel.setText("PKR " + String.format("%.2f", pricePerSeat) + " per seat");
   }
 
-  private void initializeAgeSpinner() {
-    SpinnerValueFactory<Integer> factory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 120, 25);
-    ageSpinner.setValueFactory(factory);
-  }
-
   private void loadOccupiedSeats() {
     if (schedule == null) {
       return;
@@ -121,55 +109,40 @@ public class BookingController {
     }
   }
 
-  private void initializeSelectedClass() {
-    String classCode = UserSession.getInstance().getSelectedClass();
-    if (classCode != null) {
-      // Create booking class based on code
-      selectedBookingClass = createBookingClassFromCode(classCode);
-    }
-  }
-
-  private BookingClass createBookingClassFromCode(String classCode) {
-    // Match class code to seat ranges
-    switch (classCode) {
-      case "SL":
-        return new BookingClass("SL", "Sleeper Class", 0.6, 1, 20, 0);
-      case "3A":
-        return new BookingClass("3A", "AC 3 Tier", 1.0, 21, 40, 0);
-      case "2A":
-        return new BookingClass("2A", "AC 2 Tier", 1.5, 41, 60, 0);
-      case "1A":
-        return new BookingClass("1A", "AC First Class", 2.0, 61, 80, 0);
-      default:
-        return null;
-    }
-  }
-
   private void createSeatGrid() {
     if (schedule == null) {
       return;
     }
 
-    // If a class is selected, filter seats to that class range
-    int totalSeats = TOTAL_SEATS;
-    if (selectedBookingClass != null) {
-      totalSeats = selectedBookingClass.getSeatEnd();
-    }
+    // Get seat range from selected class, or use all seats as fallback
+    Integer seatStart = UserSession.getInstance().getSelectedClassSeatStart();
+    Integer seatEnd = UserSession.getInstance().getSelectedClassSeatEnd();
 
-    SeatGridHelper.createGrid(seatGrid, totalSeats, occupiedSeats, this::toggleSeat);
-
-    // Highlight nearby available seats if a seat is preselected
-    if (!selectedSeats.isEmpty()) {
-      highlightNearbySeats();
+    if (seatStart != null && seatEnd != null) {
+      // Show only seats for the selected class
+      SeatGridHelper.createGrid(seatGrid, seatStart, seatEnd, occupiedSeats, this::toggleSeat);
+    } else {
+      // Fallback: use schedule capacity from database if no class range is set
+      int totalSeats = schedule.getCapacity() > 0 ? schedule.getCapacity() : 60;
+      SeatGridHelper.createGrid(seatGrid, totalSeats, occupiedSeats, this::toggleSeat);
     }
   }
 
   private void preselectSeatIfAvailable() {
     Integer preselectedSeat = UserSession.getInstance().getPreselectedSeat();
     if (preselectedSeat != null && !occupiedSeats.contains(preselectedSeat)) {
-      // Find the button for this seat and select it
-      selectSeatProgrammatically(preselectedSeat);
-      highlightNearbySeats();
+      // Validate preselected seat is within class range
+      Integer seatStart = UserSession.getInstance().getSelectedClassSeatStart();
+      Integer seatEnd = UserSession.getInstance().getSelectedClassSeatEnd();
+      if (seatStart != null && seatEnd != null) {
+        if (preselectedSeat >= seatStart && preselectedSeat <= seatEnd) {
+          // Find the button for this seat and select it
+          selectSeatProgrammatically(preselectedSeat);
+        }
+      } else {
+        // No class range restriction, allow any seat
+        selectSeatProgrammatically(preselectedSeat);
+      }
     }
   }
 
@@ -194,62 +167,24 @@ public class BookingController {
     }
   }
 
-  private void highlightNearbySeats() {
-    highlightedSeats.clear();
-
-    if (selectedSeats.isEmpty() || selectedBookingClass == null) {
-      return;
-    }
-
-    // Highlight available seats within 2 seats of any selected seat
-    for (Integer selectedSeat : selectedSeats) {
-      for (int offset = -2; offset <= 2; offset++) {
-        int nearbySeat = selectedSeat + offset;
-
-        // Check if seat is in the same class and available
-        if (nearbySeat >= selectedBookingClass.getSeatStart() &&
-            nearbySeat <= selectedBookingClass.getSeatEnd() &&
-            nearbySeat != selectedSeat &&
-            !occupiedSeats.contains(nearbySeat) &&
-            !selectedSeats.contains(nearbySeat)) {
-          highlightedSeats.add(nearbySeat);
-        }
-      }
-    }
-
-    // Update button styles for highlighted seats - use enhanced for loop instead of
-    // forEach
-    for (javafx.scene.Node node : seatGrid.getChildren()) {
-      if (node instanceof javafx.scene.control.Button) {
-        javafx.scene.control.Button btn = (javafx.scene.control.Button) node;
-        try {
-          int seatNum = Integer.parseInt(btn.getText());
-          if (highlightedSeats.contains(seatNum)) {
-            btn.getStyleClass().remove("seat-available");
-            btn.getStyleClass().add("seat-highlighted");
-          } else if (!selectedSeats.contains(seatNum) && !occupiedSeats.contains(seatNum)) {
-            btn.getStyleClass().remove("seat-highlighted");
-            btn.getStyleClass().add("seat-available");
-          }
-        } catch (NumberFormatException e) {
-          // Not a seat button - ignore
-        }
-      }
-    }
-  }
-
   private void toggleSeat(int seatNumber, Button button) {
-    // Prevent selecting occupied seats
+    // Prevent selecting occupied seats and show warning
     if (occupiedSeats.contains(seatNumber)) {
+      AlertUtils.showWarning("Seat Unavailable",
+          "Seat " + seatNumber + " is already booked. Please select a different seat.");
       return;
     }
 
-    // If a class is selected, only allow seats in that class
-    if (selectedBookingClass != null && !selectedBookingClass.isSeatInClass(seatNumber)) {
-      AlertUtils.showWarning("Invalid Seat",
-          "Please select a seat from " + selectedBookingClass.getCode() + " class (seats " +
-              selectedBookingClass.getSeatStart() + "-" + selectedBookingClass.getSeatEnd() + ")");
-      return;
+    // Validate seat is within selected class range
+    Integer seatStart = UserSession.getInstance().getSelectedClassSeatStart();
+    Integer seatEnd = UserSession.getInstance().getSelectedClassSeatEnd();
+    if (seatStart != null && seatEnd != null) {
+      if (seatNumber < seatStart || seatNumber > seatEnd) {
+        AlertUtils.showWarning("Invalid Seat",
+            "Seat " + seatNumber
+                + " is not available for the selected class. Please select a seat within the class range.");
+        return;
+      }
     }
 
     if (selectedSeats.contains(seatNumber)) {
@@ -258,7 +193,6 @@ public class BookingController {
       selectSeat(seatNumber, button);
     }
     updateDisplay();
-    highlightNearbySeats();
   }
 
   private void selectSeat(int seatNumber, Button button) {
@@ -280,13 +214,8 @@ public class BookingController {
     }
 
     selectedSeats.remove(seatNumber);
-    if (highlightedSeats.contains(seatNumber)) {
-      button.getStyleClass().remove("seat-selected");
-      button.getStyleClass().add("seat-highlighted");
-    } else {
-      button.getStyleClass().remove("seat-selected");
-      button.getStyleClass().add("seat-available");
-    }
+    button.getStyleClass().remove("seat-selected");
+    button.getStyleClass().add("seat-available");
   }
 
   private void updateDisplay() {
@@ -345,45 +274,13 @@ public class BookingController {
   }
 
   private void setupValidation() {
-    nameField.textProperty().addListener((obs, old, val) -> {
-      validateForm();
-      validateNameField();
-    });
-  }
-
-  private void validateNameField() {
-    String name = nameField.getText().trim();
-    if (name.isEmpty()) {
-      nameField.setStyle("-fx-border-color: rgba(203,166,164,0.3);");
-      return;
-    }
-
-    // Check if name contains only letters, spaces, hyphens, and apostrophes
-    if (!name.matches("^[a-zA-Z\\s\\-'']+$")) {
-      nameField.setStyle("-fx-border-color: #d32f2f;");
-    } else if (name.length() < 2) {
-      nameField.setStyle("-fx-border-color: #f57c00;");
-    } else if (name.length() > 50) {
-      nameField.setStyle("-fx-border-color: #f57c00;");
-    } else {
-      nameField.setStyle("-fx-border-color: #2e7d32;");
-    }
-  }
-
-  private boolean isValidName(String name) {
-    if (name == null || name.trim().isEmpty()) {
-      return false;
-    }
-    String trimmed = name.trim();
-    // Name should be 2-50 characters, contain only letters, spaces, hyphens, and
-    // apostrophes
-    return trimmed.length() >= 2 &&
-        trimmed.length() <= 50 &&
-        trimmed.matches("^[a-zA-Z\\s\\-'']+$");
+    // Validation only checks if seats are selected - user info is automatically
+    // used
+    validateForm();
   }
 
   private void validateForm() {
-    boolean isValid = isValidName(nameField.getText()) && !selectedSeats.isEmpty();
+    boolean isValid = !selectedSeats.isEmpty() && UserSession.getInstance().isLoggedIn();
     proceedButton.setDisable(!isValid);
   }
 
@@ -439,29 +336,7 @@ public class BookingController {
       return false;
     }
 
-    // Validate passenger name
-    String name = nameField.getText().trim();
-    if (name.isEmpty()) {
-      AlertUtils.showWarning("Missing Information",
-          "Please enter the passenger's name to continue.");
-      nameField.requestFocus();
-      return false;
-    }
-
-    if (!isValidName(name)) {
-      if (name.length() < 2) {
-        AlertUtils.showWarning("Invalid Name",
-            "Passenger name must be at least 2 characters long.");
-      } else if (name.length() > 50) {
-        AlertUtils.showWarning("Invalid Name",
-            "Passenger name cannot exceed 50 characters.");
-      } else {
-        AlertUtils.showWarning("Invalid Name",
-            "Passenger name can only contain letters, spaces, hyphens, and apostrophes. Numbers and special characters are not allowed.");
-      }
-      nameField.requestFocus();
-      return false;
-    }
+    // User info is automatically used - no validation needed
 
     // Validate seat selection
     if (selectedSeats.isEmpty()) {
@@ -473,11 +348,21 @@ public class BookingController {
     // Reload occupied seats to ensure we have the latest data
     loadOccupiedSeats();
 
-    // Check if any selected seat is now occupied
+    // Validate selected seats are within class range and not occupied
     List<Integer> unavailableSeats = new ArrayList<>();
+    Integer seatStart = UserSession.getInstance().getSelectedClassSeatStart();
+    Integer seatEnd = UserSession.getInstance().getSelectedClassSeatEnd();
+
     for (Integer seatNumber : selectedSeats) {
+      // Check if seat is occupied
       if (occupiedSeats.contains(seatNumber)) {
         unavailableSeats.add(seatNumber);
+      }
+      // Check if seat is within class range (if range is set)
+      else if (seatStart != null && seatEnd != null) {
+        if (seatNumber < seatStart || seatNumber > seatEnd) {
+          unavailableSeats.add(seatNumber);
+        }
       }
     }
 
@@ -519,21 +404,21 @@ public class BookingController {
       throw new IllegalStateException("Cannot create booking: schedule is null");
     }
 
-    String name = nameField.getText().trim();
-    if (!isValidName(name)) {
-      throw new IllegalArgumentException("Invalid passenger name");
-    }
-
-    int age = ageSpinner.getValue();
-    if (age < 1 || age > 120) {
-      throw new IllegalArgumentException("Passenger age must be between 1 and 120 years");
-    }
-
     if (selectedSeats.isEmpty()) {
       throw new IllegalStateException("No seats selected");
     }
 
-    List<Passenger> passengers = BookingHelper.createPassengers(name, age, new ArrayList<>(selectedSeats));
+    // Use logged-in user's information
+    com.example.trainreservationsystem.models.shared.User currentUser = UserSession.getInstance().getCurrentUser();
+    if (currentUser == null) {
+      throw new IllegalStateException("User not logged in");
+    }
+
+    String passengerName = currentUser.getUsername();
+    int passengerAge = 25; // Default age - can be updated if user profile has age field
+
+    List<Passenger> passengers = BookingHelper.createPassengers(passengerName, passengerAge,
+        new ArrayList<>(selectedSeats));
     return BookingHelper.createBooking(bookingService, schedule, passengers);
   }
 

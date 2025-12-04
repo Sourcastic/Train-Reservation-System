@@ -1,6 +1,7 @@
 package com.example.trainreservationsystem.utils.member.booking;
 
 import com.example.trainreservationsystem.models.member.Booking;
+import com.example.trainreservationsystem.services.shared.UserSession;
 
 import javafx.scene.control.Label;
 
@@ -19,7 +20,16 @@ public class BookingDisplayHelper {
   private static void displayJourney(Booking booking, Label journeyLabel, Label dateLabel) {
     journeyLabel.setText(booking.getSchedule().getRoute().getSource() +
         " → " + booking.getSchedule().getRoute().getDestination());
-    dateLabel.setText(booking.getSchedule().getDepartureDate().toString());
+    // Use travel date from session (user's selected travel date) first, then
+    // booking date as fallback
+    java.time.LocalDate travelDate = UserSession.getInstance().getSelectedTravelDate();
+    if (travelDate != null) {
+      dateLabel.setText(travelDate.toString());
+    } else if (booking.getBookingDate() != null) {
+      dateLabel.setText(booking.getBookingDate().toLocalDate().toString());
+    } else {
+      dateLabel.setText("N/A");
+    }
   }
 
   private static void displayPassengers(Booking booking, Label passengersLabel, Label seatsLabel) {

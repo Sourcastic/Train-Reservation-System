@@ -16,7 +16,9 @@ import org.controlsfx.control.SearchableComboBox;
 import com.example.trainreservationsystem.controllers.shared.HomeController;
 import com.example.trainreservationsystem.models.admin.Route;
 import com.example.trainreservationsystem.models.admin.Schedule;
+import com.example.trainreservationsystem.models.admin.SeatClass;
 import com.example.trainreservationsystem.models.member.BookingClass;
+import com.example.trainreservationsystem.repositories.RepositoryFactory;
 import com.example.trainreservationsystem.services.admin.RouteService;
 import com.example.trainreservationsystem.services.admin.TrainService;
 import com.example.trainreservationsystem.services.member.booking.BookingService;
@@ -401,20 +403,116 @@ public class SearchController {
   private List<BookingClass> getBookingClasses(Schedule schedule) {
     List<BookingClass> classes = new ArrayList<>();
 
-    // Get occupied seats to calculate availability
-    List<Integer> occupiedSeats = bookingService.getOccupiedSeats(schedule.getId());
+    try {
+      // Fetch seat classes from database
+      List<SeatClass> seatClasses = RepositoryFactory.getSeatClassRepository().getAllSeatClasses();
 
-    // Define class ranges (SL: 1-20, 3A: 21-40, 2A: 41-60)
-    classes.add(createBookingClass("SL", "Sleeper Class", 0.6, 1, 20, occupiedSeats));
-    classes.add(createBookingClass("3A", "AC 3 Tier", 1.0, 21, 40, occupiedSeats));
-    classes.add(createBookingClass("2A", "AC 2 Tier", 1.5, 41, 60, occupiedSeats));
+      if (seatClasses == null || seatClasses.isEmpty()) {
+        // Fallback to default classes if database is empty
+        return getDefaultBookingClasses(schedule);
+      }
 
-    // Add more classes dynamically if needed (e.g., based on schedule capacity)
-    if (schedule.getCapacity() > 60) {
-      classes.add(createBookingClass("1A", "AC First Class", 2.0, 61, 80, occupiedSeats));
+      // Get occupied seats to calculate availability
+      List<Integer> occupiedSeats = bookingService.getOccupiedSeats(schedule.getId());
+
+      // Sort seat classes by base_fare (ascending) to assign seat ranges
+      Collections.sort(seatClasses, new Comparator<SeatClass>() {
+        @Override
+        public int compare(SeatClass a, SeatClass b) {
+          return Double.compare(a.getBaseFare(), b.getBaseFare());
+        }
+      });
+
+      // Calculate seat ranges dynamically - use capacity from database
+      int totalSeats = schedule.getCapacity() > 0 ? schedule.getCapacity() : 60; // Fallback only
+      int seatsPerClass = totalSeats / seatClasses.size();
+      int remainingSeats = totalSeats % seatClasses.size();
+
+      int currentSeatStart = 1;
+      for (int i = 0; i < seatClasses.size(); i++) {
+        SeatClass seatClass = seatClasses.get(i);
+        int classSeats = seatsPerClass + (i < remainingSeats ? 1 : 0);
+        int seatEnd = currentSeatStart + classSeats - 1;
+
+        // Extract code from name (e.g., "Sleeper Class" -> "SL", "AC 3 Tier" -> "3A")
+        String code = extractClassCode(seatClass.getName());
+
+        // Calculate price multiplier from base_fare
+        // Assuming base_fare is additional fare, convert to multiplier
+        // If base_fare is 0, use 1.0 as default multiplier
+        double basePrice = schedule.getPrice();
+        double multiplier = basePrice > 0 ? (basePrice + seatClass.getBaseFare()) / basePrice : 1.0;
+
+        classes.add(createBookingClass(code, seatClass.getName(), multiplier,
+            currentSeatStart, seatEnd, occupiedSeats));
+
+        currentSeatStart = seatEnd + 1;
+      }
+    } catch (Exception e) {
+      System.err.println("Error fetching seat classes from database: " + e.getMessage());
+      e.printStackTrace();
+      // Fallback to default classes on error
+      return getDefaultBookingClasses(schedule);
     }
 
     return classes;
+  }
+
+  private List<BookingClass> getDefaultBookingClasses(Schedule schedule) {
+    List<BookingClass> classes = new ArrayList<>();
+    List<Integer> occupiedSeats = bookingService.getOccupiedSeats(schedule.getId());
+
+    // Use schedule capacity from database instead of hardcoded values
+    int totalSeats = schedule.getCapacity() > 0 ? schedule.getCapacity() : 60;
+
+    // Dynamically divide seats into 3 default classes if no seat classes in DB
+    int seatsPerClass = totalSeats / 3;
+    int remainingSeats = totalSeats % 3;
+
+    int seatStart = 1;
+    // First class: SL
+    int seatEnd1 = seatStart + seatsPerClass + (remainingSeats > 0 ? 1 : 0) - 1;
+    classes.add(createBookingClass("SL", "Sleeper Class", 0.6, seatStart, seatEnd1, occupiedSeats));
+    seatStart = seatEnd1 + 1;
+    remainingSeats--;
+
+    // Second class: 3A
+    int seatEnd2 = seatStart + seatsPerClass + (remainingSeats > 0 ? 1 : 0) - 1;
+    classes.add(createBookingClass("3A", "AC 3 Tier", 1.0, seatStart, seatEnd2, occupiedSeats));
+    seatStart = seatEnd2 + 1;
+    remainingSeats--;
+
+    // Third class: 2A
+    int seatEnd3 = seatStart + seatsPerClass + (remainingSeats > 0 ? 1 : 0) - 1;
+    classes.add(createBookingClass("2A", "AC 2 Tier", 1.5, seatStart, seatEnd3, occupiedSeats));
+
+    return classes;
+  }
+
+  private String extractClassCode(String className) {
+    if (className == null) {
+      return "UNK";
+    }
+    String upperName = className.toUpperCase();
+
+    // Extract code based on common patterns
+    if (upperName.contains("SLEEPER") || upperName.contains("SL")) {
+      return "SL";
+    } else if (upperName.contains("3") && (upperName.contains("TIER") || upperName.contains("AC"))) {
+      return "3A";
+    } else if (upperName.contains("2") && (upperName.contains("TIER") || upperName.contains("AC"))) {
+      return "2A";
+    } else if (upperName.contains("1")
+        && (upperName.contains("TIER") || upperName.contains("FIRST") || upperName.contains("AC"))) {
+      return "1A";
+    } else if (upperName.contains("ECONOMY") || upperName.contains("COACH")) {
+      return "EC";
+    } else if (upperName.contains("BUSINESS")) {
+      return "BC";
+    } else {
+      // Extract first 2-3 characters or use abbreviation
+      return className.length() > 3 ? className.substring(0, 2).toUpperCase() : className.toUpperCase();
+    }
   }
 
   private BookingClass createBookingClass(String code, String name, double multiplier,
@@ -502,46 +600,56 @@ public class SearchController {
 
   private String formatDaysOfWeek(List<Schedule.DayOfWeek> daysOfWeek) {
     if (daysOfWeek == null || daysOfWeek.isEmpty()) {
-      return "N/A";
+      return "Not Scheduled";
     }
 
-    // Map to single letter abbreviations
+    // Map to full day names
     StringBuilder sb = new StringBuilder();
-    for (Schedule.DayOfWeek day : daysOfWeek) {
-      switch (day) {
+    for (int i = 0; i < daysOfWeek.size(); i++) {
+      if (i > 0) {
+        sb.append(", ");
+      }
+      switch (daysOfWeek.get(i)) {
         case MONDAY:
-          sb.append("M ");
+          sb.append("Monday");
           break;
         case TUESDAY:
-          sb.append("T ");
+          sb.append("Tuesday");
           break;
         case WEDNESDAY:
-          sb.append("W ");
+          sb.append("Wednesday");
           break;
         case THURSDAY:
-          sb.append("T ");
+          sb.append("Thursday");
           break;
         case FRIDAY:
-          sb.append("F ");
+          sb.append("Friday");
           break;
         case SATURDAY:
-          sb.append("S ");
+          sb.append("Saturday");
           break;
         case SUNDAY:
-          sb.append("S ");
+          sb.append("Sunday");
           break;
       }
     }
-    return sb.toString().trim();
+    return sb.toString();
   }
 
   private void handleBook(Schedule schedule, BookingClass bookingClass) {
     UserSession.getInstance().setSelectedSchedule(schedule);
-    UserSession.getInstance().setSelectedClass(bookingClass.getCode(), bookingClass.getPriceMultiplier());
+    // Store class info including seat range
+    UserSession.getInstance().setSelectedClass(bookingClass.getCode(), bookingClass.getPriceMultiplier(),
+        bookingClass.getSeatStart(), bookingClass.getSeatEnd());
+    // Store the selected travel date
+    if (datePicker.getValue() != null) {
+      UserSession.getInstance().setSelectedTravelDate(datePicker.getValue());
+    }
 
-    // Find first available seat in this class and preselect it
+    // Find first available seat within the selected class range and preselect it
     List<Integer> occupiedSeats = bookingService.getOccupiedSeats(schedule.getId());
-    Integer firstAvailableSeat = findFirstAvailableSeat(bookingClass, occupiedSeats);
+    Integer firstAvailableSeat = findFirstAvailableSeat(bookingClass.getSeatStart(), bookingClass.getSeatEnd(),
+        occupiedSeats);
     if (firstAvailableSeat != null) {
       UserSession.getInstance().setPreselectedSeat(firstAvailableSeat);
     }
@@ -549,13 +657,13 @@ public class SearchController {
     HomeController.getInstance().loadView("/com/example/trainreservationsystem/member/booking/booking-view.fxml");
   }
 
-  private Integer findFirstAvailableSeat(BookingClass bookingClass, List<Integer> occupiedSeats) {
+  private Integer findFirstAvailableSeat(int seatStart, int seatEnd, List<Integer> occupiedSeats) {
     // Convert List to HashSet for O(1) lookup instead of O(n) - better time
     // complexity
     Set<Integer> occupiedSet = new HashSet<>(occupiedSeats);
 
-    // Linear search through seat range - O(n) where n is seat range size
-    for (int seat = bookingClass.getSeatStart(); seat <= bookingClass.getSeatEnd(); seat++) {
+    // Linear search through seats in the class range - find first available seat
+    for (int seat = seatStart; seat <= seatEnd; seat++) {
       if (!occupiedSet.contains(seat)) {
         return seat;
       }

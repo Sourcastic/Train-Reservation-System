@@ -2,7 +2,6 @@ package com.example.trainreservationsystem.controllers.staff;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,7 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -46,7 +44,7 @@ public class StaffDashboardController {
   @FXML
   private TableColumn<Schedule, String> routeCol;
   @FXML
-  private TableColumn<Schedule, LocalDate> dateCol;
+  private TableColumn<Schedule, String> dateCol;
   @FXML
   private TableColumn<Schedule, String> timeCol;
   @FXML
@@ -103,7 +101,11 @@ public class StaffDashboardController {
   private void setupTableColumns() {
     routeCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(
         cellData.getValue().getRoute() != null ? cellData.getValue().getRoute().getName() : "N/A"));
-    dateCol.setCellValueFactory(new PropertyValueFactory<>("departureDate"));
+    // Date column removed - schedules no longer have departure date
+    dateCol.setCellValueFactory(cellData -> {
+      // Return a string property since date column expects string
+      return new javafx.beans.property.SimpleStringProperty("N/A");
+    });
     timeCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(
         cellData.getValue().getDepartureTime() != null ? cellData.getValue().getDepartureTime().toString() : "N/A"));
     bookingsCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(

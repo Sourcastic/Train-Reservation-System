@@ -118,9 +118,8 @@ public class UpdateTrainStatusController {
                     : "your scheduled train";
 
             String message = String.format(
-                    "Train status update for %s on %s: %s",
+                    "Train status update for %s: %s",
                     routeName,
-                    selectedSchedule.getDepartureDate(),
                     newStatus);
 
             // Notify all users with bookings on this schedule

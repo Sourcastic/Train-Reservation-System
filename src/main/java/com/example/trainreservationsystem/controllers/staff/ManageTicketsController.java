@@ -76,12 +76,12 @@ public class ManageTicketsController {
       return new javafx.beans.property.SimpleStringProperty("N/A");
     });
 
-    // Date column
+    // Date column - use booking date as fallback
     colDate.setCellValueFactory(cellData -> {
       Booking booking = cellData.getValue();
-      if (booking.getSchedule() != null && booking.getSchedule().getDepartureDate() != null) {
+      if (booking.getBookingDate() != null) {
         return new javafx.beans.property.SimpleStringProperty(
-            booking.getSchedule().getDepartureDate().format(DATE_FORMATTER));
+            booking.getBookingDate().toLocalDate().format(DATE_FORMATTER));
       }
       return new javafx.beans.property.SimpleStringProperty("N/A");
     });

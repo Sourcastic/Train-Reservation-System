@@ -98,7 +98,6 @@ public class DatabaseInitializer {
 
     // Indexes on frequently queried columns
     createIndexIfNotExists(stmt, "idx_bookings_status", "bookings", "status");
-    createIndexIfNotExists(stmt, "idx_schedules_departure_date", "schedules", "departure_date");
     createIndexIfNotExists(stmt, "idx_routes_source_destination", "routes", "source, destination");
     createIndexIfNotExists(stmt, "idx_discounts_type", "discounts", "type");
     createIndexIfNotExists(stmt, "idx_discounts_is_active", "discounts", "is_active");
@@ -245,7 +244,6 @@ public class DatabaseInitializer {
     return "CREATE TABLE IF NOT EXISTS schedules (" +
         "id SERIAL PRIMARY KEY, " +
         "route_id INT REFERENCES routes(id), " +
-        "departure_date DATE NOT NULL, " +
         "departure_time TIME NOT NULL, " +
         "arrival_time TIME NOT NULL, " +
         "capacity INT NOT NULL, " +

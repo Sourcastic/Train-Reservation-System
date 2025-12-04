@@ -1,5 +1,6 @@
 package com.example.trainreservationsystem.services.shared;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -126,9 +127,10 @@ public class ScheduledTaskService {
           continue;
         }
 
-        // Calculate departure datetime
-        LocalDateTime departureDateTime = booking.getSchedule().getDepartureDate()
-            .atTime(booking.getSchedule().getDepartureTime());
+        // Calculate departure datetime - use booking date as travel date fallback
+        LocalDate travelDate = booking.getBookingDate() != null ? booking.getBookingDate().toLocalDate()
+            : LocalDate.now();
+        LocalDateTime departureDateTime = travelDate.atTime(booking.getSchedule().getDepartureTime());
 
         // Check if departure is within 24 hours (and not already passed)
         long hoursUntilDeparture = ChronoUnit.HOURS.between(now, departureDateTime);
@@ -148,7 +150,7 @@ public class ScheduledTaskService {
                 "Reminder: Your train (%s) departs in %d hour(s) on %s at %s",
                 routeInfo,
                 (int) hoursUntilDeparture,
-                booking.getSchedule().getDepartureDate(),
+                travelDate,
                 booking.getSchedule().getDepartureTime());
 
             notificationService.add(message, booking.getUserId());

@@ -24,9 +24,10 @@ public class StylesheetHelper {
       java.net.URL stylesheetUrl = StylesheetHelper.class.getResource(STYLESHEET_PATH);
       if (stylesheetUrl != null) {
         String externalForm = stylesheetUrl.toExternalForm();
-        if (!scene.getStylesheets().contains(externalForm)) {
-          scene.getStylesheets().add(externalForm);
-        }
+        // Remove any existing stylesheet references to avoid duplicates
+        scene.getStylesheets().removeIf(url -> url.contains("stylesheet.css"));
+        // Add the stylesheet
+        scene.getStylesheets().add(externalForm);
       } else {
         System.err.println("⚠️ Warning: Stylesheet not found at " + STYLESHEET_PATH);
       }

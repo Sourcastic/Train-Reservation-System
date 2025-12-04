@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.example.trainreservationsystem.applications.HomeApplication;
 import com.example.trainreservationsystem.services.shared.UserSession;
+import com.example.trainreservationsystem.utils.shared.ui.StylesheetHelper;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -180,8 +181,15 @@ public class StaffController {
         UserSession.getInstance().clearSession();
         try {
             FXMLLoader loader = new FXMLLoader(
-                    HomeApplication.class.getResource("/com/example/trainreservationsystem/shared/login-view.fxml"));
-            Scene scene = new Scene(loader.load());
+                    HomeApplication.class.getResource("/com/example/trainreservationsystem/shared/landing-view.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 1280, 800);
+            // Clear any existing stylesheets first to avoid conflicts
+            scene.getStylesheets().clear();
+            // Apply stylesheet programmatically to ensure it's loaded
+            StylesheetHelper.applyStylesheet(scene);
+            // Also apply to root in case scene isn't fully initialized
+            StylesheetHelper.applyStylesheet(root);
             Stage stage = (Stage) btnLogout.getScene().getWindow();
             stage.setScene(scene);
             stage.show();

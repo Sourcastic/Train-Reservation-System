@@ -15,12 +15,19 @@ public class SeatGridHelper {
   public static void createGrid(GridPane seatGrid, int totalSeats,
       Set<Integer> occupiedSeats,
       SeatSelectionHandler handler) {
-    int seatNumber = 1;
+    createGrid(seatGrid, 1, totalSeats, occupiedSeats, handler);
+  }
+
+  public static void createGrid(GridPane seatGrid, int seatStart, int seatEnd,
+      Set<Integer> occupiedSeats,
+      SeatSelectionHandler handler) {
+    int seatNumber = seatStart;
+    int totalSeats = seatEnd - seatStart + 1;
     int totalRows = calculateTotalRows(totalSeats);
 
     for (int row = 0; row < totalRows; row++) {
       addRowLabel(seatGrid, row);
-      seatNumber = addSeatsInRow(seatGrid, row, seatNumber, totalSeats, occupiedSeats, handler);
+      seatNumber = addSeatsInRow(seatGrid, row, seatNumber, seatEnd, occupiedSeats, handler);
     }
   }
 
@@ -35,11 +42,11 @@ public class SeatGridHelper {
   }
 
   private static int addSeatsInRow(GridPane seatGrid, int row, int startSeat,
-      int totalSeats, Set<Integer> occupiedSeats,
+      int seatEnd, Set<Integer> occupiedSeats,
       SeatSelectionHandler handler) {
     int seatNumber = startSeat;
 
-    for (int col = 0; col < SEATS_PER_ROW && seatNumber <= totalSeats; col++) {
+    for (int col = 0; col < SEATS_PER_ROW && seatNumber <= seatEnd; col++) {
       int column = calculateColumn(col);
       Button seatButton = createSeatButton(seatNumber, occupiedSeats, handler);
       seatGrid.add(seatButton, column, row);
@@ -71,6 +78,9 @@ public class SeatGridHelper {
       SeatSelectionHandler handler) {
     Button button = new Button(String.valueOf(seatNumber));
     button.setPrefSize(40, 40);
+    button.setText(String.valueOf(seatNumber)); // Explicitly set text to ensure it's visible
+    button.setMinSize(40, 40);
+    button.setMaxSize(40, 40);
 
     if (occupiedSeats.contains(seatNumber)) {
       button.getStyleClass().add("seat-occupied");
