@@ -3,7 +3,9 @@ package com.example.trainreservationsystem.seeders.shared;
 import java.sql.Connection;
 
 import com.example.trainreservationsystem.seeders.admin.RouteSeeder;
+import com.example.trainreservationsystem.seeders.admin.RouteSegmentSeeder;
 import com.example.trainreservationsystem.seeders.admin.ScheduleSeeder;
+import com.example.trainreservationsystem.seeders.admin.StationSeeder;
 import com.example.trainreservationsystem.utils.shared.database.Database;
 
 /**
@@ -38,14 +40,20 @@ public class DatabaseSeeder {
 
       // Seed in order (respecting foreign key dependencies)
       boolean usersSeeded = UserSeeder.seed(conn, force);
+      boolean stationsSeeded = StationSeeder.seed(conn, force);
       boolean routesSeeded = RouteSeeder.seed(conn, force);
+      boolean segmentsSeeded = RouteSegmentSeeder.seed(conn, force);
       boolean schedulesSeeded = ScheduleSeeder.seed(conn, force);
 
       // Summary
       int seededCount = 0;
       if (usersSeeded)
         seededCount++;
+      if (stationsSeeded)
+        seededCount++;
       if (routesSeeded)
+        seededCount++;
+      if (segmentsSeeded)
         seededCount++;
       if (schedulesSeeded)
         seededCount++;

@@ -3,6 +3,8 @@ package com.example.trainreservationsystem.utils.shared.database;
 import java.sql.Connection;
 import java.sql.Statement;
 
+import com.example.trainreservationsystem.seeders.shared.DatabaseSeeder;
+
 /**
  * Initializes database tables.
  * Creates all required tables if they don't exist.
@@ -25,7 +27,7 @@ public class DatabaseInitializer {
       System.out.println("[SUCCESS] Database tables and procedures created successfully!");
 
       // Note: Seeding is now optional. Use SeedCommand to seed manually.
-      // DatabaseSeeder.seed(); // Commented out - use SeedCommand instead
+      DatabaseSeeder.seed(); // Commented out - use SeedCommand instead
       return true;
 
     } catch (Exception e) {
@@ -150,6 +152,19 @@ public class DatabaseInitializer {
               "      CHECK (type IN ('PROMO', 'VOUCHER', 'DISCOUNT_CODE')); " +
               "  END IF; " +
               "END $$;");
+
+      // Migration: Add seat_id column to tickets table if it doesn't exist
+      stmt.execute(
+          "DO $$ " +
+              "BEGIN " +
+              "  IF NOT EXISTS (SELECT 1 FROM information_schema.columns " +
+              "                 WHERE table_name = 'tickets' AND column_name = 'seat_id') THEN " +
+              "    -- Delete old tickets that don't have seat assignments " +
+              "    DELETE FROM tickets; " +
+              "    -- Add the seat_id column " +
+              "    ALTER TABLE tickets ADD COLUMN seat_id INT NOT NULL; " +
+              "  END IF; " +
+              "END $$;");
     } catch (Exception e) {
       // Migration failed - table might not exist yet or column already updated
       // This is okay, just log and continue
@@ -235,7 +250,7 @@ public class DatabaseInitializer {
   private static String createRoutesTable() {
     return "CREATE TABLE IF NOT EXISTS routes (" +
         "id SERIAL PRIMARY KEY, " +
-        "name VARCHAR(100), " +
+
         "source VARCHAR(100) NOT NULL, " +
         "destination VARCHAR(100) NOT NULL)";
   }
@@ -312,6 +327,7 @@ public class DatabaseInitializer {
     return "CREATE TABLE IF NOT EXISTS tickets (" +
         "id SERIAL PRIMARY KEY, " +
         "booking_id INT REFERENCES bookings(id), " +
+        "seat_id INT NOT NULL, " +
         "qr_code VARCHAR(50) UNIQUE NOT NULL, " +
         "status VARCHAR(20) NOT NULL, " +
         "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";

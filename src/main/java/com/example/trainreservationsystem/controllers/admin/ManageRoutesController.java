@@ -228,7 +228,7 @@ public class ManageRoutesController {
 
             // Create route with auto-generated name
             Route newRoute = new Route();
-            newRoute.setName(source + " to " + destination);
+
             newRoute.setSource(source);
             newRoute.setDestination(destination);
 

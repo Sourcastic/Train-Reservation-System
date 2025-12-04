@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Route {
   private int id;
-  private String name;
+
   private String source;
   private String destination;
   private List<RouteSegment> segments = new ArrayList<>();
@@ -16,9 +16,8 @@ public class Route {
   public Route() {
   }
 
-  public Route(int id, String name, String source, String destination) {
+  public Route(int id, String source, String destination) {
     this.id = id;
-    this.name = name;
     this.source = source;
     this.destination = destination;
   }
@@ -33,11 +32,7 @@ public class Route {
   }
 
   public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
+    return source + " -> " + destination;
   }
 
   public String getSource() {

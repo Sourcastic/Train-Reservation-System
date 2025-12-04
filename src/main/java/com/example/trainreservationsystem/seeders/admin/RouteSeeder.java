@@ -39,18 +39,14 @@ public class RouteSeeder {
       }
 
       // Seed routes
+
       stmt.executeUpdate(
-          "INSERT INTO routes (name, source, destination) VALUES " +
-              "('Northeast Express', 'New York', 'Boston'), " +
-              "('Northeast Return', 'Boston', 'New York'), " +
-              "('Midwest Line', 'Chicago', 'St. Louis'), " +
-              "('Midwest Return', 'St. Louis', 'Chicago'), " +
-              "('West Coast Express', 'Los Angeles', 'San Francisco'), " +
-              "('West Coast Return', 'San Francisco', 'Los Angeles'), " +
-              "('East Coast Line', 'Washington DC', 'New York'), " +
-              "('East Coast Return', 'New York', 'Washington DC'), " +
-              "('Southern Route', 'Atlanta', 'Miami'), " +
-              "('Southern Return', 'Miami', 'Atlanta')");
+          "INSERT INTO routes (source, destination) VALUES " +
+              "('Karachi', 'Rawalpindi'), " + // Route 1
+              "('Karachi', 'Islamabad'), " + // Route 2
+              "('Karachi', 'Peshawar'), " + // Route 3
+              "('Quetta', 'Peshawar'), " + // Route 4
+              "('Karachi', 'Lahore')"); // Route 5
 
       System.out.println("✅ Seeded 10 routes");
       return true;

@@ -22,7 +22,7 @@ public class TrainRepository {
     String dayOfWeekName = dayOfWeek.name(); // Convert to Schedule.DayOfWeek format
 
     // Search for schedules that run on this day of week
-    String query = "SELECT s.*, r.name as route_name, r.source, r.destination " +
+    String query = "SELECT s.*, r.source, r.destination " +
         "FROM schedules s " +
         "JOIN routes r ON s.route_id = r.id " +
         "WHERE LOWER(r.source) = LOWER(?) AND LOWER(r.destination) = LOWER(?) " +
@@ -50,7 +50,7 @@ public class TrainRepository {
   }
 
   public Schedule getScheduleById(int id) {
-    String query = "SELECT s.*, r.name as route_name, r.source, r.destination " +
+    String query = "SELECT s.*, r.source, r.destination " +
         "FROM schedules s " +
         "JOIN routes r ON s.route_id = r.id " +
         "WHERE s.id = ?";
@@ -72,7 +72,6 @@ public class TrainRepository {
   private Schedule mapResultSetToSchedule(ResultSet rs) throws SQLException {
     Route route = new Route(
         rs.getInt("route_id"),
-        rs.getString("route_name"),
         rs.getString("source"),
         rs.getString("destination"));
 

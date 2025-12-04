@@ -3,6 +3,7 @@ package com.example.trainreservationsystem.services.member.booking;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.trainreservationsystem.models.admin.CancellationPolicy;
@@ -40,6 +41,16 @@ public class BookingService {
     Booking created = bookingRepository.createBooking(booking);
     if (created != null) {
       created.setSchedule(schedule);
+
+      // Generate tickets for each seat
+      List<Integer> seatNumbers = new ArrayList<>();
+      for (Passenger p : passengers) {
+        seatNumbers.add(p.getSeatNumber());
+      }
+
+      // Generate tickets using TicketService
+      com.example.trainreservationsystem.services.member.TicketService ticketService = new com.example.trainreservationsystem.services.member.TicketService();
+      ticketService.generateTickets(created.getId(), seatNumbers);
     }
     return created;
   }

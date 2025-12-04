@@ -11,9 +11,10 @@ public class RouteService {
 
     private final RouteRepository routeRepository = RepositoryFactory.getRouteRepository();
 
-    public Route createRoute(String name, List<RouteSegment> segments) throws Exception {
+    public Route createRoute(String source, String destination, List<RouteSegment> segments) throws Exception {
         Route route = new Route();
-        route.setName(name);
+        route.setSource(source);
+        route.setDestination(destination);
         route = routeRepository.addRoute(route);
 
         for (RouteSegment segment : segments) {

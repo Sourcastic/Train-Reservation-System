@@ -87,10 +87,21 @@
         <Label text="QR Code" styleClass="detail-label"/>
     </VBox>
 
-    <!-- Action Buttons -->
-    <HBox spacing="12.0" alignment="CENTER">
-        <Button text="Print" styleClass="secondary-button" prefWidth="100.0"/>
+    <!-- Navigation and Action Buttons -->
+    <VBox spacing="12.0" alignment="CENTER">
+        <!-- Ticket Counter -->
+        <Label fx:id="ticketCounterLabel" styleClass="detail-label" style="-fx-font-weight: bold;"/>
+        
+        <!-- Navigation Buttons -->
+        <HBox spacing="12.0" alignment="CENTER">
+            <Button fx:id="previousButton" text="◄ Previous" styleClass="secondary-button" 
+                    prefWidth="120.0" onAction="#handlePrevious"/>
+            <Button fx:id="nextButton" text="Next ►" styleClass="secondary-button" 
+                    prefWidth="120.0" onAction="#handleNext"/>
+        </HBox>
+        
+        <!-- Close Button -->
         <Button text="Close" onAction="#handleClose" styleClass="button" prefWidth="100.0"/>
-    </HBox>
+    </VBox>
 
 </VBox>

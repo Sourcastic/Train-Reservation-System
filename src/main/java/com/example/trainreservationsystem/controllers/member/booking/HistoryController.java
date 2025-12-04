@@ -180,7 +180,13 @@ public class HistoryController {
           getClass().getResource("/com/example/trainreservationsystem/member/booking/ticket-view.fxml"));
       Parent root = loader.load();
       TicketViewController controller = loader.getController();
-      controller.setBooking(booking);
+
+      // Fetch tickets for this booking
+      com.example.trainreservationsystem.services.member.TicketService ticketService = new com.example.trainreservationsystem.services.member.TicketService();
+      java.util.List<com.example.trainreservationsystem.models.member.Ticket> tickets = ticketService
+          .getTicketsByBookingId(booking.getId());
+
+      controller.setBookingWithTickets(booking, tickets);
 
       Stage stage = new Stage();
       stage.setTitle("Your E-Ticket");
@@ -190,6 +196,7 @@ public class HistoryController {
       stage.showAndWait();
     } catch (Exception e) {
       AlertUtils.showError("Error", "Failed to display ticket: " + e.getMessage());
+      e.printStackTrace();
     }
   }
 

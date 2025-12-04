@@ -53,7 +53,7 @@ public class ScheduleRepository {
     public List<Schedule> getAllSchedules() throws Exception {
         List<Schedule> schedules = new ArrayList<>();
         // Use JOIN to fetch routes in a single query (fixes N+1)
-        String sql = "SELECT s.*, r.id as route_id, r.name as route_name, r.source, r.destination " +
+        String sql = "SELECT s.*, r.id as route_id, r.source, r.destination " +
                 "FROM schedules s " +
                 "LEFT JOIN routes r ON s.route_id = r.id " +
                 "ORDER BY s.id";
@@ -74,7 +74,6 @@ public class ScheduleRepository {
                 if (rs.getInt("route_id") > 0) {
                     route = new Route(
                             rs.getInt("route_id"),
-                            rs.getString("route_name"),
                             rs.getString("source"),
                             rs.getString("destination"));
                 }
@@ -116,7 +115,7 @@ public class ScheduleRepository {
 
     public Schedule getScheduleById(int id) throws Exception {
         // Use JOIN to fetch route in a single query (fixes N+1)
-        String sql = "SELECT s.*, r.id as route_id, r.name as route_name, r.source, r.destination " +
+        String sql = "SELECT s.*, r.id as route_id, r.source, r.destination " +
                 "FROM schedules s " +
                 "LEFT JOIN routes r ON s.route_id = r.id " +
                 "WHERE s.id = ?";
@@ -130,7 +129,6 @@ public class ScheduleRepository {
                     if (rs.getInt("route_id") > 0) {
                         route = new Route(
                                 rs.getInt("route_id"),
-                                rs.getString("route_name"),
                                 rs.getString("source"),
                                 rs.getString("destination"));
                     }

@@ -24,6 +24,7 @@ public class TicketRepository {
                 tickets.add(new Ticket(
                         rs.getInt("id"),
                         rs.getInt("booking_id"),
+                        rs.getInt("seat_id"),
                         rs.getString("qr_code"),
                         rs.getString("status")));
             }
@@ -34,33 +35,36 @@ public class TicketRepository {
         return tickets;
     }
 
-    public Ticket getTicketByBookingId(int bookingId) {
-        String query = "SELECT * FROM tickets WHERE booking_id = ?";
+    public List<Ticket> getTicketsByBookingId(int bookingId) {
+        List<Ticket> tickets = new ArrayList<>();
+        String query = "SELECT * FROM tickets WHERE booking_id = ? ORDER BY seat_id";
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, bookingId);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new Ticket(
+            while (rs.next()) {
+                tickets.add(new Ticket(
                         rs.getInt("id"),
                         rs.getInt("booking_id"),
+                        rs.getInt("seat_id"),
                         rs.getString("qr_code"),
-                        rs.getString("status"));
+                        rs.getString("status")));
             }
         } catch (Exception e) {
-            System.err.println("Error getting ticket: " + e.getMessage());
+            System.err.println("Error getting tickets: " + e.getMessage());
             e.printStackTrace();
         }
-        return null;
+        return tickets;
     }
 
     public void saveTicket(Ticket ticket) {
-        String query = "INSERT INTO tickets (booking_id, qr_code, status, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP) RETURNING id";
+        String query = "INSERT INTO tickets (booking_id, seat_id, qr_code, status, created_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP) RETURNING id";
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, ticket.getBookingId());
-            stmt.setString(2, ticket.getQrCode());
-            stmt.setString(3, ticket.getStatus());
+            stmt.setInt(2, ticket.getSeatId());
+            stmt.setString(3, ticket.getQrCode());
+            stmt.setString(4, ticket.getStatus());
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 ticket.setId(rs.getInt(1));
@@ -99,6 +103,7 @@ public class TicketRepository {
                 Ticket ticket = new Ticket(
                         rs.getInt("id"),
                         rs.getInt("booking_id"),
+                        rs.getInt("seat_id"),
                         rs.getString("qr_code"),
                         rs.getString("status"));
                 // Store amount in a way we can access it - we'll need to extend Ticket model or
@@ -148,6 +153,7 @@ public class TicketRepository {
                 return new Ticket(
                         rs.getInt("id"),
                         rs.getInt("booking_id"),
+                        rs.getInt("seat_id"),
                         rs.getString("qr_code"),
                         rs.getString("status"));
             }

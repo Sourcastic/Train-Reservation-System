@@ -16,12 +16,11 @@ import com.example.trainreservationsystem.utils.shared.database.Database;
 public class RouteRepository {
 
     public Route addRoute(Route route) throws Exception {
-        String sql = "INSERT INTO routes (name, source, destination) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO routes (source, destination) VALUES (?, ?)";
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, route.getName());
-            stmt.setString(2, route.getSource());
-            stmt.setString(3, route.getDestination());
+            stmt.setString(1, route.getSource());
+            stmt.setString(2, route.getDestination());
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows == 0) {
@@ -56,7 +55,6 @@ public class RouteRepository {
 
                 Route route = new Route(
                         routeId,
-                        rs.getString("name"),
                         rs.getString("source"),
                         rs.getString("destination"));
                 routeMap.put(routeId, route);
@@ -84,7 +82,6 @@ public class RouteRepository {
                 if (rs.next()) {
                     Route route = new Route(
                             rs.getInt("id"),
-                            rs.getString("name"),
                             rs.getString("source"),
                             rs.getString("destination"));
                     route.setSegments(getSegmentsByRouteId(id));
@@ -96,13 +93,12 @@ public class RouteRepository {
     }
 
     public void updateRoute(Route route) throws Exception {
-        String sql = "UPDATE routes SET name = ?, source = ?, destination = ? WHERE id = ?";
+        String sql = "UPDATE routes SET source = ?, destination = ? WHERE id = ?";
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, route.getName());
-            stmt.setString(2, route.getSource());
-            stmt.setString(3, route.getDestination());
-            stmt.setInt(4, route.getId());
+            stmt.setString(1, route.getSource());
+            stmt.setString(2, route.getDestination());
+            stmt.setInt(3, route.getId());
             stmt.executeUpdate();
         }
     }
